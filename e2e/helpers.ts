@@ -2,7 +2,8 @@ import { expect, type Page } from "@playwright/test";
 
 export const DARK_BG = "rgb(11, 13, 18)";
 export const LIGHT_BG = "rgb(244, 242, 238)";
-export const DRAFTS_AVAILABLE = !process.env.BASE_URL;
+export const DRAFTS_AVAILABLE =
+  !process.env.BASE_URL && process.env.E2E_NO_DRAFTS !== "1";
 
 export async function expectNoHorizontalOverflow(page: Page): Promise<void> {
   const overflow = await page.evaluate(

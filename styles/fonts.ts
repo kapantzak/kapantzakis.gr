@@ -7,7 +7,7 @@ export const displayFont = Bricolage_Grotesque({
 });
 
 export const bodyFont = Inter({
-  subsets: ["latin", "greek"],
+  subsets: ["latin"],
   variable: "--font-body",
   display: "swap",
 });

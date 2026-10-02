@@ -30,3 +30,18 @@ test("an unknown post slug returns 404", async ({ page }) => {
   const response = await page.goto("/posts/does-not-exist");
   expect(response?.status()).toBe(404);
 });
+
+test("drafts are excluded from production builds", async ({
+  page,
+  request,
+}) => {
+  test.skip(DRAFTS_AVAILABLE, "Only meaningful when drafts are not built");
+  expect((await request.get("/posts/draft-fixture")).status()).toBe(404);
+  await page.goto("/posts");
+  await expect(page.getByRole("list", { name: "All posts" })).not.toContainText(
+    "Draft fixture",
+  );
+  expect(await (await request.get("/sitemap.xml")).text()).not.toContain(
+    "draft-fixture",
+  );
+});

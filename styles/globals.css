@@ -34,7 +34,7 @@ h3 {
   color: var(--color-fg-strong);
   line-height: 0.95;
   letter-spacing: -0.03em;
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
 }
 
 p {

@@ -36,6 +36,9 @@ test("the skip link is the first tab stop and targets main content", async ({
   await expect(skip).toBeInViewport();
   await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/#main$/);
+  await expect(page.locator("main#main")).toBeFocused();
+  await page.keyboard.press("Tab");
+  await expect(page.locator(":focus")).toHaveCSS("outline-style", "solid");
 });
 
 test("home shows the three latest posts and links onward", async ({ page }) => {
