@@ -20,7 +20,7 @@ The site is done when:
 
 ## 2. Decisions
 
-The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second.
+The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review.
 
 | #  | Topic                   | Decision                                                                                                  |
 |----|-------------------------|-----------------------------------------------------------------------------------------------------------|
@@ -40,6 +40,9 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 14 | Analytics               | Vercel Web Analytics (`@vercel/analytics`)                                                                |
 | 15 | MDX pipeline            | `@next/mdx`; each post exports `metadata`; external entries live in a typed TS file                       |
 | 16 | Light pages             | `/posts` and `/posts/[slug]` use the light theme; all other routes stay dark                              |
+| 17 | Post-page test coverage | Optional `draft: true` post flag; a permanent draft fixture is built only when `INCLUDE_DRAFTS=1` (e2e)    |
+| 18 | Cache Components        | Off; routes use classic static generation                                                                 |
+| 19 | Owner's name in code    | Allowed in `content/profile.ts` only; everything else reads `profile.name`                               |
 
 ## 3. Scope
 
@@ -150,7 +153,7 @@ e2e/                    # Playwright smoke tests
 
 ### 6.3 Content model
 
-- **Local post:** `content/posts/<slug>.mdx`. The slug is the file name. Each file exports `metadata = { title, date, summary }`, with `date` as an ISO `YYYY-MM-DD` string.
+- **Local post:** `content/posts/<slug>.mdx`. The slug is the file name. Each file exports `metadata = { title, date, summary, draft? }`, with `date` as an ISO `YYYY-MM-DD` string. Drafts (`draft: true`) are left out of builds unless `INCLUDE_DRAFTS=1` (decision 17).
 - **External post:** an entry in `content/external-posts.ts` with `{ title, date, summary, url, source }`, for example `source: "DEV"`.
 - **`lib/posts.ts`:** returns one merged list, sorted by date with newest first, using a discriminated union (`kind: "local" | "external"`). It fails the build on missing or invalid fields or duplicate slugs. That way bad content cannot reach production silently.
 - **Profile data:** `content/profile.ts` holds experience, education, community, social links and the email address as typed data. The pages render from it, so updating the CV means editing one file.
@@ -158,7 +161,7 @@ e2e/                    # Playwright smoke tests
 ### 6.4 Initial content
 
 - **External posts:** the 10 dev.to articles (2019–2020) and the Scalable Path article "TypeScript or Flow: which is better?". Dates and URLs come from the dev.to API, plus the Scalable Path link on the current site.
-- **Local posts:** none at launch. The pipeline is still built and tested with a test fixture, so the first real post needs no code change.
+- **Local posts:** none at launch. A permanent draft fixture (`content/posts/draft-fixture.mdx`) exercises the MDX pipeline in end-to-end tests and never ships to production (decision 17).
 - **Experience:**
   - Netdata: current. Title and start date are needed from the user, because the public LinkedIn view hides them.
   - Adzuna: Senior Frontend Developer, Feb 2022 – end date needed from the user.
