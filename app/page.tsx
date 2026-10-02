@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { HeroBackdrop } from "@/components/HeroBackdrop";
 import { PageHeader } from "@/components/PageHeader";
 import { PageMain } from "@/components/PageMain";
 import { PostList } from "@/components/PostList";
@@ -16,11 +17,13 @@ export default async function HomePage() {
   const latest = (await getAllPosts()).slice(0, 3);
   return (
     <PageMain accent="blue">
-      <PageHeader
-        eyebrow={`01 / ${profile.role}`}
-        title={profile.headline}
-        lead={profile.intro[0]}
-      />
+      <HeroBackdrop>
+        <PageHeader
+          eyebrow={`01 / ${profile.role}`}
+          title={profile.headline}
+          lead={profile.intro[0]}
+        />
+      </HeroBackdrop>
       <Section index="01" title="Latest writing">
         <PostList posts={latest} label="Latest posts" headingLevel={3} />
         <p className={styles.more}>
