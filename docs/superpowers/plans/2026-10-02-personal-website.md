@@ -3399,7 +3399,7 @@ Push the branch and open a PR into `main`, with a summary of the routes, the dec
 1. **Add New → Project →** import `kapantzak/kapantzakis.gr`. The framework is auto-detected as Next.js, and no environment variables are needed.
 2. **Settings → General → Node.js Version:** 24.x.
 3. **Analytics → Enable Web Analytics.**
-4. Open the preview deployment for the PR branch and run `BASE_URL=<preview URL> npm run e2e`. Expected: all PASS, with the draft-fixture test skipped.
+4. Open the preview deployment for the PR branch and run `BASE_URL=<preview URL> npm run e2e`. Expected: all PASS, with the draft-fixture test skipped. If Vercel Deployment Protection is enabled for previews (the default on new projects), either disable it for this check or run the smoke test against production only (Step 7.4).
 
 - [ ] **Step 7: Domain cutover (user, after the PR is merged and production is deployed)**
 
@@ -3414,18 +3414,18 @@ Push the branch and open a PR into `main`, with a summary of the routes, the dec
 
 ## Execution Log
 
-Fill in during execution.
+Filled in after execution.
 
-| Item                        | Value |
-|-----------------------------|-------|
-| TS fallback version (Task 1) |       |
-| TS 7 gate result (Task 2)   |       |
-| Display font (Task 3)       |       |
-| `{{SITE_OWNER_NAME}}`       |       |
-| `{{CONTACT_EMAIL}}`         |       |
-| `{{NETDATA_TITLE}}`         |       |
-| `{{NETDATA_START}}`         |       |
-| `{{ADZUNA_END}}`            |       |
-| `{{SKGJS_START}}`           |       |
-| Twitter/X                   |       |
-| AUTh thesis link            |       |
+| Item                         | Value                                                                                                               |
+|------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| TS fallback version (Task 1) | 5.9.3                                                                                                               |
+| TS 7 gate result (Task 2)    | FAIL — typescript-eslint 8.71.0 supports TypeScript <6.1.0; 6.0.3 tried and adopted (newest that works, decision 9) |
+| Display font (Task 3)        | Bricolage Grotesque                                                                                                 |
+| `{{SITE_OWNER_NAME}}`        | provided by user; stored only in `content/profile.ts` (decision 19)                                                 |
+| `{{CONTACT_EMAIL}}`          | kapantzak@gmail.com                                                                                                 |
+| `{{NETDATA_TITLE}}`          | Senior software engineer                                                                                            |
+| `{{NETDATA_START}}`          | Feb 2023                                                                                                            |
+| `{{ADZUNA_END}}`             | Jan 2023                                                                                                            |
+| `{{SKGJS_START}}`            | Apr 2025                                                                                                            |
+| Twitter/X                    | dropped                                                                                                             |
+| AUTh thesis link             | dropped                                                                                                             |
