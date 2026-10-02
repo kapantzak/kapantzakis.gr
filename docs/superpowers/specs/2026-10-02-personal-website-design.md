@@ -20,7 +20,7 @@ The site is done when:
 
 ## 2. Decisions
 
-The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review, 22–25 for the Home hero backdrop.
+The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review, 22–25 for the Home hero backdrop, 26–29 for the logo.
 
 | #  | Topic                   | Decision                                                                                                  |
 |----|-------------------------|-----------------------------------------------------------------------------------------------------------|
@@ -49,6 +49,10 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 23 | Hero backdrop effect    | Floating outlined code glyphs in the display font, slow transform-only drift; CSS only, no JavaScript     |
 | 24 | Pausing (WCAG 2.2.2)    | CSS-only "Pause motion" toggle in the hero, plus the existing reduced-motion support                       |
 | 25 | Hero backdrop on phones | Same effect with fewer glyphs (7 instead of 12)                                                           |
+| 26 | Logo rendering          | The user's "refined" JK logo PNG used as-is (white serif JK on a black square tile)                       |
+| 27 | Logo size               | 40px in the nav on desktop, 32px on phones                                                                |
+| 28 | Site icon               | The same logo replaces the generated monogram: `favicon.ico`, a 512px icon and a 192px Apple touch icon    |
+| 29 | Logo link               | Logo sits inside the existing name link before the name; the image is decorative (`alt=""`)              |
 
 ## 3. Scope
 
@@ -105,7 +109,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 
 ### 4.5 Navigation
 
-- A top bar with the site name on the left and links on the right: Home, About, Posts, Contact.
+- A top bar with the logo and site name on the left and links on the right: Home, About, Posts, Contact. The logo and name form one link to Home (decisions 26–29).
 - On screens wider than 640px the bar is sticky (`position: sticky`, CSS only), with a solid theme background and a thin bottom rule (decisions 20–21). On phones it scrolls away, keeping the full screen for reading.
 - While the bar is sticky, in-page anchors and focused elements scroll into view below it (`scroll-padding-top`), and the skip link renders above it.
 - The active route is marked visually and with `aria-current="page"`.
@@ -234,7 +238,7 @@ e2e/                    # Playwright smoke tests
 2. The public contact email address for the `mailto:` link.
 3. Display font choice, made at the side-by-side comparison.
 4. Keep or drop Twitter/X, and any other links to add, for example SKG JS.
-5. Optional: a portrait image and a favicon. Without them, the site launches with a text monogram favicon.
+5. Optional: a portrait image. The favicon is now the user's own logo (decision 28).
 
 ## 12. Repository notes
 
