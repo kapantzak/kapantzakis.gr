@@ -20,7 +20,7 @@ The site is done when:
 
 ## 2. Decisions
 
-The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review.
+The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review.
 
 | #  | Topic                   | Decision                                                                                                  |
 |----|-------------------------|-----------------------------------------------------------------------------------------------------------|
@@ -43,6 +43,8 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 17 | Post-page test coverage | Optional `draft: true` post flag; a permanent draft fixture is built only when `INCLUDE_DRAFTS=1` (e2e)    |
 | 18 | Cache Components        | Off; routes use classic static generation                                                                 |
 | 19 | Owner's name in code    | Allowed in `content/profile.ts` only; everything else reads `profile.name`                               |
+| 20 | Sticky nav              | Top bar sticks to the top on screens wider than 640px (40rem); on phones it scrolls away normally         |
+| 21 | Sticky bar look         | Solid page background (follows the light/dark theme) with a thin bottom rule; no blur or translucency     |
 
 ## 3. Scope
 
@@ -98,7 +100,9 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 
 ### 4.5 Navigation
 
-- A top bar that is not sticky. Site name on the left, and links on the right: Home, About, Posts, Contact.
+- A top bar with the site name on the left and links on the right: Home, About, Posts, Contact.
+- On screens wider than 640px the bar is sticky (`position: sticky`, CSS only), with a solid theme background and a thin bottom rule (decisions 20–21). On phones it scrolls away, keeping the full screen for reading.
+- While the bar is sticky, in-page anchors and focused elements scroll into view below it (`scroll-padding-top`), and the skip link renders above it.
 - The active route is marked visually and with `aria-current="page"`.
 - On mobile the four links wrap or shrink. There is no hamburger menu and no JavaScript.
 - Footer with social links.
