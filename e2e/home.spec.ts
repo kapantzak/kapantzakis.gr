@@ -37,3 +37,15 @@ test("the skip link is the first tab stop and targets main content", async ({
   await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/#main$/);
 });
+
+test("home shows the three latest posts and links onward", async ({ page }) => {
+  await page.goto("/");
+  await expect(
+    page.getByRole("heading", { level: 2, name: "Latest writing" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("list", { name: "Latest posts" }).getByRole("listitem"),
+  ).toHaveCount(3);
+  await page.getByRole("link", { name: "All posts" }).click();
+  await expect(page).toHaveURL(/\/posts$/);
+});
