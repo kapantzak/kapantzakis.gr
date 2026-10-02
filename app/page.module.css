@@ -1,0 +1,12 @@
+.more {
+  font-weight: 700;
+}
+
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 3rem;
+  font-family: var(--font-display-stack);
+  font-size: var(--text-h3);
+  font-weight: 800;
+}

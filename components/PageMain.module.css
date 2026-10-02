@@ -1,0 +1,11 @@
+.main {
+  flex: 1;
+  display: grid;
+  align-content: start;
+  gap: clamp(3rem, 8vw, 8rem);
+  padding: var(--page-pad-block) var(--gutter);
+}
+
+.main:focus {
+  outline: none;
+}

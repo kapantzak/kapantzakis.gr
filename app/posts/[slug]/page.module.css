@@ -1,0 +1,4 @@
+.article {
+  display: grid;
+  gap: clamp(2rem, 5vw, 4rem);
+}

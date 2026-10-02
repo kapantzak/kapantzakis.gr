@@ -1,0 +1,54 @@
+/* Dark is the default; a page opts into the light theme or an accent via data-* on <main>. */
+:root {
+  --color-bg: #0b0d12;
+  --color-fg: #d9dce3;
+  --color-fg-strong: #ffffff;
+  --color-muted: #9aa1ae;
+  --color-surface: #151821;
+  --color-rule: #262a33;
+  --color-accent-blue: #7d8bff;
+  --color-accent-magenta: #ff5cd6;
+  --color-accent-lime: #c6ff3d;
+  --color-accent-orange: #ff8a3d;
+
+  --accent: var(--color-accent-blue);
+
+  --font-display-stack: var(--font-display), system-ui, sans-serif;
+  --font-body-stack: var(--font-body), system-ui, sans-serif;
+
+  --text-body: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --text-lead: clamp(1.125rem, 1rem + 0.6vw, 1.5rem);
+  --text-h3: clamp(1.25rem, 1.05rem + 1vw, 2rem);
+  --text-h2: clamp(2rem, 1.2rem + 4vw, 5rem);
+  --text-display: clamp(3rem, 0.5rem + 12vw, 14rem);
+
+  --gutter: clamp(1rem, 4vw, 4rem);
+  --page-pad-block: clamp(2rem, 6vw, 6rem);
+  --measure: 70ch;
+  --transition-fast: 120ms ease-out;
+}
+
+:root:has(main[data-theme="light"]) {
+  --color-bg: #f4f2ee;
+  --color-fg: #1a1c22;
+  --color-fg-strong: #0b0d12;
+  --color-muted: #5a606c;
+  --color-surface: #e9e6df;
+  --color-rule: #d3cfc6;
+  --color-accent-blue: #3b00eb;
+  --color-accent-magenta: #b8009f;
+  --color-accent-lime: #3d7300;
+  --color-accent-orange: #b34700;
+}
+
+:root:has(main[data-accent="magenta"]) {
+  --accent: var(--color-accent-magenta);
+}
+
+:root:has(main[data-accent="lime"]) {
+  --accent: var(--color-accent-lime);
+}
+
+:root:has(main[data-accent="orange"]) {
+  --accent: var(--color-accent-orange);
+}
