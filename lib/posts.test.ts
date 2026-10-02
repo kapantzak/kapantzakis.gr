@@ -162,4 +162,9 @@ describe("formatPostDate", () => {
   it("does not shift the day across time zones", () => {
     expect(formatPostDate("2020-01-01")).toBe("1 Jan 2020");
   });
+
+  it("uses three-letter month abbreviations for every month", () => {
+    expect(formatPostDate("2019-09-16")).toBe("16 Sep 2019");
+    expect(formatPostDate("2021-06-30")).toBe("30 Jun 2021");
+  });
 });
