@@ -13,6 +13,13 @@ html {
   color-scheme: light;
 }
 
+/* Keep anchor targets and focused elements clear of the sticky header (Nav.module.css). */
+@media (min-width: 40rem) {
+  html {
+    scroll-padding-top: 7rem;
+  }
+}
+
 body {
   margin: 0;
   min-height: 100dvh;
@@ -70,7 +77,8 @@ img {
   background: var(--color-fg-strong);
   color: var(--color-bg);
   font-weight: 700;
-  z-index: 1;
+  /* Above the sticky header (z-index 10 in Nav.module.css). */
+  z-index: 20;
 }
 
 .skip-link:focus {
