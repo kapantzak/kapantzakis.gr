@@ -1,7 +1,7 @@
 # Personal Website — Design Spec
 
 - **Date:** 2026-10-02
-- **Status:** Draft — awaiting user review
+- **Status:** Approved by user 2026-10-02
 - **Inputs:** `docs/initial-notes.md`, `docs/linkedin.md`, the current site at https://kapantzakis.gr/
 
 ## 1. Purpose and success criteria
@@ -20,7 +20,7 @@ The site is done when:
 
 ## 2. Decisions
 
-The user approved decisions 1–14 on 2026-10-02. Decisions 15–16 are proposals raised while writing this spec and need confirmation.
+The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second.
 
 | #  | Topic                   | Decision                                                                                                  |
 |----|-------------------------|-----------------------------------------------------------------------------------------------------------|
@@ -38,8 +38,8 @@ The user approved decisions 1–14 on 2026-10-02. Decisions 15–16 are proposal
 | 12 | Old "Projects" section  | Dropped; `/projects` permanently redirects to `/about`                                                    |
 | 13 | About content           | Drafted from the current site and LinkedIn, then reviewed and completed by the user                       |
 | 14 | Analytics               | Vercel Web Analytics (`@vercel/analytics`)                                                                |
-| 15 | MDX pipeline            | **Proposed:** `@next/mdx`; each post exports `metadata`; external entries live in a typed TS file         |
-| 16 | Light pages             | **Proposed:** `/posts` and `/posts/[slug]` use the light theme; all other routes stay dark                |
+| 15 | MDX pipeline            | `@next/mdx`; each post exports `metadata`; external entries live in a typed TS file                       |
+| 16 | Light pages             | `/posts` and `/posts/[slug]` use the light theme; all other routes stay dark                              |
 
 ## 3. Scope
 
