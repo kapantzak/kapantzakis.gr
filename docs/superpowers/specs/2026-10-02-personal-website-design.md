@@ -20,7 +20,7 @@ The site is done when:
 
 ## 2. Decisions
 
-The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review.
+The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review, 22–25 for the Home hero backdrop.
 
 | #  | Topic                   | Decision                                                                                                  |
 |----|-------------------------|-----------------------------------------------------------------------------------------------------------|
@@ -45,6 +45,10 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 19 | Owner's name in code    | Allowed in `content/profile.ts` only; everything else reads `profile.name`                               |
 | 20 | Sticky nav              | Top bar sticks to the top on screens wider than 640px (40rem); on phones it scrolls away normally         |
 | 21 | Sticky bar look         | Solid page background (follows the light/dark theme) with a thin bottom rule; no blur or translucency     |
+| 22 | Hero backdrop scope     | Ambient animation behind the Home headline area only; every other page stays still                        |
+| 23 | Hero backdrop effect    | Floating outlined code glyphs in the display font, slow transform-only drift; CSS only, no JavaScript     |
+| 24 | Pausing (WCAG 2.2.2)    | CSS-only "Pause motion" toggle in the hero, plus the existing reduced-motion support                       |
+| 25 | Hero backdrop on phones | Same effect with fewer glyphs (7 instead of 12)                                                           |
 
 ## 3. Scope
 
@@ -76,6 +80,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 - Typography first: big, bold headings; normal-size body text.
 - Fast: no page-transition animations, no scroll-linked motion, no custom cursor and no loader screen. The current site has one, and the new one drops it.
 - Motion is limited to short colour or underline transitions on hover and focus, and is disabled under `prefers-reduced-motion: reduce`.
+- One exception (decisions 22–25): the Home hero has an ambient backdrop of faint, outlined code glyphs that drift slowly. It animates `transform` only, uses no JavaScript, can be paused with a CSS-only toggle, and is still under `prefers-reduced-motion: reduce`.
 - Full-width composition instead of a centred 1200px container.
 
 ### 4.2 Colour
