@@ -1,0 +1,132 @@
+.hero {
+  display: grid;
+  align-content: end;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  /* Fill the first screen below the nav so the next section starts on scroll. */
+  min-height: calc(100svh - 8rem - var(--page-pad-block));
+}
+
+.eyebrow {
+  font-family: var(--font-display-stack);
+  font-size: 0.875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.headline {
+  font-size: clamp(3rem, 0.5rem + 11vw, 13rem);
+  line-height: 0.9;
+}
+
+.line {
+  display: block;
+  white-space: nowrap;
+}
+
+.line[data-line="1"] {
+  color: var(--accent);
+}
+
+/* Each word rises out of its own clip box. */
+.mask {
+  display: inline-block;
+  overflow: clip;
+  overflow-clip-margin: 0.1em;
+  vertical-align: bottom;
+}
+
+.word {
+  display: inline-block;
+}
+
+.intro {
+  display: grid;
+  gap: 0.75rem;
+  max-width: var(--measure);
+  font-size: var(--text-lead);
+  line-height: 1.5;
+  color: var(--color-fg-strong);
+}
+
+.intro p + p {
+  font-size: var(--text-body);
+  color: var(--color-muted);
+}
+
+.cue {
+  justify-self: start;
+  font-family: var(--font-display-stack);
+  font-size: 0.875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-muted);
+}
+
+.cue span {
+  display: inline-block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .word {
+    animation: rise 900ms var(--ease-out) both;
+    animation-delay: calc(150ms + var(--i) * 90ms);
+  }
+
+  .intro,
+  .cue {
+    animation: fade 900ms var(--ease-out) 800ms both;
+  }
+
+  /* A few nudges only: endless motion would need its own pause control (WCAG 2.2.2). */
+  .cue span {
+    animation: nudge 1.6s ease-in-out 1.8s 3;
+  }
+
+  /* Lines drift apart as the page scrolls away from the hero. */
+  @supports (animation-timeline: scroll()) {
+    .line {
+      animation: part-left linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100svh;
+    }
+
+    .line[data-line="1"] {
+      animation-name: part-right;
+    }
+  }
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(110%) rotate(6deg);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+}
+
+@keyframes nudge {
+  50% {
+    transform: translateY(0.3em);
+  }
+}
+
+@keyframes part-left {
+  to {
+    transform: translateX(-30vw);
+    opacity: 0.2;
+  }
+}
+
+@keyframes part-right {
+  to {
+    transform: translateX(30vw);
+    opacity: 0.2;
+  }
+}

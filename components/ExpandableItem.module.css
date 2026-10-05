@@ -1,0 +1,184 @@
+.item {
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.heading {
+  font-size: inherit;
+  line-height: inherit;
+  letter-spacing: normal;
+}
+
+.trigger {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(9rem, 14rem) 1fr auto;
+  grid-template-areas:
+    "period title icon"
+    "period subtitle icon";
+  align-items: baseline;
+  gap: 0.25rem 2rem;
+  width: 100%;
+  padding: clamp(1.25rem, 3vw, 2.5rem) clamp(0.5rem, 2vw, 1.5rem);
+  border: 0;
+  background: none;
+  color: var(--color-fg);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: color 300ms var(--ease-out);
+}
+
+/* Accent wipe from the left on hover, focus and while open. */
+.trigger::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 500ms var(--ease-out);
+}
+
+.trigger:hover,
+.trigger:focus-visible,
+.item[data-open] .trigger {
+  color: var(--color-on-accent);
+}
+
+.trigger:hover::before,
+.trigger:focus-visible::before,
+.item[data-open] .trigger::before {
+  transform: scaleX(1);
+}
+
+.trigger:focus-visible {
+  outline-color: var(--color-fg-strong);
+}
+
+.period {
+  grid-area: period;
+  font-variant-numeric: tabular-nums;
+}
+
+.title {
+  grid-area: title;
+  font-family: var(--font-display-stack);
+  font-size: clamp(2.25rem, 1rem + 5.5vw, 7rem);
+  line-height: 0.95;
+  color: var(--color-fg-strong);
+  transition:
+    color 300ms var(--ease-out),
+    transform 500ms var(--ease-out);
+}
+
+.trigger:hover .title,
+.trigger:focus-visible .title,
+.item[data-open] .title {
+  color: inherit;
+  transform: translateX(clamp(0.5rem, 1.5vw, 1.5rem));
+}
+
+.subtitle {
+  grid-area: subtitle;
+  font-size: var(--text-lead);
+  font-weight: 600;
+}
+
+/* A plus that turns into a cross. */
+.icon {
+  grid-area: icon;
+  position: relative;
+  align-self: center;
+  width: clamp(1.75rem, 3vw, 3rem);
+  aspect-ratio: 1;
+  transition: transform 500ms var(--ease-out);
+}
+
+.icon::before,
+.icon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 0.2rem;
+  margin-top: -0.1rem;
+  background: currentColor;
+}
+
+.icon::after {
+  transform: rotate(90deg);
+}
+
+.item[data-open] .icon {
+  transform: rotate(135deg);
+}
+
+/* Height animates through the grid track: 0fr -> 1fr. */
+.panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 600ms var(--ease-out);
+}
+
+.item[data-open] .panel {
+  grid-template-rows: 1fr;
+}
+
+.panelInner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.panelInner > * {
+  opacity: 0;
+  transform: translateY(1.5rem);
+  transition:
+    opacity 400ms var(--ease-out),
+    transform 600ms var(--ease-out);
+}
+
+.item[data-open] .panelInner > * {
+  opacity: 1;
+  transform: none;
+  transition-delay: 200ms;
+}
+
+.item[data-open] .panelInner > :nth-child(2) {
+  transition-delay: 320ms;
+}
+
+.item[data-open] .panelInner > :nth-child(n + 3) {
+  transition-delay: 440ms;
+}
+
+@media (width < 40rem) {
+  .trigger {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "period icon"
+      "title icon"
+      "subtitle icon";
+    column-gap: 1rem;
+  }
+}
+
+/* Rows rise into place as they enter the viewport. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .item {
+      animation: enter linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 90%;
+    }
+  }
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(4rem) skewY(2deg);
+  }
+}

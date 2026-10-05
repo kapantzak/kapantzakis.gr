@@ -4,7 +4,7 @@ import { expectNoHorizontalOverflow } from "./helpers";
 // Matches the 40rem breakpoint in components/Nav.module.css (decision 27).
 const DESKTOP_MIN_WIDTH = 640;
 
-for (const path of ["/", "/posts"]) {
+for (const path of ["/", "/no-such-page"]) {
   test(`the logo sits before the name in the main nav on ${path}`, async ({
     page,
   }) => {

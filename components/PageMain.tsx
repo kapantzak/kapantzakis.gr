@@ -1,20 +1,9 @@
 import type { ReactNode } from "react";
 import styles from "./PageMain.module.css";
 
-export type Accent = "blue" | "magenta" | "lime" | "orange";
-
-type Props = { accent: Accent; theme?: "dark" | "light"; children: ReactNode };
-
-// data-theme / data-accent are read by :root:has(...) rules in styles/tokens.css.
-export function PageMain({ accent, theme = "dark", children }: Props) {
+export function PageMain({ children }: { children: ReactNode }) {
   return (
-    <main
-      id="main"
-      tabIndex={-1}
-      className={styles.main}
-      data-theme={theme}
-      data-accent={accent}
-    >
+    <main id="main" tabIndex={-1} className={styles.main}>
       {children}
     </main>
   );

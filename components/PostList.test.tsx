@@ -5,15 +5,13 @@ import { PostList } from "./PostList";
 
 const posts: Post[] = [
   {
-    kind: "local",
-    slug: "new-site",
-    title: "New site",
-    date: "2026-01-02",
-    summary: "Local summary",
-    draft: false,
+    url: "https://www.scalablepath.com/blog/flow",
+    source: "Scalable Path",
+    title: "Flow",
+    date: "2020-07-16",
+    summary: "Flow summary",
   },
   {
-    kind: "external",
     url: "https://dev.to/kapantzak/event-loop",
     source: "DEV",
     title: "Event loop",
@@ -23,38 +21,35 @@ const posts: Post[] = [
 ];
 
 describe("PostList", () => {
-  it("is a labelled ordered list with one item per post", () => {
-    render(<PostList posts={posts} label="All posts" headingLevel={2} />);
+  it("is a labelled ordered list with one tile per post", () => {
+    render(<PostList posts={posts} label="All posts" />);
     const list = screen.getByRole("list", { name: "All posts" });
     expect(list.tagName).toBe("OL");
     expect(screen.getAllByRole("listitem")).toHaveLength(2);
+    expect(screen.getAllByRole("heading", { level: 3 })).toHaveLength(2);
   });
 
-  it("links local posts to their page in the same tab", () => {
-    render(<PostList posts={posts} label="All posts" headingLevel={2} />);
-    const link = screen.getByRole("link", { name: "New site" });
-    expect(link).toHaveAttribute("href", "/posts/new-site");
-    expect(link).not.toHaveAttribute("target");
+  it("opens every post in a new tab and says so", () => {
+    render(<PostList posts={posts} label="All posts" />);
+    const links = screen.getAllByRole("link");
+    expect(links.map((a) => a.getAttribute("href"))).toEqual(
+      posts.map((p) => p.url),
+    );
+    for (const link of links) {
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
+      expect(link).toHaveAccessibleName(/\(opens in a new tab\)$/);
+    }
   });
 
-  it("opens external posts in a new tab and names the source", () => {
-    render(<PostList posts={posts} label="All posts" headingLevel={2} />);
-    const link = screen.getByRole("link", { name: "Event loop on DEV" });
-    expect(link).toHaveAttribute("href", "https://dev.to/kapantzak/event-loop");
-    expect(link).toHaveAttribute("target", "_blank");
-    expect(link).toHaveAttribute("rel", "noopener noreferrer");
-  });
-
-  it("shows readable dates with machine-readable datetime", () => {
-    render(<PostList posts={posts} label="All posts" headingLevel={2} />);
+  it("names the source and shows readable dates with machine-readable datetime", () => {
+    render(<PostList posts={posts} label="All posts" />);
+    expect(screen.getByRole("link", { name: /Event loop/ })).toHaveTextContent(
+      "DEV",
+    );
     expect(screen.getByText("15 Aug 2019")).toHaveAttribute(
       "dateTime",
       "2019-08-15",
     );
-  });
-
-  it("uses the requested heading level", () => {
-    render(<PostList posts={posts} label="Latest posts" headingLevel={3} />);
-    expect(screen.getAllByRole("heading", { level: 3 })).toHaveLength(2);
   });
 });

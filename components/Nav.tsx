@@ -24,6 +24,7 @@ export function Nav() {
         </Link>
         <NavLinks />
       </nav>
+      <div className={styles.progress} aria-hidden="true" />
     </header>
   );
 }

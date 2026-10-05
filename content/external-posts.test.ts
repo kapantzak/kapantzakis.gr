@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { mergePosts, parseExternalPost } from "@/lib/posts";
+import { orderPosts, parsePost } from "@/lib/posts";
 import { externalPosts } from "./external-posts";
 
 describe("externalPosts", () => {
@@ -11,7 +11,7 @@ describe("externalPosts", () => {
   });
 
   it("every entry is valid and URLs are unique", () => {
-    const parsed = externalPosts.map((entry, i) => parseExternalPost(entry, i));
-    expect(() => mergePosts([], parsed)).not.toThrow();
+    const parsed = externalPosts.map((entry, i) => parsePost(entry, i));
+    expect(() => orderPosts(parsed)).not.toThrow();
   });
 });

@@ -69,6 +69,6 @@ test("reduced motion stops the backdrop and hides the toggle", async ({
 });
 
 test("only the home page has the backdrop", async ({ page }) => {
-  await page.goto("/about");
+  await page.goto("/no-such-page");
   await expect(page.locator("[data-hero-backdrop]")).toHaveCount(0);
 });
