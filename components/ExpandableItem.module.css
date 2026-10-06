@@ -2,7 +2,9 @@
   border-bottom: 1px solid var(--color-rule);
 }
 
+/* globals.css resets h1–h3 only; the h4's default margin would gap the hover fill from the rules. */
 .heading {
+  margin: 0;
   font-size: inherit;
   line-height: inherit;
   letter-spacing: normal;
