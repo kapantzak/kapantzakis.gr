@@ -1,0 +1,208 @@
+/* Light surface (decision 44). Shared tokens are remapped so content styled for the dark page reads here too. */
+.sheet {
+  --color-bg: var(--color-paper);
+  --color-fg: var(--color-paper-fg);
+  --color-fg-strong: var(--color-paper-fg-strong);
+  --color-muted: var(--color-paper-muted);
+  --color-rule: var(--color-paper-rule);
+
+  position: fixed;
+  /* Above the sticky header (10) and the skip link (20). */
+  z-index: 30;
+  inset: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  color-scheme: light;
+  background: var(--color-bg);
+  color: var(--color-fg);
+}
+
+/* The global lime focus ring and link hover are invisible on the light surface. */
+.sheet :focus-visible {
+  outline-color: var(--color-fg-strong);
+}
+
+.sheet a:hover {
+  color: var(--color-fg-strong);
+}
+
+/* Keeps the close button in view while the sheet scrolls. */
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+  padding: clamp(1rem, 2.5vw, 2rem) var(--gutter) 0;
+  pointer-events: none;
+}
+
+.close {
+  position: relative;
+  width: clamp(3rem, 5vw, 4rem);
+  aspect-ratio: 1;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-fg-strong);
+  color: var(--color-paper);
+  cursor: pointer;
+  pointer-events: auto;
+  transition:
+    transform 400ms var(--ease-out),
+    background-color 300ms var(--ease-out),
+    color 300ms var(--ease-out);
+}
+
+.close::before,
+.close::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 27.5%;
+  width: 45%;
+  height: 0.15rem;
+  margin-top: -0.075rem;
+  background: currentColor;
+  transform: rotate(45deg);
+}
+
+.close::after {
+  transform: rotate(-45deg);
+}
+
+.close:hover,
+.close:focus-visible {
+  background: var(--accent);
+  color: var(--color-on-accent);
+  transform: rotate(90deg);
+}
+
+.content {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  padding: 0 var(--gutter) var(--page-pad-block);
+}
+
+.header {
+  display: grid;
+  gap: 1rem;
+  padding-top: clamp(1rem, 4vw, 3rem);
+}
+
+.period {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--color-muted);
+}
+
+.title {
+  font-size: clamp(3rem, 1rem + 8vw, 10rem);
+}
+
+.subtitle {
+  font-size: var(--text-lead);
+  font-weight: 600;
+  color: var(--color-fg-strong);
+}
+
+/*
+ * Motion (decision 43): the sheet grows out of the row's rectangle, starting in the
+ * row's accent fill, then the content rises in. Closing plays it back into the row.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .sheet {
+    animation: grow 800ms var(--ease-out) both;
+  }
+
+  .sheet[data-closing] {
+    animation: shrink 550ms cubic-bezier(0.7, 0, 0.3, 1) both;
+  }
+
+  .bar,
+  .content > * {
+    animation: rise 700ms var(--ease-out) both;
+    animation-delay: 350ms;
+  }
+
+  .content > :nth-child(2) {
+    animation-delay: 450ms;
+  }
+
+  .content > :nth-child(n + 3) {
+    animation-delay: 550ms;
+  }
+
+  .sheet[data-closing] .bar,
+  .sheet[data-closing] .content > * {
+    animation: sink 200ms ease-in both;
+  }
+}
+
+/* globals.css turns every animation off; a short fade still marks the change of context. */
+@media (prefers-reduced-motion: reduce) {
+  .sheet {
+    animation: fade-in 200ms ease-out both !important;
+  }
+
+  .sheet[data-closing] {
+    animation: fade-out 150ms ease-in both !important;
+  }
+}
+
+@keyframes grow {
+  from {
+    clip-path: inset(
+      var(--from-top) var(--from-right) var(--from-bottom) var(--from-left)
+    );
+    background-color: var(--accent);
+  }
+  35% {
+    background-color: var(--accent);
+  }
+  to {
+    clip-path: inset(0);
+    background-color: var(--color-paper);
+  }
+}
+
+@keyframes shrink {
+  from {
+    clip-path: inset(0);
+    background-color: var(--color-paper);
+  }
+  65% {
+    background-color: var(--accent);
+  }
+  to {
+    clip-path: inset(
+      var(--from-top) var(--from-right) var(--from-bottom) var(--from-left)
+    );
+    background-color: var(--accent);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(3rem);
+  }
+}
+
+@keyframes sink {
+  to {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}

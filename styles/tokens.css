@@ -10,6 +10,12 @@
   --color-accent-magenta: #ff5cd6;
   /* Text drawn on an accent fill. */
   --color-on-accent: #0b0d12;
+  /* Light surface of the detail sheet (decision 44); accents are only fills on it. */
+  --color-paper: #f7f6f2;
+  --color-paper-fg: #2a2e37;
+  --color-paper-fg-strong: #0b0d12;
+  --color-paper-muted: #5a6070;
+  --color-paper-rule: #d9d6cc;
 
   --accent: var(--color-accent-lime);
 

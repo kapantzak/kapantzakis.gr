@@ -12,6 +12,9 @@ type Entry = {
   details: ReactNode;
 };
 
+// Enough blocks for the sheet to scroll, so long content is exercised.
+const PLACEHOLDERS = ["Highlights", "Projects", "Stories"];
+
 function ExternalLink({ href, children }: { href: string; children: string }) {
   return (
     <a href={href} target="_blank" rel="noopener noreferrer">
@@ -38,11 +41,13 @@ function Group({ title, entries }: { title: string; entries: Entry[] }) {
             subtitle={entry.subtitle}
           >
             <div className={styles.facts}>{entry.details}</div>
-            {/* Rich per-entry content is designed later (decision 33). */}
-            <div className={styles.placeholder} data-placeholder>
-              <span className={styles.placeholderLabel}>Coming soon</span>
-              <p>Projects, highlights and stories from this chapter.</p>
-            </div>
+            {/* Rich per-entry content is designed later (decision 45). */}
+            {PLACEHOLDERS.map((label) => (
+              <div key={label} className={styles.placeholder} data-placeholder>
+                <span className={styles.placeholderLabel}>{label}</span>
+                <p>Coming soon.</p>
+              </div>
+            ))}
           </ExpandableItem>
         ))}
       </ol>
