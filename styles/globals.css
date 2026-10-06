@@ -15,6 +15,12 @@ html {
   }
 }
 
+/* The page stays put behind an open detail sheet; the padding replaces the hidden scrollbar so nothing shifts. */
+html[data-sheet-open] {
+  overflow: hidden;
+  padding-right: var(--scrollbar-gap, 0px);
+}
+
 /* Keep anchor targets and focused elements clear of the sticky header (Nav.module.css). */
 @media (min-width: 40rem) {
   html {

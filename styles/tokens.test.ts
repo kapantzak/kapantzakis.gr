@@ -13,6 +13,13 @@ const TEXT_TOKENS = [
   "--color-accent-magenta",
 ];
 
+// The detail sheet's light surface (decision 44); accents are never text on it.
+const PAPER_TEXT_TOKENS = [
+  "--color-paper-fg",
+  "--color-paper-fg-strong",
+  "--color-paper-muted",
+];
+
 const ACCENT_FILLS = ["--color-accent-lime", "--color-accent-magenta"];
 
 function readColours(): Record<string, string> {
@@ -47,4 +54,10 @@ describe("text on accent fills", () => {
       expect(ratio("--color-on-accent", fill)).toBeGreaterThanOrEqual(4.5);
     },
   );
+});
+
+describe("text on the detail sheet", () => {
+  it.each(PAPER_TEXT_TOKENS)("%s has at least 4.5:1 contrast", (token) => {
+    expect(ratio(token, "--color-paper")).toBeGreaterThanOrEqual(4.5);
+  });
 });

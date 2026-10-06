@@ -20,7 +20,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 1rem 2rem;
-  padding: clamp(1.25rem, 3vw, 2rem) clamp(0.5rem, 2vw, 1.5rem) 1rem;
+  max-width: var(--measure);
   font-weight: 600;
 }
 
@@ -28,8 +28,12 @@
   display: none;
 }
 
-.facts a {
-  color: var(--accent);
+/* The facts sit on the light detail sheet, where accents are fills, never text (decision 44). */
+.facts a,
+.facts a:hover {
+  padding: 0.2em 0.6em;
+  background: var(--accent);
+  color: var(--color-on-accent);
 }
 
 .tags {
@@ -43,7 +47,7 @@
 
 .tags li {
   padding: 0.25rem 0.85rem;
-  border: 1px solid var(--accent);
+  border: 1px solid var(--color-fg-strong);
   border-radius: 999px;
   color: var(--color-fg-strong);
   font-size: 0.9rem;
@@ -51,8 +55,9 @@
 
 .placeholder {
   display: grid;
+  align-content: start;
   gap: 0.5rem;
-  margin: 1rem clamp(0.5rem, 2vw, 1.5rem) clamp(1.5rem, 3vw, 2.5rem);
+  min-height: 40vh;
   padding: clamp(1.5rem, 4vw, 3rem);
   border: 2px dashed var(--color-rule);
   border-radius: 1rem;

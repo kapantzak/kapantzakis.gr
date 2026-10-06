@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 import { externalPosts } from "../content/external-posts";
 import {
   DARK_BG,
+  PAPER_BG,
   expectBodyBackground,
   expectNoHorizontalOverflow,
 } from "./helpers";
@@ -43,38 +44,71 @@ test("the skip link is the first tab stop and targets main content", async ({
   await expect(page.locator(":focus")).toHaveCSS("outline-style", "solid");
 });
 
-test("an experience row expands to reveal its details and collapses again", async ({
+test("an experience row opens a full-page light sheet that scrolls and closes on Escape", async ({
   page,
 }) => {
   await page.goto("/");
   const row = page.getByRole("button", { name: /Netdata/ });
-  await expect(row).toHaveAttribute("aria-expanded", "false");
-  const panel = page.locator(`#${await row.getAttribute("aria-controls")}`);
-  await expect(panel).toHaveAttribute("inert", "");
-
+  await expect(row).toHaveAttribute("aria-haspopup", "dialog");
   await row.click();
-  await expect(row).toHaveAttribute("aria-expanded", "true");
-  await expect(panel).not.toHaveAttribute("inert");
+
+  const sheet = page.getByRole("dialog", { name: "Netdata" });
+  await expect(sheet).toBeVisible();
+  await expect(sheet).toHaveCSS("background-color", PAPER_BG);
+  await expect(sheet.getByRole("button", { name: "Close" })).toBeFocused();
   await expect(
-    panel.getByRole("link", { name: /netdata\.cloud/ }),
+    sheet.getByRole("link", { name: /netdata\.cloud/ }),
   ).toBeVisible();
-  await expect(panel.locator("[data-placeholder]")).toBeVisible();
+  await expect(sheet.locator("[data-placeholder]").first()).toBeVisible();
+  const box = await sheet.boundingBox();
+  const viewport = page.viewportSize()!;
+  expect(box).toMatchObject({ x: 0, y: 0, width: viewport.width });
+  expect(await sheet.evaluate((el) => el.scrollHeight > el.clientHeight)).toBe(
+    true,
+  );
+  await expect(page.locator("main")).toHaveAttribute("inert", "");
 
-  await row.click();
-  await expect(row).toHaveAttribute("aria-expanded", "false");
-  await expect(panel).toHaveAttribute("inert", "");
+  await page.keyboard.press("Escape");
+  await expect(sheet).toHaveCount(0);
+  await expect(row).toBeFocused();
+  await expect(page.locator("main")).not.toHaveAttribute("inert");
+  await expectNoHorizontalOverflow(page);
 });
 
-test("education and community rows reveal their links", async ({ page }) => {
+test("the close button and the browser Back button both close the sheet", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const row = page.getByRole("button", { name: /Netdata/ });
+  const sheet = page.getByRole("dialog", { name: "Netdata" });
+
+  await row.click();
+  await sheet.getByRole("button", { name: "Close" }).click();
+  await expect(sheet).toHaveCount(0);
+
+  await row.click();
+  await expect(sheet).toBeVisible();
+  await page.goBack();
+  await expect(sheet).toHaveCount(0);
+  await expect(page).toHaveURL(/\/$/);
+  await expect(row).toBeFocused();
+});
+
+test("education and community sheets reveal their links", async ({ page }) => {
   await page.goto("/");
   await page
     .getByRole("button", { name: /MSc in Applied Informatics/ })
     .click();
   await expect(
-    page.getByRole("link", { name: /Thesis \(English\)/ }),
+    page.getByRole("dialog").getByRole("link", { name: /Thesis \(English\)/ }),
   ).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+
   await page.getByRole("button", { name: /SKG JS/ }).click();
-  await expect(page.getByText(/Organising meetups and talks/)).toBeVisible();
+  await expect(
+    page.getByRole("dialog").getByText(/Organising meetups and talks/),
+  ).toBeVisible();
 });
 
 test("every post is a tile, newest first, opening off-site in a new tab", async ({
@@ -122,4 +156,20 @@ test("reduced motion turns off the scroll-driven animations", async ({
     .evaluateAll((els) => els.map((el) => getComputedStyle(el).animationName));
   expect(names.length).toBeGreaterThan(0);
   expect(names.every((name) => name === "none")).toBe(true);
+});
+
+test("reduced motion opens the sheet with a short fade only", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  await page.getByRole("button", { name: /Netdata/ }).click();
+  const sheet = page.getByRole("dialog", { name: "Netdata" });
+  await expect(sheet).toHaveCSS("animation-name", /fade-in/);
+  const names = await sheet
+    .locator(":scope > *, :scope > * > *")
+    .evaluateAll((els) => els.map((el) => getComputedStyle(el).animationName));
+  expect(names.every((name) => name === "none")).toBe(true);
+  await page.keyboard.press("Escape");
+  await expect(sheet).toHaveCount(0);
 });

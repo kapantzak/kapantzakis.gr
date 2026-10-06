@@ -32,7 +32,7 @@
   transition: color 300ms var(--ease-out);
 }
 
-/* Accent wipe from the left on hover, focus and while open. */
+/* Accent wipe from the left on hover, focus and while its sheet is open. */
 .trigger::before {
   content: "";
   position: absolute;
@@ -117,44 +117,6 @@
 
 .item[data-open] .icon {
   transform: rotate(135deg);
-}
-
-/* Height animates through the grid track: 0fr -> 1fr. */
-.panel {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 600ms var(--ease-out);
-}
-
-.item[data-open] .panel {
-  grid-template-rows: 1fr;
-}
-
-.panelInner {
-  min-height: 0;
-  overflow: hidden;
-}
-
-.panelInner > * {
-  opacity: 0;
-  transform: translateY(1.5rem);
-  transition:
-    opacity 400ms var(--ease-out),
-    transform 600ms var(--ease-out);
-}
-
-.item[data-open] .panelInner > * {
-  opacity: 1;
-  transform: none;
-  transition-delay: 200ms;
-}
-
-.item[data-open] .panelInner > :nth-child(2) {
-  transition-delay: 320ms;
-}
-
-.item[data-open] .panelInner > :nth-child(n + 3) {
-  transition-delay: 440ms;
 }
 
 @media (width < 40rem) {
