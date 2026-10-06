@@ -94,6 +94,36 @@ test("the close button and the browser Back button both close the sheet", async 
   await expect(row).toBeFocused();
 });
 
+test("the Netdata sheet opens on a brand band with its logo, and other sheets do not", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: /Netdata/ }).click();
+  const sheet = page.getByRole("dialog", { name: "Netdata" });
+  const band = sheet.locator("[data-brand]");
+  await expect(band).toHaveCSS("background-color", "rgb(2, 5, 3)");
+  const logo = band
+    .getByRole("heading", { level: 2 })
+    .getByRole("img", { name: "Netdata" });
+  await expect(logo).toBeVisible();
+  await expect
+    .poll(() => logo.evaluate((img: HTMLImageElement) => img.naturalWidth))
+    .toBeGreaterThan(0);
+  // The band reaches up behind the close bar, leaving no paper strip above it.
+  await expect.poll(async () => (await band.boundingBox())?.y).toBe(0);
+  expect(
+    await sheet.evaluate((el) => el.scrollWidth - el.clientWidth),
+  ).toBeLessThanOrEqual(0);
+  await page.keyboard.press("Escape");
+  await expect(sheet).toHaveCount(0);
+
+  await page.getByRole("button", { name: /Adzuna/ }).click();
+  const plain = page.getByRole("dialog", { name: "Adzuna" });
+  await expect(plain).toBeVisible();
+  await expect(plain.locator("[data-brand]")).toHaveCount(0);
+  await expect(plain.getByRole("img")).toHaveCount(0);
+});
+
 test("education and community sheets reveal their links", async ({ page }) => {
   await page.goto("/");
   await page

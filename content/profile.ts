@@ -1,4 +1,14 @@
+import type { StaticImageData } from "next/image";
+import netdataLogo from "@/assets/brand/netdata-logo.svg";
 import type { Period } from "@/lib/period";
+
+/** An employer's own look for the top of its detail sheet (decisions 48–53). */
+export type Brand = {
+  /** The official light-on-dark logo, used unchanged. */
+  logo: StaticImageData;
+  background: string;
+  accent: string;
+};
 
 export type Role = {
   org: string;
@@ -6,6 +16,7 @@ export type Role = {
   title: string;
   period: Period;
   stack: string[];
+  brand?: Brand;
 };
 export type Degree = {
   institution: string;
@@ -50,6 +61,8 @@ export const profile: Profile = {
       title: "Senior software engineer",
       period: { start: "Feb 2023" },
       stack: [],
+      // From netdata.cloud: page background and logo green.
+      brand: { logo: netdataLogo, background: "#020503", accent: "#00ab44" },
     },
     {
       org: "Adzuna",

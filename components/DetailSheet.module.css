@@ -1,10 +1,7 @@
-/* Light surface (decision 44). Shared tokens are remapped so content styled for the dark page reads here too. */
 .sheet {
-  --color-bg: var(--color-paper);
-  --color-fg: var(--color-paper-fg);
-  --color-fg-strong: var(--color-paper-fg-strong);
-  --color-muted: var(--color-paper-muted);
-  --color-rule: var(--color-paper-rule);
+  /* Shared with the brand band, which reaches up behind the bar. */
+  --bar-pad: clamp(1rem, 2.5vw, 2rem);
+  --close-size: clamp(3rem, 5vw, 4rem);
 
   position: fixed;
   /* Above the sticky header (10) and the skip link (20). */
@@ -13,11 +10,24 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   color-scheme: light;
-  background: var(--color-bg);
-  color: var(--color-fg);
+  background: var(--color-paper);
+  color: var(--color-paper-fg);
 }
 
-/* The global lime focus ring and link hover are invisible on the light surface. */
+/*
+ * Light surface (decision 44). Shared tokens are remapped so content styled for the dark page
+ * reads here too. The brand band is left out, so it keeps the dark page's tokens (decision 49).
+ */
+.bar,
+.content {
+  --color-bg: var(--color-paper);
+  --color-fg: var(--color-paper-fg);
+  --color-fg-strong: var(--color-paper-fg-strong);
+  --color-muted: var(--color-paper-muted);
+  --color-rule: var(--color-paper-rule);
+}
+
+/* The global lime focus ring and link hover are invisible on the light surface; the band resolves them to white. */
 .sheet :focus-visible {
   outline-color: var(--color-fg-strong);
 }
@@ -33,16 +43,18 @@
   z-index: 1;
   display: flex;
   justify-content: flex-end;
-  padding: clamp(1rem, 2.5vw, 2rem) var(--gutter) 0;
+  padding: var(--bar-pad) var(--gutter) 0;
   pointer-events: none;
 }
 
 .close {
   position: relative;
-  width: clamp(3rem, 5vw, 4rem);
+  width: var(--close-size);
   aspect-ratio: 1;
   border: 0;
   border-radius: 50%;
+  /* Keeps the dark button visible over a dark brand band (decision 52). */
+  box-shadow: 0 0 0 2px var(--color-paper);
   background: var(--color-fg-strong);
   color: var(--color-paper);
   cursor: pointer;
@@ -83,6 +95,19 @@
   padding: 0 var(--gutter) var(--page-pad-block);
 }
 
+/* Full-bleed brand band behind the header and the close bar (decision 49). */
+.band {
+  margin-top: calc(-1 * (var(--bar-pad) + var(--close-size)));
+  padding: calc(var(--bar-pad) + var(--close-size)) var(--gutter)
+    clamp(2rem, 5vw, 4rem);
+  background: var(--brand-bg);
+  color: var(--color-fg);
+}
+
+.band + .content {
+  padding-top: clamp(1.5rem, 4vw, 3rem);
+}
+
 .header {
   display: grid;
   gap: 1rem;
@@ -97,6 +122,16 @@
 
 .title {
   font-size: clamp(3rem, 1rem + 8vw, 10rem);
+}
+
+/* Sized by height so the wide wordmark scales with the title, never wider than the screen. */
+.logo {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: clamp(2.5rem, 1rem + 6vw, 7rem);
+  object-fit: contain;
+  object-position: left center;
 }
 
 .subtitle {
@@ -119,6 +154,7 @@
   }
 
   .bar,
+  .band,
   .content > * {
     animation: rise 700ms var(--ease-out) both;
     animation-delay: 350ms;
@@ -133,6 +169,7 @@
   }
 
   .sheet[data-closing] .bar,
+  .sheet[data-closing] .band,
   .sheet[data-closing] .content > * {
     animation: sink 200ms ease-in both;
   }

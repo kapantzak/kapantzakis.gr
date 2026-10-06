@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
+import { profile } from "@/content/profile";
 import { contrastRatio } from "@/lib/contrast";
 
 const css = readFileSync(path.join(process.cwd(), "styles/tokens.css"), "utf8");
@@ -21,6 +22,13 @@ const PAPER_TEXT_TOKENS = [
 ];
 
 const ACCENT_FILLS = ["--color-accent-lime", "--color-accent-magenta"];
+
+// A brand band is dark, so it reuses the page's text tokens (decision 49).
+const BAND_TEXT_TOKENS = ["--color-fg", "--color-fg-strong", "--color-muted"];
+
+const brands = profile.experience.flatMap((role) =>
+  role.brand ? [[role.org, role.brand] as const] : [],
+);
 
 function readColours(): Record<string, string> {
   const start = css.indexOf(":root {");
@@ -59,5 +67,23 @@ describe("text on accent fills", () => {
 describe("text on the detail sheet", () => {
   it.each(PAPER_TEXT_TOKENS)("%s has at least 4.5:1 contrast", (token) => {
     expect(ratio(token, "--color-paper")).toBeGreaterThanOrEqual(4.5);
+  });
+});
+
+describe.each(brands)("the %s brand", (_org, brand) => {
+  it.each(BAND_TEXT_TOKENS)(
+    "%s has at least 4.5:1 contrast on its band",
+    (token) => {
+      expect(colours[token], `${token} is not defined`).toBeDefined();
+      expect(
+        contrastRatio(colours[token]!, brand.background),
+      ).toBeGreaterThanOrEqual(4.5);
+    },
+  );
+
+  it("--color-on-accent has at least 4.5:1 contrast on its accent", () => {
+    expect(
+      contrastRatio(colours["--color-on-accent"]!, brand.accent),
+    ).toBeGreaterThanOrEqual(4.5);
   });
 });

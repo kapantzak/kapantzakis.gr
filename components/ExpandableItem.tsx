@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  type CSSProperties,
   type ReactNode,
   useCallback,
   useEffect,
@@ -8,6 +9,7 @@ import {
   useRef,
   useState,
 } from "react";
+import type { Brand } from "@/content/profile";
 import { DetailSheet, type Origin } from "./DetailSheet";
 import styles from "./ExpandableItem.module.css";
 
@@ -15,6 +17,7 @@ type Props = {
   period: string;
   title: string;
   subtitle: string;
+  brand?: Brand;
   children: ReactNode;
 };
 
@@ -32,7 +35,13 @@ function insetsOf(el: HTMLElement): Origin {
 }
 
 // Row that opens its details in a full-page sheet (decisions 41–47).
-export function ExpandableItem({ period, title, subtitle, children }: Props) {
+export function ExpandableItem({
+  period,
+  title,
+  subtitle,
+  brand,
+  children,
+}: Props) {
   const [phase, setPhase] = useState<Phase>("closed");
   const [origin, setOrigin] = useState<Origin | null>(null);
   const rowRef = useRef<HTMLButtonElement>(null);
@@ -81,7 +90,14 @@ export function ExpandableItem({ period, title, subtitle, children }: Props) {
   }, [phase]);
 
   return (
-    <li className={styles.item} data-open={phase !== "closed" || undefined}>
+    <li
+      className={styles.item}
+      data-open={phase !== "closed" || undefined}
+      // The row wipes in the brand colour the sheet grows out of (decision 53).
+      style={
+        brand ? ({ "--accent": brand.accent } as CSSProperties) : undefined
+      }
+    >
       <h4 className={styles.heading}>
         <button
           ref={rowRef}
@@ -101,6 +117,7 @@ export function ExpandableItem({ period, title, subtitle, children }: Props) {
           period={period}
           title={title}
           subtitle={subtitle}
+          brand={brand}
           origin={origin}
           closing={phase === "closing"}
           onClose={requestClose}
