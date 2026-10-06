@@ -137,6 +137,11 @@ test("the Netdata sheet opens on a brand band with its logo, and other sheets do
         : art.width >= viewportWidth - 1 && art.y >= text.y + text.height;
     })
     .toBe(true);
+  // Tilted in perspective on wide screens only (decisions 60–62).
+  await expect(visual.locator("img")).toHaveCSS(
+    "transform",
+    viewportWidth >= 768 ? /^matrix3d\(/ : "none",
+  );
   // The band reaches up behind the close bar, leaving no paper strip above it.
   await expect.poll(async () => (await band.boundingBox())?.y).toBe(0);
   expect(

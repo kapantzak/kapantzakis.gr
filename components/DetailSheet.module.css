@@ -122,20 +122,34 @@
   object-position: left top;
 }
 
-/* Wide screens: the art covers the right half and fades in from the middle; the text keeps the left. */
+/*
+ * Wide screens (decisions 60–62): a large screen tilted towards the viewer on its right, starting in
+ * the middle with its top edge in view and running off the band; the text keeps the left half.
+ */
 @media (min-width: 48rem) {
   .band:has(> .visual) {
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: var(--gutter);
+    overflow: hidden;
   }
 
   .visual {
     position: absolute;
-    inset: 0 0 0 50%;
-    aspect-ratio: auto;
+    inset: 12% -8% auto 50%;
+    aspect-ratio: 16 / 9;
+    /* Where the band is tall for its width, still run off the bottom; the image crops instead. */
+    min-height: 100%;
     margin: 0;
-    mask-image: linear-gradient(to right, transparent, #000 60%);
+    perspective: 1400px;
+    mask-image: linear-gradient(to right, transparent, #000 35%);
+  }
+
+  .visualImage {
+    border-radius: 10px;
+    box-shadow: 0 30px 80px rgb(0 0 0 / 60%);
+    transform: rotateY(-20deg);
+    transform-origin: left center;
   }
 }
 
