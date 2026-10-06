@@ -18,6 +18,8 @@ type Props = {
   title: string;
   subtitle: string;
   brand?: Brand;
+  /** Short facts shown in the sheet header (decision 54). */
+  facts?: ReactNode;
   children: ReactNode;
 };
 
@@ -40,6 +42,7 @@ export function ExpandableItem({
   title,
   subtitle,
   brand,
+  facts,
   children,
 }: Props) {
   const [phase, setPhase] = useState<Phase>("closed");
@@ -118,6 +121,7 @@ export function ExpandableItem({
           title={title}
           subtitle={subtitle}
           brand={brand}
+          facts={facts}
           origin={origin}
           closing={phase === "closing"}
           onClose={requestClose}

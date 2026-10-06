@@ -60,7 +60,7 @@ export const profile: Profile = {
       orgUrl: "https://www.netdata.cloud/",
       title: "Senior software engineer",
       period: { start: "Feb 2023" },
-      stack: [],
+      stack: ["JavaScript", "React", "AI coding agents"],
       // From netdata.cloud: page background and logo green.
       brand: { logo: netdataLogo, background: "#020503", accent: "#00ab44" },
     },

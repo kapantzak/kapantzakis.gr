@@ -24,6 +24,7 @@ function renderItem(brand?: Brand) {
           title="Netdata"
           subtitle="Senior software engineer"
           brand={brand}
+          facts={<a href="https://example.com/site">Website link</a>}
         >
           <a href="https://example.com/">Details link</a>
         </ExpandableItem>
@@ -98,7 +99,7 @@ describe("ExpandableItem", () => {
     await expectClosed(row);
   });
 
-  it("titles a plain sheet with text and no brand band", () => {
+  it("titles a plain sheet with text and keeps its facts in the header", () => {
     renderItem();
     const { sheet } = openSheet();
     expect(
@@ -106,14 +107,24 @@ describe("ExpandableItem", () => {
     ).toHaveTextContent("Netdata");
     expect(within(sheet).queryByRole("img")).toBeNull();
     expect(sheet.querySelector("[data-brand]")).toBeNull();
+    expect(
+      within(sheet)
+        .getByRole("link", { name: "Website link" })
+        .closest("header"),
+    ).not.toBeNull();
   });
 
-  it("titles a branded sheet with its logo on a band in its colours", () => {
+  it("titles a branded sheet with its logo and facts on a band in its colours", () => {
     renderItem(BRAND);
     const { row, sheet } = openSheet();
     const title = within(sheet).getByRole("heading", { level: 2 });
     expect(within(title).getByRole("img", { name: "Netdata" })).toBeVisible();
     expect(title.closest("[data-brand]")).not.toBeNull();
+    expect(
+      within(sheet)
+        .getByRole("link", { name: "Website link" })
+        .closest("[data-brand]"),
+    ).not.toBeNull();
     expect(sheet.style.getPropertyValue("--accent")).toBe(BRAND.accent);
     expect(sheet.style.getPropertyValue("--brand-bg")).toBe(BRAND.background);
     expect(row.closest("li")!.style.getPropertyValue("--accent")).toBe(

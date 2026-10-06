@@ -22,7 +22,7 @@ The site is done when:
 
 ## 2. Decisions
 
-The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review, 22–25 for the Home hero backdrop, 26–29 for the logo, 30–40 for the one-page refactor on 2026-10-06, 41–47 for the detail sheet on 2026-10-06, and 48–53 for the brand header on 2026-10-06. Rows marked *superseded* are kept for history.
+The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review, 22–25 for the Home hero backdrop, 26–29 for the logo, 30–40 for the one-page refactor on 2026-10-06, 41–47 for the detail sheet on 2026-10-06, and 48–54 for the brand header on 2026-10-06. Rows marked *superseded* are kept for history.
 
 | #  | Topic                   | Decision                                                                                                  |
 |----|-------------------------|-----------------------------------------------------------------------------------------------------------|
@@ -79,6 +79,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 51 | Brand accent (sheet)    | The brand accent replaces `--accent` on the sheet, so it grows out of the brand colour and the close button fills with it on hover; Netdata uses `#00ab44` |
 | 52 | Close button ring       | A 2px white ring on the close button of every sheet, so it stays visible on dark bands and on paper |
 | 53 | Brand accent (row)      | A branded row wipes in its brand accent on hover, focus and while its sheet is open, so the sheet grows out of the same colour |
+| 54 | Facts in the header     | The facts line (stack pills, website link, thesis, summary) is part of the sheet header on every sheet, so on a branded sheet it sits on the band; every entry is expected to get a brand eventually |
 
 ## 3. Scope
 
@@ -295,10 +296,10 @@ The user asked for each section item to open a full-page section with a striking
 
 ## 15. Brand header (2026-10-06)
 
-The user asked for the top of the Netdata detail sheet to be brand oriented, with Netdata's colours and official logo from netdata.cloud. The decisions are 48–53.
+The user asked for the top of the Netdata detail sheet to be brand oriented, with Netdata's colours and official logo from netdata.cloud. The decisions are 48–54.
 
 - **Source:** the logo is `https://www.netdata.cloud/img/netdata-logo.svg` (green mark `#00ab44`, white wordmark), stored unchanged at `assets/brand/netdata-logo.svg`. The site's page background is `#020503` and its brand green is `#00ab44`.
 - **Data:** `Role.brand` holds the logo and both colours. They live with the entry rather than in `tokens.css`, because they belong to the employer, not the site.
-- **Layout:** the band holds the period, logo and subtitle on the dark-page text tokens. It pulls up behind the sticky close bar by the bar's height, which is defined once as CSS variables.
+- **Layout:** the band holds the period, logo, subtitle and facts line on the dark-page text tokens. It pulls up behind the sticky close bar by the bar's height, which is defined once as CSS variables.
 - **Colour:** `tokens.test.ts` checks that the band's text tokens and `--color-on-accent` keep at least 4.5:1 contrast on every brand's background and accent.
 - **Out of scope:** Netdata's fonts, and brand bands for other entries (they only need data).

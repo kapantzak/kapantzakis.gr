@@ -109,6 +109,13 @@ test("the Netdata sheet opens on a brand band with its logo, and other sheets do
   await expect
     .poll(() => logo.evaluate((img: HTMLImageElement) => img.naturalWidth))
     .toBeGreaterThan(0);
+  await expect(band.getByRole("list", { name: "Stack" })).toContainText(
+    "AI coding agents",
+  );
+  const site = band.getByRole("link", { name: /netdata\.cloud/ });
+  await site.hover();
+  // Dark text stays on the green fill; white would fall to 3:1 (decision 54).
+  await expect(site).toHaveCSS("color", "rgb(11, 13, 18)");
   // The band reaches up behind the close bar, leaving no paper strip above it.
   await expect.poll(async () => (await band.boundingBox())?.y).toBe(0);
   expect(
@@ -122,6 +129,9 @@ test("the Netdata sheet opens on a brand band with its logo, and other sheets do
   await expect(plain).toBeVisible();
   await expect(plain.locator("[data-brand]")).toHaveCount(0);
   await expect(plain.getByRole("img")).toHaveCount(0);
+  await expect(
+    plain.locator("header").getByRole("list", { name: "Stack" }),
+  ).toContainText("React");
 });
 
 test("education and community sheets reveal their links", async ({ page }) => {

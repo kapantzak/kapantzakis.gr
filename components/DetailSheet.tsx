@@ -26,6 +26,8 @@ type Props = {
   title: string;
   subtitle: string;
   brand?: Brand;
+  /** Short facts in the header, so a brand band carries them too (decision 54). */
+  facts?: ReactNode;
   origin: Origin;
   closing: boolean;
   /** The visitor asked to close. */
@@ -42,6 +44,7 @@ export function DetailSheet({
   title,
   subtitle,
   brand,
+  facts,
   origin,
   closing,
   onClose,
@@ -112,6 +115,7 @@ export function DetailSheet({
         )}
       </h2>
       <p className={styles.subtitle}>{subtitle}</p>
+      {facts}
     </header>
   );
 

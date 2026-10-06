@@ -41,8 +41,8 @@ function Group({ title, entries }: { title: string; entries: Entry[] }) {
             title={entry.title}
             subtitle={entry.subtitle}
             brand={entry.brand}
+            facts={<div className={styles.facts}>{entry.details}</div>}
           >
-            <div className={styles.facts}>{entry.details}</div>
             {/* Rich per-entry content is designed later (decision 45). */}
             {PLACEHOLDERS.map((label) => (
               <div key={label} className={styles.placeholder} data-placeholder>
