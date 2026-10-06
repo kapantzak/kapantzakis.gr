@@ -3,11 +3,13 @@ import adzunaHome from "@/assets/brand/adzuna-home.png";
 import adzunaLogo from "@/assets/brand/adzuna-logo.svg";
 import netdataDashboard from "@/assets/brand/netdata-dashboard.png";
 import netdataLogo from "@/assets/brand/netdata-logo.svg";
+import skroutzLogo from "@/assets/brand/skroutz-logo.svg";
+import skroutzPromo from "@/assets/brand/skroutz-promo.png";
 import type { Period } from "@/lib/period";
 
 /** An employer's own look for the top of its detail sheet (decisions 48–53). */
 export type Brand = {
-  /** The official light-on-dark logo, used unchanged. */
+  /** The official logo, used unchanged; it must read on `background`. */
   logo: StaticImageData;
   background: string;
   accent: string;
@@ -98,6 +100,14 @@ export const profile: Profile = {
       title: "Software engineer",
       period: { start: "Jun 2020", end: "Jan 2022" },
       stack: ["JavaScript", "React", "Ruby on Rails"],
+      // From skroutz.gr: header logo and brand orange; the promo image is from Skroutz's blog.
+      brand: {
+        logo: skroutzLogo,
+        background: "#ffffff",
+        accent: "#f68b24",
+        tone: "light",
+        visual: skroutzPromo,
+      },
     },
     {
       org: "EpsilonNet",

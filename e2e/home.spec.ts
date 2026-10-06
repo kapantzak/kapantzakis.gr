@@ -150,47 +150,50 @@ test("the Netdata sheet opens on a brand band with its logo, and other sheets do
   await page.keyboard.press("Escape");
   await expect(sheet).toHaveCount(0);
 
-  await page.getByRole("button", { name: /Skroutz/ }).click();
-  const plain = page.getByRole("dialog", { name: "Skroutz" });
+  await page.getByRole("button", { name: /EpsilonNet/ }).click();
+  const plain = page.getByRole("dialog", { name: "EpsilonNet" });
   await expect(plain).toBeVisible();
   await expect(plain.locator("[data-brand]")).toHaveCount(0);
   await expect(plain.getByRole("img")).toHaveCount(0);
   await expect(
     plain.locator("header").getByRole("list", { name: "Stack" }),
-  ).toContainText("Ruby on Rails");
+  ).toContainText("ASP.NET");
 });
 
-test("the Adzuna sheet opens on a white band with dark text and its green logo", async ({
-  page,
-}) => {
-  await page.goto("/");
-  await page.getByRole("button", { name: /Adzuna/ }).click();
-  const band = page
-    .getByRole("dialog", { name: "Adzuna" })
-    .locator("[data-brand]");
-  await expect(band).toHaveCSS("background-color", "rgb(255, 255, 255)");
-  // Keeps the white band distinct from the off-white sheet (decision 65).
-  await expect(band).toHaveCSS("border-bottom-width", "1px");
-  await expect(
-    band
-      .getByRole("heading", { level: 2 })
-      .getByRole("img", { name: "Adzuna" }),
-  ).toBeVisible();
-  await expect(band.getByText("Senior frontend developer")).toHaveCSS(
-    "color",
-    "rgb(11, 13, 18)",
-  );
-  await expect(
-    band.getByRole("list", { name: "Stack" }).getByRole("listitem").first(),
-  ).toHaveCSS("color", "rgb(11, 13, 18)");
-  await expect
-    .poll(() =>
-      band
-        .locator('[aria-hidden="true"] img')
-        .evaluate((img: HTMLImageElement) => img.naturalWidth),
-    )
-    .toBeGreaterThan(0);
-});
+for (const [org, role] of [
+  ["Adzuna", "Senior frontend developer"],
+  ["Skroutz", "Software engineer"],
+]) {
+  test(`the ${org} sheet opens on a white band with dark text and its logo`, async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await page.getByRole("button", { name: new RegExp(org) }).click();
+    const band = page
+      .getByRole("dialog", { name: org })
+      .locator("[data-brand]");
+    await expect(band).toHaveCSS("background-color", "rgb(255, 255, 255)");
+    // Keeps the white band distinct from the off-white sheet (decision 65).
+    await expect(band).toHaveCSS("border-bottom-width", "1px");
+    await expect(
+      band.getByRole("heading", { level: 2 }).getByRole("img", { name: org }),
+    ).toBeVisible();
+    await expect(band.getByText(role, { exact: true })).toHaveCSS(
+      "color",
+      "rgb(11, 13, 18)",
+    );
+    await expect(
+      band.getByRole("list", { name: "Stack" }).getByRole("listitem").first(),
+    ).toHaveCSS("color", "rgb(11, 13, 18)");
+    await expect
+      .poll(() =>
+        band
+          .locator('[aria-hidden="true"] img')
+          .evaluate((img: HTMLImageElement) => img.naturalWidth),
+      )
+      .toBeGreaterThan(0);
+  });
+}
 
 test("education and community sheets reveal their links", async ({ page }) => {
   await page.goto("/");
