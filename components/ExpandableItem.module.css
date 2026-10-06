@@ -21,7 +21,8 @@
   align-items: baseline;
   gap: 0.25rem 2rem;
   width: 100%;
-  padding: clamp(1.25rem, 3vw, 2.5rem) clamp(0.5rem, 2vw, 1.5rem);
+  /* +1.33em: the h4's former default margin, kept as padding so the row height is unchanged. */
+  padding: calc(clamp(1.25rem, 3vw, 2.5rem) + 1.33em) clamp(0.5rem, 2vw, 1.5rem);
   border: 0;
   background: none;
   color: var(--color-fg);
