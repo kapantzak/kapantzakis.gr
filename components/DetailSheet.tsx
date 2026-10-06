@@ -140,7 +140,7 @@ export function DetailSheet({
         />
       </div>
       {brand ? (
-        <div className={styles.band} data-brand>
+        <div className={styles.band} data-brand data-tone={brand.tone}>
           {header}
           {brand.visual ? (
             <div className={styles.visual} aria-hidden="true">

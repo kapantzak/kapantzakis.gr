@@ -22,7 +22,7 @@ The site is done when:
 
 ## 2. Decisions
 
-The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review, 22–25 for the Home hero backdrop, 26–29 for the logo, 30–40 for the one-page refactor on 2026-10-06, 41–47 for the detail sheet on 2026-10-06, 48–54 for the brand header on 2026-10-06, 55–59 for the brand visual on 2026-10-06, and 60–62 for its perspective on 2026-10-06. Rows marked *superseded* are kept for history.
+The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review, 22–25 for the Home hero backdrop, 26–29 for the logo, 30–40 for the one-page refactor on 2026-10-06, 41–47 for the detail sheet on 2026-10-06, 48–54 for the brand header on 2026-10-06, 55–59 for the brand visual on 2026-10-06, 60–62 for its perspective on 2026-10-06, and 63–65 for the Adzuna brand on 2026-10-06. Rows marked *superseded* are kept for history.
 
 | #  | Topic                   | Decision                                                                                                  |
 |----|-------------------------|-----------------------------------------------------------------------------------------------------------|
@@ -74,7 +74,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 46 | Back button             | Opening the sheet adds a history entry, so Back closes it; there is no shareable deep link |
 | 47 | Closing                 | A close button that stays in view while scrolling, plus Escape and Back; focus returns to the row that opened the sheet |
 | 48 | Brand header scope      | Optional per-entry `brand` (logo, background, accent) in `content/profile.ts`; only Netdata has one for now |
-| 49 | Brand band              | A full-width band in the brand background at the top of the sheet, reaching behind the close bar; Netdata uses `#020503` and its official logo, copied unchanged from netdata.cloud; the content below stays on paper |
+| 49 | Brand band              | A full-width band in the brand background at the top of the sheet, reaching behind the close bar; Netdata uses `#020503` and its official logo, copied unchanged from netdata.cloud; the content below stays on paper; a light band uses the paper tokens instead (decision 64) |
 | 50 | Brand title             | The logo replaces the visible title text, inside the `h2` with the org name as `alt`, so the dialog keeps its accessible name |
 | 51 | Brand accent (sheet)    | The brand accent replaces `--accent` on the sheet, so it grows out of the brand colour and the close button fills with it on hover; Netdata uses `#00ab44` |
 | 52 | Close button ring       | A 2px white ring on the close button of every sheet, so it stays visible on dark bands and on paper |
@@ -88,6 +88,9 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 60 | Visual perspective      | From 48rem up, the visual is a large screen tilted in perspective, its right side nearer the viewer; it starts in the middle of the band with its top edge visible, runs off the band's bottom and right edge, and fades in from the middle; the header keeps the left half; the same for every brand, so a brand visual should be a landscape, screen-like image (about 16:9) |
 | 61 | Visual tilt angle       | `rotateY(-20deg)` around the screen's left edge, with a soft shadow |
 | 62 | Visual on phones (tilt) | No tilt on phones: the strip under the text stays flat (decision 57) |
+| 63 | Adzuna brand            | White band, the official green logo from the adzuna.co.uk header (copied unchanged), `#279b37` as the accent (both checked on the live site), and a screenshot of the adzuna.co.uk first screen as the visual, with the same fade and perspective |
+| 64 | Band tone               | Each brand declares `tone: "light" \| "dark"`; a dark band keeps the dark page's text tokens, a light band uses the sheet's paper tokens |
+| 65 | Light band edge         | A light band ends in a 1px rule in the paper rule colour, so it stays distinct from the off-white sheet |
 
 ## 3. Scope
 
@@ -311,4 +314,5 @@ The user asked for the top of the Netdata detail sheet to be brand oriented, wit
 - **Layout:** the band holds the period, logo, subtitle and facts line on the dark-page text tokens. It pulls up behind the sticky close bar by the bar's height, which is defined once as CSS variables.
 - **Colour:** `tokens.test.ts` checks that the band's text tokens and `--color-on-accent` keep at least 4.5:1 contrast on every brand's background and accent.
 - **Visual:** the screenshot is `https://www.netdata.cloud/img/landing/landing-hero_hu_1bcf3da23fee438b.png` (1919×1079), stored unchanged at `assets/brand/netdata-dashboard.png`; `next/image` serves resized copies. Decisions 55–62.
-- **Out of scope:** Netdata's fonts, and brand bands for other entries (they only need data).
+- **Adzuna:** adzuna.co.uk blocks automated clients, so the logo and colour were checked and the screenshot taken in the user's Chrome. The capture is the 1512×756 first screen (1568×784 PNG), with the cookie-settings badge and the browser's password-manager overlay hidden. Decisions 63–65.
+- **Out of scope:** Netdata's fonts.

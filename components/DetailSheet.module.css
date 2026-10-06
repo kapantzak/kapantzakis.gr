@@ -153,6 +153,16 @@
   }
 }
 
+/* A light band takes the sheet's colours and a rule to part it from the paper (decisions 64, 65). */
+.band[data-tone="light"] {
+  --color-fg: var(--color-paper-fg);
+  --color-fg-strong: var(--color-paper-fg-strong);
+  --color-muted: var(--color-paper-muted);
+  --color-rule: var(--color-paper-rule);
+
+  border-bottom: 1px solid var(--color-rule);
+}
+
 .band + .content {
   padding-top: clamp(1.5rem, 4vw, 3rem);
 }

@@ -13,6 +13,7 @@ const BRAND: Brand = {
   logo: { src: "/netdata-logo.svg", width: 879, height: 151 },
   background: "#020503",
   accent: "#00ab44",
+  tone: "dark",
 };
 
 const BRAND_WITH_VISUAL: Brand = {
@@ -151,5 +152,14 @@ describe("ExpandableItem", () => {
     renderItem(BRAND);
     const { sheet } = openSheet();
     expect(sheet.querySelectorAll("[data-brand] img")).toHaveLength(1);
+  });
+
+  it("marks the band's tone, so a light band takes the light-page colours", () => {
+    renderItem({ ...BRAND, background: "#ffffff", tone: "light" });
+    const { sheet } = openSheet();
+    expect(sheet.querySelector("[data-brand]")).toHaveAttribute(
+      "data-tone",
+      "light",
+    );
   });
 });

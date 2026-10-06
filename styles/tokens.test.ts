@@ -23,8 +23,11 @@ const PAPER_TEXT_TOKENS = [
 
 const ACCENT_FILLS = ["--color-accent-lime", "--color-accent-magenta"];
 
-// A brand band is dark, so it reuses the page's text tokens (decision 49).
-const BAND_TEXT_TOKENS = ["--color-fg", "--color-fg-strong", "--color-muted"];
+// A dark band reuses the page's text tokens, a light band the sheet's (decisions 49, 64).
+const BAND_TEXT_TOKENS = {
+  dark: ["--color-fg", "--color-fg-strong", "--color-muted"],
+  light: PAPER_TEXT_TOKENS,
+};
 
 const brands = profile.experience.flatMap((role) =>
   role.brand ? [[role.org, role.brand] as const] : [],
@@ -71,7 +74,7 @@ describe("text on the detail sheet", () => {
 });
 
 describe.each(brands)("the %s brand", (_org, brand) => {
-  it.each(BAND_TEXT_TOKENS)(
+  it.each(BAND_TEXT_TOKENS[brand.tone])(
     "%s has at least 4.5:1 contrast on its band",
     (token) => {
       expect(colours[token], `${token} is not defined`).toBeDefined();

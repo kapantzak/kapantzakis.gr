@@ -1,4 +1,6 @@
 import type { StaticImageData } from "next/image";
+import adzunaHome from "@/assets/brand/adzuna-home.png";
+import adzunaLogo from "@/assets/brand/adzuna-logo.svg";
 import netdataDashboard from "@/assets/brand/netdata-dashboard.png";
 import netdataLogo from "@/assets/brand/netdata-logo.svg";
 import type { Period } from "@/lib/period";
@@ -9,6 +11,8 @@ export type Brand = {
   logo: StaticImageData;
   background: string;
   accent: string;
+  /** Which text colours the band takes: the dark page's or the light sheet's (decision 64). */
+  tone: "light" | "dark";
   /** Decorative brand art for the band (decisions 55–59). */
   visual?: StaticImageData;
 };
@@ -69,6 +73,7 @@ export const profile: Profile = {
         logo: netdataLogo,
         background: "#020503",
         accent: "#00ab44",
+        tone: "dark",
         visual: netdataDashboard,
       },
     },
@@ -78,6 +83,14 @@ export const profile: Profile = {
       title: "Senior frontend developer",
       period: { start: "Feb 2022", end: "Jan 2023" },
       stack: ["JavaScript", "React", "Next.js"],
+      // From adzuna.co.uk: header logo, brand green and the first screen.
+      brand: {
+        logo: adzunaLogo,
+        background: "#ffffff",
+        accent: "#279b37",
+        tone: "light",
+        visual: adzunaHome,
+      },
     },
     {
       org: "Skroutz",
