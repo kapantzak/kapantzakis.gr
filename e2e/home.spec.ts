@@ -116,6 +116,27 @@ test("the Netdata sheet opens on a brand band with its logo, and other sheets do
   await site.hover();
   // Dark text stays on the green fill; white would fall to 3:1 (decision 54).
   await expect(site).toHaveCSS("color", "rgb(11, 13, 18)");
+  // Decorative brand art: right half on wide screens, a strip below the text on phones.
+  const visual = band.locator('[aria-hidden="true"]').filter({
+    has: page.locator('img[alt=""]'),
+  });
+  await expect
+    .poll(() =>
+      visual
+        .locator("img")
+        .evaluate((img: HTMLImageElement) => img.naturalWidth),
+    )
+    .toBeGreaterThan(0);
+  const viewportWidth = page.viewportSize()!.width;
+  await expect
+    .poll(async () => {
+      const art = (await visual.boundingBox())!;
+      const text = (await band.locator("header").boundingBox())!;
+      return viewportWidth >= 768
+        ? art.x >= viewportWidth / 2 - 1 && text.x + text.width <= art.x
+        : art.width >= viewportWidth - 1 && art.y >= text.y + text.height;
+    })
+    .toBe(true);
   // The band reaches up behind the close bar, leaving no paper strip above it.
   await expect.poll(async () => (await band.boundingBox())?.y).toBe(0);
   expect(

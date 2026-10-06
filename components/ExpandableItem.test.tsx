@@ -15,6 +15,11 @@ const BRAND: Brand = {
   accent: "#00ab44",
 };
 
+const BRAND_WITH_VISUAL: Brand = {
+  ...BRAND,
+  visual: { src: "/netdata-dashboard.png", width: 1919, height: 1079 },
+};
+
 function renderItem(brand?: Brand) {
   return render(
     <main>
@@ -130,5 +135,21 @@ describe("ExpandableItem", () => {
     expect(row.closest("li")!.style.getPropertyValue("--accent")).toBe(
       BRAND.accent,
     );
+  });
+
+  it("shows a brand's visual on its band as decoration only", () => {
+    renderItem(BRAND_WITH_VISUAL);
+    const { sheet } = openSheet();
+    const band = sheet.querySelector<HTMLElement>("[data-brand]")!;
+    const visual = band.querySelector('[aria-hidden="true"] img');
+    expect(visual).not.toBeNull();
+    expect(visual).toHaveAttribute("alt", "");
+    expect(within(band).getAllByRole("img")).toHaveLength(1);
+  });
+
+  it("leaves the band without a visual when the brand has none", () => {
+    renderItem(BRAND);
+    const { sheet } = openSheet();
+    expect(sheet.querySelectorAll("[data-brand] img")).toHaveLength(1);
   });
 });

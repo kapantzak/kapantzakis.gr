@@ -142,6 +142,18 @@ export function DetailSheet({
       {brand ? (
         <div className={styles.band} data-brand>
           {header}
+          {brand.visual ? (
+            <div className={styles.visual} aria-hidden="true">
+              <Image
+                src={brand.visual}
+                alt=""
+                fill
+                // Covering the band's height can draw it wider than half the screen.
+                sizes="(min-width: 48rem) max(50vw, 52rem), 100vw"
+                className={styles.visualImage}
+              />
+            </div>
+          ) : null}
         </div>
       ) : null}
       <div className={styles.content}>

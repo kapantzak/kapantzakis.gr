@@ -1,4 +1,5 @@
 import type { StaticImageData } from "next/image";
+import netdataDashboard from "@/assets/brand/netdata-dashboard.png";
 import netdataLogo from "@/assets/brand/netdata-logo.svg";
 import type { Period } from "@/lib/period";
 
@@ -8,6 +9,8 @@ export type Brand = {
   logo: StaticImageData;
   background: string;
   accent: string;
+  /** Decorative brand art for the band (decisions 55–59). */
+  visual?: StaticImageData;
 };
 
 export type Role = {
@@ -61,8 +64,13 @@ export const profile: Profile = {
       title: "Senior software engineer",
       period: { start: "Feb 2023" },
       stack: ["JavaScript", "React", "AI coding agents"],
-      // From netdata.cloud: page background and logo green.
-      brand: { logo: netdataLogo, background: "#020503", accent: "#00ab44" },
+      // From netdata.cloud: page background, logo green and the hero's dashboard.
+      brand: {
+        logo: netdataLogo,
+        background: "#020503",
+        accent: "#00ab44",
+        visual: netdataDashboard,
+      },
     },
     {
       org: "Adzuna",

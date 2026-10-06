@@ -97,11 +97,46 @@
 
 /* Full-bleed brand band behind the header and the close bar (decision 49). */
 .band {
+  --band-pad-end: clamp(2rem, 5vw, 4rem);
+
+  position: relative;
   margin-top: calc(-1 * (var(--bar-pad) + var(--close-size)));
   padding: calc(var(--bar-pad) + var(--close-size)) var(--gutter)
-    clamp(2rem, 5vw, 4rem);
+    var(--band-pad-end);
   background: var(--brand-bg);
   color: var(--color-fg);
+}
+
+/* Decorative brand art (decisions 55–59). On phones, a full-width strip under the text. */
+.visual {
+  position: relative;
+  aspect-ratio: 5 / 2;
+  margin: clamp(1.5rem, 4vw, 3rem) calc(-1 * var(--gutter))
+    calc(-1 * var(--band-pad-end));
+  mask-image: linear-gradient(to bottom, transparent, #000 60%);
+}
+
+/* Top-left keeps the dashboard's header row and first gauges in view. */
+.visualImage {
+  object-fit: cover;
+  object-position: left top;
+}
+
+/* Wide screens: the art covers the right half and fades in from the middle; the text keeps the left. */
+@media (min-width: 48rem) {
+  .band:has(> .visual) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--gutter);
+  }
+
+  .visual {
+    position: absolute;
+    inset: 0 0 0 50%;
+    aspect-ratio: auto;
+    margin: 0;
+    mask-image: linear-gradient(to right, transparent, #000 60%);
+  }
 }
 
 .band + .content {
