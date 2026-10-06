@@ -1,117 +1,61 @@
 import { describe, expect, it } from "vitest";
 import {
-  type ExternalPost,
   formatPostDate,
-  type LocalPost,
-  mergePosts,
-  parseExternalPost,
-  parseLocalPost,
+  orderPosts,
+  parsePost,
+  type Post,
   PostValidationError,
-  selectVisible,
 } from "./posts";
 
-const VALID_META = {
-  title: "Hello",
-  date: "2026-01-02",
-  summary: "A summary.",
-};
-
-const local = (overrides: Partial<LocalPost> = {}): LocalPost => ({
-  kind: "local",
-  slug: "hello",
-  title: "Hello",
-  date: "2026-01-02",
-  summary: "A summary.",
-  draft: false,
-  ...overrides,
-});
-
-const external = (overrides: Partial<ExternalPost> = {}): ExternalPost => ({
-  kind: "external",
-  url: "https://dev.to/example/post",
-  source: "DEV",
+const VALID = {
   title: "Elsewhere",
   date: "2019-08-15",
   summary: "An external summary.",
+  url: "https://dev.to/example/post",
+  source: "DEV",
+};
+
+const post = (overrides: Partial<Post> = {}): Post => ({
+  ...VALID,
   ...overrides,
 });
 
-describe("parseLocalPost", () => {
-  it("builds a local post from valid metadata", () => {
-    expect(parseLocalPost("hello", VALID_META)).toEqual(local());
-  });
-
-  it("reads an explicit draft flag", () => {
-    expect(parseLocalPost("hello", { ...VALID_META, draft: true }).draft).toBe(
-      true,
-    );
+describe("parsePost", () => {
+  it("builds a post from a valid entry", () => {
+    expect(parsePost(VALID, 0)).toEqual(post());
   });
 
   it.each([
-    ["missing metadata", undefined, /metadata export is missing/],
-    ["blank title", { ...VALID_META, title: "  " }, /"title"/],
-    ["missing summary", { title: "Hello", date: "2026-01-02" }, /"summary"/],
-    ["non-ISO date", { ...VALID_META, date: "02/01/2026" }, /"date"/],
-    ["impossible date", { ...VALID_META, date: "2026-02-30" }, /"date"/],
-    ["out-of-range month", { ...VALID_META, date: "2026-13-01" }, /"date"/],
-    ["non-boolean draft", { ...VALID_META, draft: "yes" }, /"draft"/],
-  ])("rejects %s", (_, metadata, message) => {
-    expect(() => parseLocalPost("hello", metadata)).toThrow(message);
+    ["a non-object entry", "nope", /entry must be an object/],
+    ["a blank title", { ...VALID, title: "  " }, /"title"/],
+    ["a missing summary", { ...VALID, summary: undefined }, /"summary"/],
+    ["a missing source", { ...VALID, source: "" }, /"source"/],
+    ["a non-ISO date", { ...VALID, date: "02/01/2026" }, /"date"/],
+    ["an impossible date", { ...VALID, date: "2026-02-30" }, /"date"/],
+    ["an out-of-range month", { ...VALID, date: "2026-13-01" }, /"date"/],
+  ])("rejects %s", (_, input, message) => {
+    expect(() => parsePost(input, 0)).toThrow(message);
   });
 
-  it("names the offending file in errors", () => {
-    expect(() => parseLocalPost("hello", { ...VALID_META, title: "" })).toThrow(
-      /content\/posts\/hello\.mdx/,
+  it("rejects non-https URLs and names the offending entry", () => {
+    expect(() => parsePost({ ...VALID, url: "http://dev.to/x" }, 3)).toThrow(
+      /\[3\].*https/,
     );
-  });
-
-  it("rejects slugs that are not lowercase kebab-case", () => {
-    expect(() => parseLocalPost("Hello_World", VALID_META)).toThrow(/slug/);
   });
 
   it("throws PostValidationError", () => {
-    expect(() => parseLocalPost("hello", undefined)).toThrow(
-      PostValidationError,
-    );
+    expect(() => parsePost(undefined, 0)).toThrow(PostValidationError);
   });
 });
 
-describe("parseExternalPost", () => {
-  const input = {
-    title: "Elsewhere",
-    date: "2019-08-15",
-    summary: "An external summary.",
-    url: "https://dev.to/example/post",
-    source: "DEV",
-  };
-
-  it("builds an external post", () => {
-    expect(parseExternalPost(input, 0)).toEqual(external());
-  });
-
-  it("rejects non-https URLs", () => {
-    expect(() =>
-      parseExternalPost({ ...input, url: "http://dev.to/x" }, 3),
-    ).toThrow(/\[3\].*https/);
-  });
-
-  it("rejects a missing source", () => {
-    expect(() => parseExternalPost({ ...input, source: "" }, 0)).toThrow(
-      /"source"/,
-    );
-  });
-});
-
-describe("mergePosts", () => {
-  it("sorts newest first across local and external posts", () => {
-    const merged = mergePosts(
-      [
-        local({ slug: "older", date: "2020-01-01" }),
-        local({ slug: "newer", date: "2026-01-01" }),
-      ],
-      [external({ date: "2023-05-05" })],
-    );
-    expect(merged.map((p) => p.date)).toEqual([
+describe("orderPosts", () => {
+  it("sorts newest first", () => {
+    const ordered = orderPosts([
+      post({ url: "https://a.example/1", date: "2020-01-01" }),
+      post({ url: "https://a.example/2", date: "2026-01-01" }),
+      post({ url: "https://a.example/3", date: "2023-05-05" }),
+    ]);
+    expect(ordered.map((p) => p.date)).toEqual([
       "2026-01-01",
       "2023-05-05",
       "2020-01-01",
@@ -119,38 +63,15 @@ describe("mergePosts", () => {
   });
 
   it("breaks date ties by title", () => {
-    const merged = mergePosts(
-      [local({ slug: "b", title: "B" }), local({ slug: "a", title: "A" })],
-      [],
-    );
-    expect(merged.map((p) => p.title)).toEqual(["A", "B"]);
-  });
-
-  it("rejects duplicate slugs", () => {
-    expect(() => mergePosts([local(), local()], [])).toThrow(
-      /Duplicate slug: hello/,
-    );
-  });
-
-  it("rejects duplicate external URLs", () => {
-    expect(() => mergePosts([], [external(), external()])).toThrow(
-      /Duplicate external URL/,
-    );
-  });
-});
-
-describe("selectVisible", () => {
-  const posts = [local({ slug: "live" }), local({ slug: "wip", draft: true })];
-
-  it("hides drafts by default", () => {
-    expect(selectVisible(posts, false).map((p) => p.slug)).toEqual(["live"]);
-  });
-
-  it("keeps drafts when requested", () => {
-    expect(selectVisible(posts, true).map((p) => p.slug)).toEqual([
-      "live",
-      "wip",
+    const ordered = orderPosts([
+      post({ url: "https://a.example/b", title: "B" }),
+      post({ url: "https://a.example/a", title: "A" }),
     ]);
+    expect(ordered.map((p) => p.title)).toEqual(["A", "B"]);
+  });
+
+  it("rejects duplicate URLs", () => {
+    expect(() => orderPosts([post(), post()])).toThrow(/Duplicate URL/);
   });
 });
 

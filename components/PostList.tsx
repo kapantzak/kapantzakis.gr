@@ -1,33 +1,31 @@
-import Link from "next/link";
 import { formatPostDate, type Post } from "@/lib/posts";
 import styles from "./PostList.module.css";
 
-type Props = { posts: Post[]; label: string; headingLevel: 2 | 3 };
+type Props = { posts: Post[]; label: string };
 
-export function PostList({ posts, label, headingLevel }: Props) {
-  const Heading = headingLevel === 2 ? "h2" : "h3";
+// Every post lives on another site and opens in a new tab (decision 34).
+export function PostList({ posts, label }: Props) {
   return (
-    <ol className={styles.list} aria-label={label}>
+    <ol className={styles.grid} aria-label={label}>
       {posts.map((post) => (
-        <li
-          key={post.kind === "local" ? post.slug : post.url}
-          className={styles.item}
-        >
-          <time className={styles.date} dateTime={post.date}>
-            {formatPostDate(post.date)}
-          </time>
-          <Heading className={styles.title}>
-            {post.kind === "local" ? (
-              <Link href={`/posts/${post.slug}`}>{post.title}</Link>
-            ) : (
-              <a href={post.url} target="_blank" rel="noopener noreferrer">
-                {post.title}{" "}
-                <span className={styles.source}>on {post.source}</span>
-                <span aria-hidden="true"> ↗</span>
-              </a>
-            )}
-          </Heading>
-          <p className={styles.summary}>{post.summary}</p>
+        <li key={post.url} className={styles.cell}>
+          <a
+            href={post.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.tile}
+          >
+            <span className={styles.meta}>
+              <time dateTime={post.date}>{formatPostDate(post.date)}</time>
+              <span className={styles.source}>{post.source}</span>
+            </span>
+            <h3 className={styles.title}>{post.title}</h3>
+            <p className={styles.summary}>{post.summary}</p>
+            <span className={styles.arrow} aria-hidden="true">
+              ↗
+            </span>
+            <span className="visually-hidden">(opens in a new tab)</span>
+          </a>
         </li>
       ))}
     </ol>

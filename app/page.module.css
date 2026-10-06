@@ -1,12 +1,89 @@
-.more {
-  font-weight: 700;
+.lead {
+  font-size: var(--text-lead);
+  color: var(--color-fg-strong);
 }
 
-.ctas {
+.email {
+  font-family: var(--font-display-stack);
+  /* Sized so the address fits one line at any width (about 12.5em wide in this font). */
+  font-size: clamp(1.25rem, calc((100vw - 2 * var(--gutter)) / 13), 9rem);
+  line-height: 1;
+  /* Long addresses must wrap rather than widen the page on phones. */
+  overflow-wrap: anywhere;
+}
+
+.email a {
+  color: var(--accent);
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) left bottom / 0 0.06em
+    no-repeat;
+  transition: background-size 500ms var(--ease-out);
+}
+
+.email a:hover,
+.email a:focus-visible {
+  background-size: 100% 0.06em;
+}
+
+.social {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem 3rem;
-  font-family: var(--font-display-stack);
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.social a {
+  display: inline-block;
+  padding: 0.6em 1.4em;
+  border: 2px solid var(--accent);
+  border-radius: 999px;
   font-size: var(--text-h3);
-  font-weight: 800;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--color-fg-strong);
+  transition:
+    background-color 300ms var(--ease-out),
+    color 300ms var(--ease-out),
+    transform 400ms var(--ease-out);
+}
+
+.social a:hover,
+.social a:focus-visible {
+  background: var(--accent);
+  color: var(--color-on-accent);
+  transform: rotate(-3deg) scale(1.06);
+}
+
+/* The address grows to full size as it scrolls in. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .email {
+      transform-origin: left center;
+      animation: grow linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 40%;
+    }
+
+    .social li {
+      animation: pop linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
+    }
+  }
+}
+
+@keyframes grow {
+  from {
+    opacity: 0;
+    transform: scale(0.6) translateY(2rem);
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(2rem) scale(0.8);
+  }
 }

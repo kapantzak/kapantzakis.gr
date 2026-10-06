@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { HeroBackdrop } from "@/components/HeroBackdrop";
-import { PageHeader } from "@/components/PageHeader";
+import { Experience } from "@/components/Experience";
+import { Hero } from "@/components/Hero";
 import { PageMain } from "@/components/PageMain";
 import { PostList } from "@/components/PostList";
 import { Section } from "@/components/Section";
@@ -13,28 +12,41 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-export default async function HomePage() {
-  const latest = (await getAllPosts()).slice(0, 3);
+// The whole site, read by scrolling (decision 30).
+export default function HomePage() {
   return (
-    <PageMain accent="blue">
-      <HeroBackdrop>
-        <PageHeader
-          eyebrow={`01 / ${profile.role}`}
-          title={profile.headline}
-          lead={profile.intro[0]}
-        />
-      </HeroBackdrop>
-      <Section index="01" title="Latest writing">
-        <PostList posts={latest} label="Latest posts" headingLevel={3} />
-        <p className={styles.more}>
-          <Link href="/posts">All posts</Link>
-        </p>
+    <PageMain>
+      <Hero
+        eyebrow={profile.role}
+        headline={profile.headline}
+        intro={profile.intro}
+      />
+      <Section id="experience" index="01" title="Experience">
+        <Experience profile={profile} />
       </Section>
-      <Section index="02" title="Say hello">
-        <p className={styles.ctas}>
-          <Link href="/about">More about me</Link>
-          <Link href="/contact">Get in touch</Link>
+      <Section
+        id="writing"
+        index="02"
+        title="Writing"
+        tone="lime"
+        direction="reverse"
+      >
+        <PostList posts={getAllPosts()} label="All posts" />
+      </Section>
+      <Section id="contact" index="03" title="Say hello" tone="magenta">
+        <p className={styles.lead}>Email is the quickest way to reach me.</p>
+        <p className={styles.email}>
+          <a href={`mailto:${profile.email}`}>{profile.email}</a>
         </p>
+        <ul className={styles.social} aria-label="Elsewhere">
+          {profile.social.map((link) => (
+            <li key={link.url}>
+              <a href={link.url} target="_blank" rel="me noopener noreferrer">
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
       </Section>
     </PageMain>
   );

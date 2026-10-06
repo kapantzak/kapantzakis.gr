@@ -1,51 +1,130 @@
-.list {
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+  gap: clamp(1rem, 2.5vw, 2rem);
   margin: 0;
   padding: 0;
   list-style: none;
-  border-top: 1px solid var(--color-rule);
 }
 
-.item {
+.cell {
   display: grid;
-  grid-template-columns: minmax(7rem, 12rem) 1fr;
-  gap: 0.5rem 2rem;
-  padding: clamp(1.25rem, 3vw, 2.5rem) 0;
-  border-bottom: 1px solid var(--color-rule);
 }
 
-.date {
-  grid-row: span 2;
-  color: var(--color-muted);
+.tile {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 1rem;
+  min-height: clamp(16rem, 28vw, 22rem);
+  padding: clamp(1.25rem, 2.5vw, 2rem);
+  border-radius: 1.25rem;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  text-decoration: none;
+  box-shadow: 0 0 0 var(--color-on-accent);
+  transition:
+    transform 450ms var(--ease-out),
+    box-shadow 450ms var(--ease-out),
+    color 250ms var(--ease-out);
+}
+
+/* Magenta flood rises from the bottom-left corner on hover. */
+.tile::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -50%;
+  background: var(--color-accent-magenta);
+  border-radius: 50%;
+  transform: translate(-60%, 60%) scale(0);
+  transition: transform 600ms var(--ease-out);
+}
+
+.tile:hover,
+.tile:focus-visible {
+  color: var(--color-on-accent);
+  transform: translate(-0.4rem, -0.4rem) rotate(-1.5deg);
+  box-shadow: 0.75rem 0.75rem 0 var(--color-on-accent);
+}
+
+.tile:hover::before,
+.tile:focus-visible::before {
+  transform: translate(0, 0) scale(1);
+}
+
+.tile:focus-visible {
+  outline-color: var(--color-on-accent);
+}
+
+/* Left-aligned so the corner stays free for the arrow. */
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.875rem;
   font-variant-numeric: tabular-nums;
 }
 
-.title {
-  font-size: var(--text-h3);
-  font-weight: 800;
-}
-
-.title a {
-  text-decoration: none;
-}
-
 .source {
-  font-family: var(--font-body-stack);
-  font-size: 0.6em;
-  font-weight: 600;
-  letter-spacing: 0;
-  color: var(--color-muted);
+  padding: 0.1rem 0.6rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+}
+
+.title {
+  align-self: end;
+  font-size: clamp(1.75rem, 1.2rem + 1.5vw, 2.5rem);
+  line-height: 1;
+  color: var(--color-fg-strong);
+  transition: color 250ms var(--ease-out);
+}
+
+.tile:hover .title,
+.tile:focus-visible .title {
+  color: inherit;
 }
 
 .summary {
-  max-width: var(--measure);
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
-@media (max-width: 40rem) {
-  .item {
-    grid-template-columns: 1fr;
-  }
+.arrow {
+  position: absolute;
+  top: clamp(1.25rem, 2.5vw, 2rem);
+  right: clamp(1.25rem, 2.5vw, 2rem);
+  font-size: 2rem;
+  line-height: 1;
+  opacity: 0;
+  transform: translate(-1rem, 1rem);
+  transition:
+    opacity 300ms var(--ease-out),
+    transform 450ms var(--ease-out);
+}
 
-  .date {
-    grid-row: auto;
+.tile:hover .arrow,
+.tile:focus-visible .arrow {
+  opacity: 1;
+  transform: none;
+}
+
+/* Tiles flip up into place as they scroll in. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .cell {
+      animation: deal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
+    }
+  }
+}
+
+@keyframes deal {
+  from {
+    opacity: 0;
+    transform: perspective(60rem) translateY(5rem) rotateX(-35deg) scale(0.9);
   }
 }

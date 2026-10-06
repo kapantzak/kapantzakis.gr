@@ -1,13 +1,76 @@
 .section {
   display: grid;
-  gap: clamp(1.5rem, 3vw, 3rem);
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 5rem);
+}
+
+.section[data-tone="magenta"] {
+  --accent: var(--color-accent-magenta);
+}
+
+/* Full-bleed accent block: bleeds through PageMain's gutters. */
+.section[data-tone="lime"] {
+  margin-inline: calc(-1 * var(--gutter));
+  padding: clamp(3rem, 8vw, 8rem) var(--gutter);
+  background: var(--color-accent-lime);
+  color: var(--color-on-accent);
+  --accent: var(--color-on-accent);
 }
 
 .heading {
-  font-size: var(--text-h2);
-  font-weight: 800;
+  /* Named so the track can follow the heading's own trip through the viewport. */
+  view-timeline-name: --section-heading;
+  font-size: clamp(3.5rem, 1rem + 13vw, 16rem);
+  line-height: 0.85;
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+
+.section[data-tone="lime"] .heading {
+  color: var(--color-on-accent);
+}
+
+.track {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25em;
 }
 
 .index {
+  font-size: 0.3em;
   color: var(--accent);
+}
+
+.echo {
+  color: transparent;
+  -webkit-text-stroke: 0.02em var(--accent);
+}
+
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 4rem);
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .track {
+      animation: slide linear both;
+      animation-timeline: --section-heading;
+      animation-range: cover 0% cover 100%;
+    }
+
+    .heading[data-direction="reverse"] .track {
+      animation-direction: reverse;
+    }
+  }
+}
+
+@keyframes slide {
+  from {
+    transform: translateX(20vw);
+  }
+  to {
+    transform: translateX(-30vw);
+  }
 }

@@ -1,6 +1,6 @@
-import type { ExternalPostInput } from "@/lib/posts";
+import type { Post } from "@/lib/posts";
 
-export const externalPosts: ExternalPostInput[] = [
+export const externalPosts: Post[] = [
   {
     title: "TypeScript or Flow: Which Is Better?",
     date: "2020-07-16",

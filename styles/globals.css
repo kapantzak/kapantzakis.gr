@@ -9,8 +9,10 @@ html {
   background: var(--color-bg);
 }
 
-:root:has(main[data-theme="light"]) {
-  color-scheme: light;
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 /* Keep anchor targets and focused elements clear of the sticky header (Nav.module.css). */
@@ -38,9 +40,12 @@ h2,
 h3 {
   margin: 0;
   font-family: var(--font-display-stack);
+  /* The display font has one weight; never let the browser fake a bold. */
+  font-weight: 400;
+  font-synthesis: none;
   color: var(--color-fg-strong);
   line-height: 0.95;
-  letter-spacing: -0.03em;
+  letter-spacing: 0;
   overflow-wrap: anywhere;
 }
 
@@ -83,6 +88,15 @@ img {
 
 .skip-link:focus {
   top: 1rem;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 @media (prefers-reduced-motion: reduce) {

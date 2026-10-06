@@ -32,7 +32,7 @@ describe("profile", () => {
     expect(profile.email).toMatch(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
   });
 
-  it("has intro copy for Home and About", () => {
+  it("has intro copy for the hero", () => {
     expect(profile.intro.length).toBeGreaterThan(0);
   });
 });

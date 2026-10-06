@@ -1,4 +1,4 @@
-/* Dark is the default; a page opts into the light theme or an accent via data-* on <main>. */
+/* Dark only, with two vivid accents (decision 38). A section may switch --accent locally. */
 :root {
   --color-bg: #0b0d12;
   --color-fg: #d9dce3;
@@ -6,12 +6,12 @@
   --color-muted: #9aa1ae;
   --color-surface: #151821;
   --color-rule: #262a33;
-  --color-accent-blue: #7d8bff;
-  --color-accent-magenta: #ff5cd6;
   --color-accent-lime: #c6ff3d;
-  --color-accent-orange: #ff8a3d;
+  --color-accent-magenta: #ff5cd6;
+  /* Text drawn on an accent fill. */
+  --color-on-accent: #0b0d12;
 
-  --accent: var(--color-accent-blue);
+  --accent: var(--color-accent-lime);
 
   --font-display-stack: var(--font-display), system-ui, sans-serif;
   --font-body-stack: var(--font-body), system-ui, sans-serif;
@@ -26,29 +26,5 @@
   --page-pad-block: clamp(2rem, 6vw, 6rem);
   --measure: 70ch;
   --transition-fast: 120ms ease-out;
-}
-
-:root:has(main[data-theme="light"]) {
-  --color-bg: #f4f2ee;
-  --color-fg: #1a1c22;
-  --color-fg-strong: #0b0d12;
-  --color-muted: #5a606c;
-  --color-surface: #e9e6df;
-  --color-rule: #d3cfc6;
-  --color-accent-blue: #3b00eb;
-  --color-accent-magenta: #b8009f;
-  --color-accent-lime: #3d7300;
-  --color-accent-orange: #b34700;
-}
-
-:root:has(main[data-accent="magenta"]) {
-  --accent: var(--color-accent-magenta);
-}
-
-:root:has(main[data-accent="lime"]) {
-  --accent: var(--color-accent-lime);
-}
-
-:root:has(main[data-accent="orange"]) {
-  --accent: var(--color-accent-orange);
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
 }

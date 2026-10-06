@@ -7,7 +7,7 @@ const STICKY_MIN_WIDTH = 640;
 test("the main nav sticks on wide screens and scrolls away on phones", async ({
   page,
 }) => {
-  await page.goto("/about");
+  await page.goto("/");
   await page.evaluate(() =>
     window.scrollTo(0, document.documentElement.scrollHeight),
   );

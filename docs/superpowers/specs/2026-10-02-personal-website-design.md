@@ -1,7 +1,9 @@
 # Personal Website — Design Spec
 
 - **Date:** 2026-10-02
-- **Status:** Approved by user 2026-10-02
+- **Status:** Approved by user 2026-10-02; one-page refactor approved 2026-10-06 (section 13)
+
+> The site is now a single page. Where sections 1–8 describe the original multi-page site and conflict with section 13, section 13 wins.
 - **Inputs:** `docs/initial-notes.md`, `docs/linkedin.md`, the current site at https://kapantzakis.gr/
 
 ## 1. Purpose and success criteria
@@ -20,32 +22,32 @@ The site is done when:
 
 ## 2. Decisions
 
-The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review, 22–25 for the Home hero backdrop, 26–29 for the logo.
+The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review, 22–25 for the Home hero backdrop, 26–29 for the logo, and 30–40 for the one-page refactor on 2026-10-06. Rows marked *superseded* are kept for history.
 
 | #  | Topic                   | Decision                                                                                                  |
 |----|-------------------------|-----------------------------------------------------------------------------------------------------------|
-| 1  | Posts source            | MDX files in the repo, plus "external" entries that link to articles published elsewhere                  |
+| 1  | Posts source            | *Superseded by 35.* MDX files in the repo, plus "external" entries that link to articles published elsewhere |
 | 2  | Contact                 | `mailto:` link and social links only, with no form and no backend                                         |
 | 3  | Styling                 | CSS Modules plus CSS custom properties (design tokens), with no CSS framework                             |
-| 4  | Fonts                   | Two variable fonts via `next/font`: a bold display font for headings and a neutral body font              |
+| 4  | Fonts                   | *Superseded by 37.* Two variable fonts via `next/font`: a bold display font for headings and a neutral body font |
 | 5  | Colour scheme           | Dark by default; selected pages or blocks switch to a light background; vivid heading accents             |
 | 6  | Layout width            | Full-width layout and headings; running text capped at a reading width of about 70ch                      |
-| 7  | Navigation              | Simple top bar with 4 links and no menu animation                                                         |
+| 7  | Navigation              | *Superseded by 40.* Simple top bar with 4 links and no menu animation |
 | 8  | Package manager         | npm                                                                                                       |
 | 9  | TypeScript              | Try TS 7 first; keep it only if `next build`, type-check and ESLint all pass, otherwise use the newest TS that works |
 | 10 | Lint / format           | ESLint flat config with `eslint-config-next`, plus Prettier                                               |
 | 11 | Testing                 | Vitest with React Testing Library, plus Playwright smoke tests                                            |
-| 12 | Old "Projects" section  | Dropped; `/projects` permanently redirects to `/about`                                                    |
+| 12 | Old "Projects" section  | *Superseded by 31.* Dropped; `/projects` permanently redirects to `/about` |
 | 13 | About content           | Drafted from the current site and LinkedIn, then reviewed and completed by the user                       |
 | 14 | Analytics               | Vercel Web Analytics (`@vercel/analytics`)                                                                |
-| 15 | MDX pipeline            | `@next/mdx`; each post exports `metadata`; external entries live in a typed TS file                       |
-| 16 | Light pages             | `/posts` and `/posts/[slug]` use the light theme; all other routes stay dark                              |
-| 17 | Post-page test coverage | Optional `draft: true` post flag; a permanent draft fixture is built only when `INCLUDE_DRAFTS=1` (e2e)    |
+| 15 | MDX pipeline            | *Superseded by 35.* `@next/mdx`; each post exports `metadata`; external entries live in a typed TS file |
+| 16 | Light pages             | *Superseded by 38.* `/posts` and `/posts/[slug]` use the light theme; all other routes stay dark |
+| 17 | Post-page test coverage | *Superseded by 35.* Optional `draft: true` post flag; a permanent draft fixture is built only when `INCLUDE_DRAFTS=1` (e2e) |
 | 18 | Cache Components        | Off; routes use classic static generation                                                                 |
 | 19 | Owner's name in code    | Allowed in `content/profile.ts` only; everything else reads `profile.name`                               |
 | 20 | Sticky nav              | Top bar sticks to the top on screens wider than 640px (40rem); on phones it scrolls away normally         |
 | 21 | Sticky bar look         | Solid page background (follows the light/dark theme) with a thin bottom rule; no blur or translucency     |
-| 22 | Hero backdrop scope     | Ambient animation behind the Home headline area only; every other page stays still                        |
+| 22 | Hero backdrop scope     | *Superseded by 39.* Ambient animation behind the Home headline area only; every other page stays still |
 | 23 | Hero backdrop effect    | Floating outlined code glyphs in the display font, slow transform-only drift; CSS only, no JavaScript     |
 | 24 | Pausing (WCAG 2.2.2)    | CSS-only "Pause motion" toggle in the hero, plus the existing reduced-motion support                       |
 | 25 | Hero backdrop on phones | Same effect with fewer glyphs (7 instead of 12)                                                           |
@@ -53,6 +55,17 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 27 | Logo size               | 40px in the nav on desktop, 32px on phones                                                                |
 | 28 | Site icon               | The same logo replaces the generated monogram: `favicon.ico`, a 512px icon and a 192px Apple touch icon    |
 | 29 | Logo link               | Logo sits inside the existing name link before the name; the image is decorative (`alt=""`)              |
+| 30 | One-page site           | `/` holds everything, read by scrolling: hero, experience, writing, contact                               |
+| 31 | Old routes              | `/about`, `/posts`, `/contact` removed (404); the `/projects` redirect removed; the sitemap lists `/` only |
+| 32 | Education and community | Expandable rows inside the Experience section, under their own subheadings                               |
+| 33 | Experience details      | Big rows that expand with an animation; the panel shows existing facts plus a placeholder for rich content to be designed later |
+| 34 | Posts                   | Every post as a tile with a hover animation; every tile opens the article in a new tab                    |
+| 35 | Local posts             | None will be published here: MDX pipeline, `/posts/[slug]`, drafts and the draft fixture removed          |
+| 36 | Obsolete files          | Deleted (routes, `Timeline`, `PageHeader`, `Prose`, their tests and the route-specific e2e specs)          |
+| 37 | Display font            | BBH Hegarty (single weight, 400) for headings; Inter stays for body text                                   |
+| 38 | Colour                  | Dark only; two vivid accents (lime, magenta); the Writing section uses a full-bleed lime background; blue, orange and the light theme removed |
+| 39 | Motion                  | Scroll-driven CSS animations (`animation-timeline`) as progressive enhancement; browsers without support show static content; all motion off under `prefers-reduced-motion` |
+| 40 | Navigation              | In-page links (Experience, Writing, Contact); the section in view is marked with `aria-current="true"`; a scroll-progress bar sits on the top edge |
 
 ## 3. Scope
 
@@ -243,3 +256,15 @@ e2e/                    # Playwright smoke tests
 ## 12. Repository notes
 
 - `docs/linkedin.md` contains other people's names and profile links, from LinkedIn's "similar profiles" section and a recommendation. This repository is public, so that file should stay out of version control or be trimmed before it is committed.
+
+## 13. One-page refactor (2026-10-06)
+
+The user asked for a single scrolling page with eye-catching scroll animations, big nowrap headings in BBH Hegarty that move as a whole line, expandable experience items and animated post tiles. Visual and motion design were delegated ("improvise"); the structural decisions are 30–36.
+
+- **Page order:** hero → Experience (work, education, community) → Writing (all posts) → Say hello (email, social links).
+- **Headings:** each section heading is one nowrap line that slides sideways while the section crosses the viewport. Decorative repeats of the title are `aria-hidden`.
+- **Experience rows:** a button inside a heading (`aria-expanded`, `aria-controls`); the panel animates open and is `inert` while closed. Several rows can be open at once.
+- **Client JavaScript:** only the expandable row and the in-view nav marker. Everything else, including scroll motion, is CSS.
+- **Superseded:** success criteria 1, 3, 4 and 5; section 3 (pages, MDX pipeline, `/projects`); section 4.1 (no scroll-linked motion); section 4.2 (light theme, four accents); section 4.3 (display font); section 4.5 (route links); section 5 (page table); the `/projects` redirect in section 7; the draft tests in section 8.
+- **Open:** the rich content for each experience row (decision 33).
+

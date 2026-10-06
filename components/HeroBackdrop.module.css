@@ -23,7 +23,7 @@
   top: var(--y);
   font-family: var(--font-display-stack);
   font-size: calc(var(--size) * var(--glyph-scale, 1));
-  font-weight: 800;
+  font-weight: 400;
   line-height: 1;
   white-space: nowrap;
   color: transparent;

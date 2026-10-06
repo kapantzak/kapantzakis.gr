@@ -1,9 +1,13 @@
 .main {
   flex: 1;
   display: grid;
+  /* minmax(0, …): nowrap headings must not widen the column past the viewport. */
+  grid-template-columns: minmax(0, 1fr);
   align-content: start;
-  gap: clamp(3rem, 8vw, 8rem);
+  gap: clamp(4rem, 10vw, 10rem);
   padding: var(--page-pad-block) var(--gutter);
+  /* Sliding nowrap headings travel past the edges; clip keeps the page from scrolling sideways. */
+  overflow-x: clip;
 }
 
 .main:focus {

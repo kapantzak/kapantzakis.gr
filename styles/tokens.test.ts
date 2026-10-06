@@ -5,22 +5,19 @@ import { contrastRatio } from "@/lib/contrast";
 
 const css = readFileSync(path.join(process.cwd(), "styles/tokens.css"), "utf8");
 
-const LIGHT_SELECTOR = ':root:has(main[data-theme="light"])';
-
 const TEXT_TOKENS = [
   "--color-fg",
   "--color-fg-strong",
   "--color-muted",
-  "--color-accent-blue",
-  "--color-accent-magenta",
   "--color-accent-lime",
-  "--color-accent-orange",
+  "--color-accent-magenta",
 ];
 
-function readColours(selector: string): Record<string, string> {
-  const start = css.indexOf(`${selector} {`);
-  if (start === -1)
-    throw new Error(`Block "${selector} {" not found in tokens.css`);
+const ACCENT_FILLS = ["--color-accent-lime", "--color-accent-magenta"];
+
+function readColours(): Record<string, string> {
+  const start = css.indexOf(":root {");
+  if (start === -1) throw new Error('Block ":root {" not found in tokens.css');
   const block = css.slice(start, css.indexOf("}", start));
   return Object.fromEntries(
     [...block.matchAll(/(--color-[\w-]+):\s*(#[0-9a-fA-F]{6})\s*;/g)].map(
@@ -29,25 +26,25 @@ function readColours(selector: string): Record<string, string> {
   );
 }
 
-const darkOwn = readColours(":root");
-const lightOwn = readColours(LIGHT_SELECTOR);
-const themes = { dark: darkOwn, light: { ...darkOwn, ...lightOwn } };
+const colours = readColours();
 
-describe.each(Object.entries(themes))("%s theme", (_, colours) => {
-  it.each(TEXT_TOKENS)(
-    "%s has at least 4.5:1 contrast on --color-bg",
-    (token) => {
-      const fg = colours[token];
-      const bg = colours["--color-bg"];
-      expect(fg, `${token} is not defined`).toBeDefined();
-      expect(bg, "--color-bg is not defined").toBeDefined();
-      expect(contrastRatio(fg!, bg!)).toBeGreaterThanOrEqual(4.5);
-    },
-  );
+function ratio(fg: string, bg: string): number {
+  expect(colours[fg], `${fg} is not defined`).toBeDefined();
+  expect(colours[bg], `${bg} is not defined`).toBeDefined();
+  return contrastRatio(colours[fg]!, colours[bg]!);
+}
+
+describe("text on the page background", () => {
+  it.each(TEXT_TOKENS)("%s has at least 4.5:1 contrast", (token) => {
+    expect(ratio(token, "--color-bg")).toBeGreaterThanOrEqual(4.5);
+  });
 });
 
-it("light theme overrides the background and every text colour", () => {
-  for (const token of ["--color-bg", ...TEXT_TOKENS]) {
-    expect(lightOwn[token], `${token} missing from light block`).toBeDefined();
-  }
+describe("text on accent fills", () => {
+  it.each(ACCENT_FILLS)(
+    "--color-on-accent has at least 4.5:1 contrast on %s",
+    (fill) => {
+      expect(ratio("--color-on-accent", fill)).toBeGreaterThanOrEqual(4.5);
+    },
+  );
 });

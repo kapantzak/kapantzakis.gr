@@ -1,16 +1,11 @@
-export type PostFields = { title: string; date: string; summary: string };
-export type LocalPost = PostFields & {
-  kind: "local";
-  slug: string;
-  draft: boolean;
-};
-export type ExternalPost = PostFields & {
-  kind: "external";
+/** An article published elsewhere; the site links out to it (decision 35). */
+export type Post = {
+  title: string;
+  date: string;
+  summary: string;
   url: string;
   source: string;
 };
-export type Post = LocalPost | ExternalPost;
-export type ExternalPostInput = Omit<ExternalPost, "kind">;
 
 export class PostValidationError extends Error {
   constructor(message: string) {
@@ -19,7 +14,6 @@ export class PostValidationError extends Error {
   }
 }
 
-const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 
 // Fixed month abbreviations because ICU's en-GB "short" month varies (e.g., "Sept" vs "Sep").
@@ -72,35 +66,7 @@ function readDate(record: Record<string, unknown>, where: string): string {
   return value;
 }
 
-export function parseLocalPost(slug: string, metadata: unknown): LocalPost {
-  const where = `content/posts/${slug}.mdx`;
-  if (!SLUG_PATTERN.test(slug)) {
-    throw new PostValidationError(
-      `${where}: file name must be a lowercase kebab-case slug`,
-    );
-  }
-  if (!isRecord(metadata)) {
-    throw new PostValidationError(
-      `${where}: metadata export is missing or not an object`,
-    );
-  }
-  const draft = metadata.draft ?? false;
-  if (typeof draft !== "boolean") {
-    throw new PostValidationError(
-      `${where}: "draft" must be a boolean when present`,
-    );
-  }
-  return {
-    kind: "local",
-    slug,
-    title: readString(metadata, "title", where),
-    date: readDate(metadata, where),
-    summary: readString(metadata, "summary", where),
-    draft,
-  };
-}
-
-export function parseExternalPost(input: unknown, index: number): ExternalPost {
+export function parsePost(input: unknown, index: number): Post {
   const where = `content/external-posts.ts[${index}]`;
   if (!isRecord(input)) {
     throw new PostValidationError(`${where}: entry must be an object`);
@@ -110,7 +76,6 @@ export function parseExternalPost(input: unknown, index: number): ExternalPost {
     throw new PostValidationError(`${where}: "url" must start with https://`);
   }
   return {
-    kind: "external",
     url,
     source: readString(input, "source", where),
     title: readString(input, "title", where),
@@ -119,37 +84,16 @@ export function parseExternalPost(input: unknown, index: number): ExternalPost {
   };
 }
 
-function assertUnique(values: string[], label: string): void {
+/** Newest first; rejects the same article listed twice. */
+export function orderPosts(posts: Post[]): Post[] {
   const seen = new Set<string>();
-  for (const value of values) {
-    if (seen.has(value))
-      throw new PostValidationError(`Duplicate ${label}: ${value}`);
-    seen.add(value);
+  for (const { url } of posts) {
+    if (seen.has(url)) throw new PostValidationError(`Duplicate URL: ${url}`);
+    seen.add(url);
   }
-}
-
-export function mergePosts(
-  local: LocalPost[],
-  external: ExternalPost[],
-): Post[] {
-  assertUnique(
-    local.map((p) => p.slug),
-    "slug",
-  );
-  assertUnique(
-    external.map((p) => p.url),
-    "external URL",
-  );
-  return [...local, ...external].sort(
+  return [...posts].sort(
     (a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title),
   );
-}
-
-export function selectVisible(
-  posts: LocalPost[],
-  includeDrafts: boolean,
-): LocalPost[] {
-  return includeDrafts ? posts : posts.filter((p) => !p.draft);
 }
 
 export function formatPostDate(date: string): string {
