@@ -1,7 +1,7 @@
 # Personal Website — Design Spec
 
 - **Date:** 2026-10-02
-- **Status:** Approved by user 2026-10-02; one-page refactor approved 2026-10-06 (section 13)
+- **Status:** Approved by user 2026-10-02; one-page refactor approved 2026-10-06 (section 13); detail sheet approved 2026-10-06 (section 14)
 
 > The site is now a single page. Where sections 1–8 describe the original multi-page site and conflict with section 13, section 13 wins.
 - **Inputs:** `docs/initial-notes.md`, `docs/linkedin.md`, the current site at https://kapantzakis.gr/
@@ -22,7 +22,7 @@ The site is done when:
 
 ## 2. Decisions
 
-The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review, 22–25 for the Home hero backdrop, 26–29 for the logo, and 30–40 for the one-page refactor on 2026-10-06. Rows marked *superseded* are kept for history.
+The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review, 22–25 for the Home hero backdrop, 26–29 for the logo, 30–40 for the one-page refactor on 2026-10-06, and 41–47 for the detail sheet on 2026-10-06. Rows marked *superseded* are kept for history.
 
 | #  | Topic                   | Decision                                                                                                  |
 |----|-------------------------|-----------------------------------------------------------------------------------------------------------|
@@ -58,14 +58,21 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 30 | One-page site           | `/` holds everything, read by scrolling: hero, experience, writing, contact                               |
 | 31 | Old routes              | `/about`, `/posts`, `/contact` removed (404); the `/projects` redirect removed; the sitemap lists `/` only |
 | 32 | Education and community | Expandable rows inside the Experience section, under their own subheadings                               |
-| 33 | Experience details      | Big rows that expand with an animation; the panel shows existing facts plus a placeholder for rich content to be designed later |
+| 33 | Experience details      | *Superseded by 41.* Big rows that expand with an animation; the panel shows existing facts plus a placeholder for rich content to be designed later |
 | 34 | Posts                   | Every post as a tile with a hover animation; every tile opens the article in a new tab                    |
 | 35 | Local posts             | None will be published here: MDX pipeline, `/posts/[slug]`, drafts and the draft fixture removed          |
 | 36 | Obsolete files          | Deleted (routes, `Timeline`, `PageHeader`, `Prose`, their tests and the route-specific e2e specs)          |
 | 37 | Display font            | BBH Hegarty (single weight, 400) for headings; Inter stays for body text                                   |
-| 38 | Colour                  | Dark only; two vivid accents (lime, magenta); the Writing section uses a full-bleed lime background; blue, orange and the light theme removed |
+| 38 | Colour                  | Dark only (except the detail sheet, decision 44); two vivid accents (lime, magenta); the Writing section uses a full-bleed lime background; blue, orange and the light theme removed |
 | 39 | Motion                  | Scroll-driven CSS animations (`animation-timeline`) as progressive enhancement; browsers without support show static content; all motion off under `prefers-reduced-motion` |
 | 40 | Navigation              | In-page links (Experience, Writing, Contact); the section in view is marked with `aria-current="true"`; a scroll-progress bar sits on the top edge |
+| 41 | Detail sheet scope      | Every Experience row (work, education, community) opens a full-page detail sheet instead of expanding in place |
+| 42 | Detail sheet technique  | Custom modal overlay (`role="dialog"`, `aria-modal`), portalled to `<body>`; the rest of the page is `inert` and does not scroll while it is open |
+| 43 | Detail sheet motion     | The sheet grows out of the clicked row to fill the screen, then its content rises in; closing shrinks it back into the row; a short fade under `prefers-reduced-motion` |
+| 44 | Detail sheet colour     | Warm off-white `#f7f6f2` with near-black text and a darker muted grey; lime and magenta are used only as fills behind dark text, never as text on the sheet |
+| 45 | Detail sheet content    | Real period, title and subtitle, the existing facts (stack, links, summary), then placeholder blocks long enough to scroll |
+| 46 | Back button             | Opening the sheet adds a history entry, so Back closes it; there is no shareable deep link |
+| 47 | Closing                 | A close button that stays in view while scrolling, plus Escape and Back; focus returns to the row that opened the sheet |
 
 ## 3. Scope
 
@@ -264,7 +271,18 @@ The user asked for a single scrolling page with eye-catching scroll animations, 
 - **Page order:** hero → Experience (work, education, community) → Writing (all posts) → Say hello (email, social links).
 - **Headings:** each section heading is one nowrap line that slides sideways while the section crosses the viewport. Decorative repeats of the title are `aria-hidden`.
 - **Experience rows:** a button inside a heading (`aria-expanded`, `aria-controls`); the panel animates open and is `inert` while closed. Several rows can be open at once.
-- **Client JavaScript:** only the expandable row and the in-view nav marker. Everything else, including scroll motion, is CSS.
+- **Client JavaScript:** only the expandable row (now the detail sheet, section 14) and the in-view nav marker. Everything else, including scroll motion, is CSS.
 - **Superseded:** success criteria 1, 3, 4 and 5; section 3 (pages, MDX pipeline, `/projects`); section 4.1 (no scroll-linked motion); section 4.2 (light theme, four accents); section 4.3 (display font); section 4.5 (route links); section 5 (page table); the `/projects` redirect in section 7; the draft tests in section 8.
-- **Open:** the rich content for each experience row (decision 33).
+- **Open:** the rich content for each experience row (decision 33, now decision 45).
 
+## 14. Detail sheet (2026-10-06)
+
+The user asked for each section item to open a full-page section with a striking animation, on a white or near-white background, with placeholder content for now. The decisions are 41–47.
+
+- **Rows:** each row stays a big button inside an `h4`. It now opens a sheet (`aria-haspopup="dialog"`) instead of a disclosure panel.
+- **Portal:** the sheet renders into `<body>`. Rows carry scroll-driven transforms, and a transformed ancestor would trap a `position: fixed` sheet inside the row.
+- **Modality:** while the sheet is open, the header, main content and footer are `inert`, the page does not scroll, and focus moves to the close button. Tab cannot reach the page behind.
+- **Motion:** the sheet's `clip-path` animates from the clicked row's rectangle to the full viewport, using the row's measured position. Content blocks rise in with a stagger. Closing plays the reverse and then removes the sheet.
+- **History:** opening pushes a history entry without changing the URL. Back, Escape and the close button all close through that entry, so the history stays balanced.
+- **Colour:** light-surface tokens sit alongside the dark tokens in `tokens.css`, and `tokens.test.ts` checks their contrast.
+- **Open:** the rich content for each sheet (decision 45).
