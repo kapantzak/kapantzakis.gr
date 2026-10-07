@@ -3,8 +3,8 @@ import adzunaHome from "@/assets/brand/adzuna-home.png";
 import adzunaLogo from "@/assets/brand/adzuna-logo.svg";
 import netdataDashboard from "@/assets/brand/netdata-dashboard.png";
 import netdataLogo from "@/assets/brand/netdata-logo.svg";
+import skroutzHome from "@/assets/brand/skroutz-home.webp";
 import skroutzLogo from "@/assets/brand/skroutz-logo.svg";
-import skroutzPromo from "@/assets/brand/skroutz-promo.png";
 import type { Period } from "@/lib/period";
 
 /** An employer's own look for the top of its detail sheet (decisions 48–53). */
@@ -13,6 +13,8 @@ export type Brand = {
   logo: StaticImageData;
   background: string;
   accent: string;
+  /** Fills the website link on the band (decision 68). */
+  link: string;
   /** Which text colours the band takes: the dark page's or the light sheet's (decision 64). */
   tone: "light" | "dark";
   /** Decorative brand art for the band (decisions 55–59). */
@@ -75,6 +77,7 @@ export const profile: Profile = {
         logo: netdataLogo,
         background: "#020503",
         accent: "#00ab44",
+        link: "#00ab44",
         tone: "dark",
         visual: netdataDashboard,
       },
@@ -90,6 +93,7 @@ export const profile: Profile = {
         logo: adzunaLogo,
         background: "#ffffff",
         accent: "#279b37",
+        link: "#279b37",
         tone: "light",
         visual: adzunaHome,
       },
@@ -100,13 +104,15 @@ export const profile: Profile = {
       title: "Software engineer",
       period: { start: "Jun 2020", end: "Jan 2022" },
       stack: ["JavaScript", "React", "Ruby on Rails"],
-      // From skroutz.gr: header logo and brand orange; the promo image is from Skroutz's blog.
+      // From skroutz.gr: header logo (recoloured white), brand orange and primary yellow,
+      // and a signed-out screenshot of the home page.
       brand: {
         logo: skroutzLogo,
-        background: "#ffffff",
+        background: "#f68b24",
         accent: "#f68b24",
+        link: "#ffb800",
         tone: "light",
-        visual: skroutzPromo,
+        visual: skroutzHome,
       },
     },
     {

@@ -35,7 +35,8 @@
 .facts a:any-link,
 .facts a:any-link:hover {
   padding: 0.2em 0.6em;
-  background: var(--accent);
+  /* A brand can fill its link in its own colour (decision 68). */
+  background: var(--brand-link, var(--accent));
   color: var(--color-on-accent);
 }
 

@@ -13,6 +13,7 @@ const BRAND: Brand = {
   logo: { src: "/netdata-logo.svg", width: 879, height: 151 },
   background: "#020503",
   accent: "#00ab44",
+  link: "#00ab44",
   tone: "dark",
 };
 
@@ -133,6 +134,7 @@ describe("ExpandableItem", () => {
     ).not.toBeNull();
     expect(sheet.style.getPropertyValue("--accent")).toBe(BRAND.accent);
     expect(sheet.style.getPropertyValue("--brand-bg")).toBe(BRAND.background);
+    expect(sheet.style.getPropertyValue("--brand-link")).toBe(BRAND.link);
     expect(row.closest("li")!.style.getPropertyValue("--accent")).toBe(
       BRAND.accent,
     );

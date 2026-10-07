@@ -23,10 +23,11 @@ const PAPER_TEXT_TOKENS = [
 
 const ACCENT_FILLS = ["--color-accent-lime", "--color-accent-magenta"];
 
-// A dark band reuses the page's text tokens, a light band the sheet's (decisions 49, 64).
+// A dark band reuses the page's text tokens, a light band the sheet's, with its body grey
+// standing in for muted text (decisions 49, 64, 69).
 const BAND_TEXT_TOKENS = {
   dark: ["--color-fg", "--color-fg-strong", "--color-muted"],
-  light: PAPER_TEXT_TOKENS,
+  light: ["--color-paper-fg", "--color-paper-fg-strong"],
 };
 
 const brands = profile.experience.flatMap((role) =>
@@ -87,6 +88,12 @@ describe.each(brands)("the %s brand", (_org, brand) => {
   it("--color-on-accent has at least 4.5:1 contrast on its accent", () => {
     expect(
       contrastRatio(colours["--color-on-accent"]!, brand.accent),
+    ).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it("--color-on-accent has at least 4.5:1 contrast on its link colour", () => {
+    expect(
+      contrastRatio(colours["--color-on-accent"]!, brand.link),
     ).toBeGreaterThanOrEqual(4.5);
   });
 });

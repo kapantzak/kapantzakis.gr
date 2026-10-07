@@ -100,7 +100,11 @@ export function DetailSheet({
     "--from-right": `${origin.right}px`,
     "--from-bottom": `${origin.bottom}px`,
     "--from-left": `${origin.left}px`,
-    ...(brand && { "--accent": brand.accent, "--brand-bg": brand.background }),
+    ...(brand && {
+      "--accent": brand.accent,
+      "--brand-bg": brand.background,
+      "--brand-link": brand.link,
+    }),
   } as CSSProperties;
 
   const header = (

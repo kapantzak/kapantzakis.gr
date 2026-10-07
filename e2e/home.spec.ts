@@ -160,11 +160,17 @@ test("the Netdata sheet opens on a brand band with its logo, and other sheets do
   ).toContainText("ASP.NET");
 });
 
-for (const [org, role] of [
-  ["Adzuna", "Senior frontend developer"],
-  ["Skroutz", "Software engineer"],
+// Light-toned bands: dark text on the brand background, the link filled in the brand's link colour.
+for (const [org, role, background, link] of [
+  [
+    "Adzuna",
+    "Senior frontend developer",
+    "rgb(255, 255, 255)",
+    "rgb(39, 155, 55)",
+  ],
+  ["Skroutz", "Software engineer", "rgb(246, 139, 36)", "rgb(255, 184, 0)"],
 ]) {
-  test(`the ${org} sheet opens on a white band with dark text and its logo`, async ({
+  test(`the ${org} sheet opens on its light band with dark text, its logo and link colour`, async ({
     page,
   }) => {
     await page.goto("/");
@@ -172,8 +178,8 @@ for (const [org, role] of [
     const band = page
       .getByRole("dialog", { name: org })
       .locator("[data-brand]");
-    await expect(band).toHaveCSS("background-color", "rgb(255, 255, 255)");
-    // Keeps the white band distinct from the off-white sheet (decision 65).
+    await expect(band).toHaveCSS("background-color", background);
+    // Keeps a light band distinct from the off-white sheet (decision 65).
     await expect(band).toHaveCSS("border-bottom-width", "1px");
     await expect(
       band.getByRole("heading", { level: 2 }).getByRole("img", { name: org }),
@@ -185,6 +191,12 @@ for (const [org, role] of [
     await expect(
       band.getByRole("list", { name: "Stack" }).getByRole("listitem").first(),
     ).toHaveCSS("color", "rgb(11, 13, 18)");
+    // The date uses the body grey on light bands (decision 69).
+    await expect(band.locator("header > p").first()).toHaveCSS(
+      "color",
+      "rgb(42, 46, 55)",
+    );
+    await expect(band.getByRole("link")).toHaveCSS("background-color", link);
     await expect
       .poll(() =>
         band
