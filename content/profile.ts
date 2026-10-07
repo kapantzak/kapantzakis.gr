@@ -105,7 +105,7 @@ export const profile: Profile = {
       orgUrl: "https://www.skroutz.gr/",
       title: "Software engineer",
       period: { start: "Jun 2020", end: "Jan 2022" },
-      stack: ["JavaScript", "React", "Ruby on Rails"],
+      stack: ["JavaScript", "React", "Ruby on Rails", "Hotwire"],
       // From skroutz.gr: header logo (recoloured white), brand orange and primary yellow,
       // and a signed-out screenshot of the home page.
       brand: {
@@ -120,7 +120,7 @@ export const profile: Profile = {
     {
       org: "EpsilonNet",
       orgUrl: "https://www.epsilonnet.gr/",
-      title: "Web developer",
+      title: "Full stack developer",
       period: { start: "Sep 2014", end: "May 2020" },
       stack: ["JavaScript", "TypeScript", "ASP.NET", "C#"],
       // From epsilonnet.gr: logo (traced from its PNG), the logo's orange-red and the first screen.

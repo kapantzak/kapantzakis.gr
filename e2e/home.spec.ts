@@ -173,7 +173,12 @@ for (const [org, role, background, link] of [
     "rgb(39, 155, 55)",
   ],
   ["Skroutz", "Software engineer", "rgb(246, 139, 36)", "rgb(255, 184, 0)"],
-  ["EpsilonNet", "Web developer", "rgb(255, 255, 255)", "rgb(240, 78, 35)"],
+  [
+    "EpsilonNet",
+    "Full stack developer",
+    "rgb(255, 255, 255)",
+    "rgb(240, 78, 35)",
+  ],
 ]) {
   test(`the ${org} sheet opens on its light band with dark text, its logo and link colour`, async ({
     page,
