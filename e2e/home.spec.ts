@@ -154,14 +154,14 @@ test("the Netdata sheet opens on a brand band with its logo, and other sheets do
   await page.keyboard.press("Escape");
   await expect(sheet).toHaveCount(0);
 
-  await page.getByRole("button", { name: /EpsilonNet/ }).click();
-  const plain = page.getByRole("dialog", { name: "EpsilonNet" });
+  await page.getByRole("button", { name: /Independent/ }).click();
+  const plain = page.getByRole("dialog", { name: "Independent" });
   await expect(plain).toBeVisible();
   await expect(plain.locator("[data-brand]")).toHaveCount(0);
   await expect(plain.getByRole("img")).toHaveCount(0);
   await expect(
     plain.locator("header").getByRole("list", { name: "Stack" }),
-  ).toContainText("ASP.NET");
+  ).toContainText("jQuery");
 });
 
 // Light-toned bands: dark text on the brand background, the link filled in the brand's link colour.
@@ -173,6 +173,7 @@ for (const [org, role, background, link] of [
     "rgb(39, 155, 55)",
   ],
   ["Skroutz", "Software engineer", "rgb(246, 139, 36)", "rgb(255, 184, 0)"],
+  ["EpsilonNet", "Web developer", "rgb(255, 255, 255)", "rgb(240, 78, 35)"],
 ]) {
   test(`the ${org} sheet opens on its light band with dark text, its logo and link colour`, async ({
     page,

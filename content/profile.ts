@@ -1,6 +1,8 @@
 import type { StaticImageData } from "next/image";
 import adzunaHome from "@/assets/brand/adzuna-home.png";
 import adzunaLogo from "@/assets/brand/adzuna-logo.svg";
+import epsilonnetHome from "@/assets/brand/epsilonnet-home.webp";
+import epsilonnetLogo from "@/assets/brand/epsilonnet-logo.svg";
 import netdataDashboard from "@/assets/brand/netdata-dashboard.png";
 import netdataLogo from "@/assets/brand/netdata-logo.svg";
 import skroutzHome from "@/assets/brand/skroutz-home.webp";
@@ -121,6 +123,15 @@ export const profile: Profile = {
       title: "Web developer",
       period: { start: "Sep 2014", end: "May 2020" },
       stack: ["JavaScript", "TypeScript", "ASP.NET", "C#"],
+      // From epsilonnet.gr: logo (traced from its PNG), the logo's orange-red and the first screen.
+      brand: {
+        logo: epsilonnetLogo,
+        background: "#ffffff",
+        accent: "#f04e23",
+        link: "#f04e23",
+        tone: "light",
+        visual: epsilonnetHome,
+      },
     },
     {
       org: "Independent",
