@@ -22,7 +22,7 @@ The site is done when:
 
 ## 2. Decisions
 
-The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review, 22–25 for the Home hero backdrop, 26–29 for the logo, 30–40 for the one-page refactor on 2026-10-06, 41–47 for the detail sheet on 2026-10-06, 48–54 for the brand header on 2026-10-06, 55–59 for the brand visual on 2026-10-06, 60–62 for its perspective on 2026-10-06, 63–65 for the Adzuna brand on 2026-10-06, 66 for the Skroutz brand on 2026-10-06, and 67–69 for its revision and brand link colours on 2026-10-07. Rows marked *superseded* are kept for history.
+The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review, 22–25 for the Home hero backdrop, 26–29 for the logo, 30–40 for the one-page refactor on 2026-10-06, 41–47 for the detail sheet on 2026-10-06, 48–54 for the brand header on 2026-10-06, 55–59 for the brand visual on 2026-10-06, 60–62 for its perspective on 2026-10-06, 63–65 for the Adzuna brand on 2026-10-06, 66 for the Skroutz brand on 2026-10-06, 67–69 for its revision and brand link colours on 2026-10-07, and 70 for the visual's full height on 2026-10-07. Rows marked *superseded* are kept for history.
 
 | #  | Topic                   | Decision                                                                                                  |
 |----|-------------------------|-----------------------------------------------------------------------------------------------------------|
@@ -95,6 +95,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 67 | Skroutz brand (revised) | Orange `#f68b24` band with dark text (`tone: "light"`), the official wordmark recoloured white without the hat, and the user's signed-out skroutz.gr screenshot as the visual, with the same fade and perspective; `#f68b24` stays the accent for the row, the grow and the close button |
 | 68 | Brand link colour       | Each brand stores a `link` colour that fills its website link on the band, separate from the accent; Netdata `#00ab44`, Adzuna `#279b37`, Skroutz `#ffb800` (from skroutz.gr's primary scale) |
 | 69 | Light band muted text   | On light bands the muted text (the date) uses the sheet's body grey `#2a2e37`, so it keeps 4.5:1 on coloured backgrounds such as orange |
+| 70 | Visual full height      | The tilted visual starts at the band's top edge instead of 12% down, so it fills the band's full height; its nearer right side rises above the band and is clipped, and the slanted top edge of decision 60 is no longer visible |
 
 ## 3. Scope
 

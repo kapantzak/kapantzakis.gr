@@ -123,8 +123,8 @@
 }
 
 /*
- * Wide screens (decisions 60–62): a large screen tilted towards the viewer on its right, starting in
- * the middle with its top edge in view and running off the band; the text keeps the left half.
+ * Wide screens (decisions 60–62, 70): a large screen tilted towards the viewer on its right, starting
+ * in the middle and filling the band's full height; the text keeps the left half.
  */
 @media (min-width: 48rem) {
   .band:has(> .visual) {
@@ -136,7 +136,8 @@
 
   .visual {
     position: absolute;
-    inset: 12% -8% auto 50%;
+    /* From the band's top: the nearer right side rises above it and is clipped, so no gap shows. */
+    inset: 0 -8% auto 50%;
     aspect-ratio: 16 / 9;
     /* Where the band is tall for its width, still run off the bottom; the image crops instead. */
     min-height: 100%;

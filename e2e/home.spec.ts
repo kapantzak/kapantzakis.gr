@@ -142,6 +142,10 @@ test("the Netdata sheet opens on a brand band with its logo, and other sheets do
     "transform",
     viewportWidth >= 768 ? /^matrix3d\(/ : "none",
   );
+  // The tilted screen fills the band's full height, from its top edge (decision 70).
+  if (viewportWidth >= 768) {
+    await expect.poll(async () => (await visual.boundingBox())!.y).toBe(0);
+  }
   // The band reaches up behind the close bar, leaving no paper strip above it.
   await expect.poll(async () => (await band.boundingBox())?.y).toBe(0);
   expect(
