@@ -28,11 +28,15 @@
   display: none;
 }
 
-/* The facts sit on the light detail sheet, where accents are fills, never text (decision 44). */
-.facts a,
-.facts a:hover {
+/*
+ * Accents are fills, never text, on the sheet (decision 44). `:any-link` lifts these above the
+ * sheet's own link hover, which turns white on a brand band and would fail contrast on the fill.
+ */
+.facts a:any-link,
+.facts a:any-link:hover {
   padding: 0.2em 0.6em;
-  background: var(--accent);
+  /* A brand can fill its link in its own colour (decision 68). */
+  background: var(--brand-link, var(--accent));
   color: var(--color-on-accent);
 }
 

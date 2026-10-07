@@ -22,7 +22,7 @@ The site is done when:
 
 ## 2. Decisions
 
-The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review, 22–25 for the Home hero backdrop, 26–29 for the logo, 30–40 for the one-page refactor on 2026-10-06, and 41–47 for the detail sheet on 2026-10-06. Rows marked *superseded* are kept for history.
+The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review, 22–25 for the Home hero backdrop, 26–29 for the logo, 30–40 for the one-page refactor on 2026-10-06, 41–47 for the detail sheet on 2026-10-06, 48–54 for the brand header on 2026-10-06, 55–59 for the brand visual on 2026-10-06, 60–62 for its perspective on 2026-10-06, 63–65 for the Adzuna brand on 2026-10-06, 66 for the Skroutz brand on 2026-10-06, 67–69 for its revision and brand link colours on 2026-10-07, 70 for the visual's full height on 2026-10-07, and 71–72 for the EpsilonNet brand on 2026-10-07. Rows marked *superseded* are kept for history.
 
 | #  | Topic                   | Decision                                                                                                  |
 |----|-------------------------|-----------------------------------------------------------------------------------------------------------|
@@ -69,10 +69,35 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 41 | Detail sheet scope      | Every Experience row (work, education, community) opens a full-page detail sheet instead of expanding in place |
 | 42 | Detail sheet technique  | Custom modal overlay (`role="dialog"`, `aria-modal`), portalled to `<body>`; the rest of the page is `inert` and does not scroll while it is open |
 | 43 | Detail sheet motion     | The sheet grows out of the clicked row to fill the screen, then its content rises in; closing shrinks it back into the row; a short fade under `prefers-reduced-motion` |
-| 44 | Detail sheet colour     | Warm off-white `#f7f6f2` with near-black text and a darker muted grey; lime and magenta are used only as fills behind dark text, never as text on the sheet |
+| 44 | Detail sheet colour     | Warm off-white `#f7f6f2` with near-black text and a darker muted grey; lime and magenta are used only as fills behind dark text, never as text on the sheet; a branded entry adds a dark band at the top (decision 49) |
 | 45 | Detail sheet content    | Real period, title and subtitle, the existing facts (stack, links, summary), then placeholder blocks long enough to scroll |
 | 46 | Back button             | Opening the sheet adds a history entry, so Back closes it; there is no shareable deep link |
 | 47 | Closing                 | A close button that stays in view while scrolling, plus Escape and Back; focus returns to the row that opened the sheet |
+| 48 | Brand header scope      | Optional per-entry `brand` (logo, background, accent) in `content/profile.ts`; only Netdata has one for now |
+| 49 | Brand band              | A full-width band in the brand background at the top of the sheet, reaching behind the close bar; Netdata uses `#020503` and its official logo, copied unchanged from netdata.cloud; the content below stays on paper; a light band uses the paper tokens instead (decision 64) |
+| 50 | Brand title             | The logo replaces the visible title text, inside the `h2` with the org name as `alt`, so the dialog keeps its accessible name |
+| 51 | Brand accent (sheet)    | The brand accent replaces `--accent` on the sheet, so it grows out of the brand colour and the close button fills with it on hover; Netdata uses `#00ab44` |
+| 52 | Close button ring       | A 2px white ring on the close button of every sheet, so it stays visible on dark bands and on paper |
+| 53 | Brand accent (row)      | A branded row wipes in its brand accent on hover, focus and while its sheet is open, so the sheet grows out of the same colour |
+| 54 | Facts in the header     | The facts line (stack pills, website link, thesis, summary) is part of the sheet header on every sheet, so on a branded sheet it sits on the band; every entry is expected to get a brand eventually |
+| 55 | Brand visual            | Optional `brand.visual` image per company; Netdata uses the dashboard screenshot from the netdata.cloud hero, copied unchanged |
+| 56 | Visual placement (wide) | *Superseded by 60.* From 48rem up, the visual covers the right half of the band from top to bottom, cropped as needed and anchored top-left, fading in from the middle; the header stays in the left half |
+| 57 | Visual on phones        | Below 48rem, the visual is a full-width strip at the bottom of the band, fading in from its top |
+| 58 | Visual glow             | None: the image only, without netdata.cloud's green glow |
+| 59 | Visual semantics        | Decorative: empty `alt` and hidden from assistive technology; the logo already names the company |
+| 60 | Visual perspective      | From 48rem up, the visual is a large screen tilted in perspective, its right side nearer the viewer; it starts in the middle of the band with its top edge visible, runs off the band's bottom and right edge, and fades in from the middle; the header keeps the left half; the same for every brand, so a brand visual should be a landscape, screen-like image (about 16:9) |
+| 61 | Visual tilt angle       | `rotateY(-20deg)` around the screen's left edge, with a soft shadow |
+| 62 | Visual on phones (tilt) | No tilt on phones: the strip under the text stays flat (decision 57) |
+| 63 | Adzuna brand            | White band, the official green logo from the adzuna.co.uk header (copied unchanged), `#279b37` as the accent (both checked on the live site), and a screenshot of the adzuna.co.uk first screen as the visual, with the same fade and perspective |
+| 64 | Band tone               | Each brand declares `tone: "light" \| "dark"`; a dark band keeps the dark page's text tokens, a light band uses the sheet's paper tokens |
+| 65 | Light band edge         | A light band ends in a 1px rule in the paper rule colour, so it stays distinct from the off-white sheet |
+| 66 | Skroutz brand           | *Superseded by 67.* White band, the orange logo from the skroutz.gr header (copied unchanged), `#f68b24` as the accent (both checked on the live site), and the user-chosen promo image from Skroutz's blog CDN as the visual, with the same fade and perspective; a homepage screenshot was ruled out because the signed-in page is personalised |
+| 67 | Skroutz brand (revised) | Orange `#f68b24` band with dark text (`tone: "light"`), the official wordmark recoloured white without the hat, and the user's signed-out skroutz.gr screenshot as the visual, with the same fade and perspective; `#f68b24` stays the accent for the row, the grow and the close button |
+| 68 | Brand link colour       | Each brand stores a `link` colour that fills its website link on the band, separate from the accent; Netdata `#00ab44`, Adzuna `#279b37`, Skroutz `#ffb800` (from skroutz.gr's primary scale) |
+| 69 | Light band muted text   | On light bands the muted text (the date) uses the sheet's body grey `#2a2e37`, so it keeps 4.5:1 on coloured backgrounds such as orange |
+| 70 | Visual full height      | The tilted visual starts at the band's top edge instead of 12% down, so it fills the band's full height; its nearer right side rises above the band and is clipped, and the slanted top edge of decision 60 is no longer visible |
+| 71 | EpsilonNet brand        | White band (`tone: "light"`) with the EpsilonNet logo, `#f04e23` (the logo's orange-red and the site header's rule) as both accent and link colour, and a screenshot of the epsilonnet.gr first screen (first hero slide) as the visual, with the same fade and perspective |
+| 72 | EpsilonNet logo vector  | epsilonnet.gr publishes the logo only as a 500×95 PNG, so the SVG is traced from it with potrace (two colour layers, `#231f20` and `#f04e23`); rendered at 500×95 it differs from the PNG by a mean of 0.71/255 per channel; an official vector replaces it when available |
 
 ## 3. Scope
 
@@ -286,3 +311,17 @@ The user asked for each section item to open a full-page section with a striking
 - **History:** opening pushes a history entry without changing the URL. Back, Escape and the close button all close through that entry, so the history stays balanced.
 - **Colour:** light-surface tokens sit alongside the dark tokens in `tokens.css`, and `tokens.test.ts` checks their contrast.
 - **Open:** the rich content for each sheet (decision 45).
+
+## 15. Brand header (2026-10-06)
+
+The user asked for the top of the Netdata detail sheet to be brand oriented, with Netdata's colours and official logo from netdata.cloud. The decisions are 48–54.
+
+- **Source:** the logo is `https://www.netdata.cloud/img/netdata-logo.svg` (green mark `#00ab44`, white wordmark), stored unchanged at `assets/brand/netdata-logo.svg`. The site's page background is `#020503` and its brand green is `#00ab44`.
+- **Data:** `Role.brand` holds the logo and both colours. They live with the entry rather than in `tokens.css`, because they belong to the employer, not the site.
+- **Layout:** the band holds the period, logo, subtitle and facts line on the dark-page text tokens. It pulls up behind the sticky close bar by the bar's height, which is defined once as CSS variables.
+- **Colour:** `tokens.test.ts` checks that the band's text tokens and `--color-on-accent` keep at least 4.5:1 contrast on every brand's background and accent.
+- **Visual:** the screenshot is `https://www.netdata.cloud/img/landing/landing-hero_hu_1bcf3da23fee438b.png` (1919×1079), stored unchanged at `assets/brand/netdata-dashboard.png`; `next/image` serves resized copies. Decisions 55–62.
+- **Adzuna:** adzuna.co.uk blocks automated clients, so the logo and colour were checked and the screenshot taken in the user's Chrome. The capture is the 1512×756 first screen (1568×784 PNG), with the cookie-settings badge and the browser's password-manager overlay hidden. Decisions 63–65.
+- **Skroutz:** the logo is `https://www.skroutz.gr/assets/schwartz/logo-4636919242747e42156835b0b8673b0c.svg` with its fill changed from `#f68b24` to white. The visual is the user's signed-out screenshot of skroutz.gr (2956×1482), stored as a quality-90 WebP at `assets/brand/skroutz-home.webp`. Decisions 66–69.
+- **EpsilonNet:** the logo source is `https://epsilonnet.gr/wp-content/uploads/2024/06/EPSILONNET_logo.png`, traced to `assets/brand/epsilonnet-logo.svg`. The visual is a 1440×900 capture at 2× of epsilonnet.gr's first screen, taken with the cookie banner hidden rather than answered, stored as `assets/brand/epsilonnet-home.webp`. Decisions 71–72.
+- **Out of scope:** Netdata's fonts.

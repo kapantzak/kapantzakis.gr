@@ -8,7 +8,9 @@ import {
   useId,
   useRef,
 } from "react";
+import Image from "next/image";
 import { createPortal } from "react-dom";
+import type { Brand } from "@/content/profile";
 import styles from "./DetailSheet.module.css";
 
 /** Insets of the opening row from each viewport edge, in pixels. */
@@ -23,6 +25,9 @@ type Props = {
   period: string;
   title: string;
   subtitle: string;
+  brand?: Brand;
+  /** Short facts in the header, so a brand band carries them too (decision 54). */
+  facts?: ReactNode;
   origin: Origin;
   closing: boolean;
   /** The visitor asked to close. */
@@ -32,12 +37,14 @@ type Props = {
   children: ReactNode;
 };
 
-// Full-page modal sheet (decisions 41–47). Portalled to <body>: rows carry
+// Full-page modal sheet (decisions 41–47), with an optional brand band (48–53). Portalled to <body>: rows carry
 // scroll-driven transforms, which would trap a fixed-position sheet inside them.
 export function DetailSheet({
   period,
   title,
   subtitle,
+  brand,
+  facts,
   origin,
   closing,
   onClose,
@@ -88,12 +95,33 @@ export function DetailSheet({
     }
   }
 
-  const insets = {
+  const vars = {
     "--from-top": `${origin.top}px`,
     "--from-right": `${origin.right}px`,
     "--from-bottom": `${origin.bottom}px`,
     "--from-left": `${origin.left}px`,
+    ...(brand && {
+      "--accent": brand.accent,
+      "--brand-bg": brand.background,
+      "--brand-link": brand.link,
+    }),
   } as CSSProperties;
+
+  const header = (
+    <header className={styles.header}>
+      <p className={styles.period}>{period}</p>
+      <h2 id={titleId} className={styles.title}>
+        {brand ? (
+          // The logo is the title, so its alt text names the dialog (decision 50).
+          <Image src={brand.logo} alt={title} className={styles.logo} />
+        ) : (
+          title
+        )}
+      </h2>
+      <p className={styles.subtitle}>{subtitle}</p>
+      {facts}
+    </header>
+  );
 
   return createPortal(
     <div
@@ -103,7 +131,7 @@ export function DetailSheet({
       aria-labelledby={titleId}
       className={styles.sheet}
       data-closing={closing || undefined}
-      style={insets}
+      style={vars}
       onKeyDown={onKeyDown}
     >
       <div className={styles.bar}>
@@ -115,14 +143,25 @@ export function DetailSheet({
           onClick={onClose}
         />
       </div>
+      {brand ? (
+        <div className={styles.band} data-brand data-tone={brand.tone}>
+          {header}
+          {brand.visual ? (
+            <div className={styles.visual} aria-hidden="true">
+              <Image
+                src={brand.visual}
+                alt=""
+                fill
+                // Covering the band's height can draw it wider than half the screen.
+                sizes="(min-width: 48rem) max(50vw, 52rem), 100vw"
+                className={styles.visualImage}
+              />
+            </div>
+          ) : null}
+        </div>
+      ) : null}
       <div className={styles.content}>
-        <header className={styles.header}>
-          <p className={styles.period}>{period}</p>
-          <h2 id={titleId} className={styles.title}>
-            {title}
-          </h2>
-          <p className={styles.subtitle}>{subtitle}</p>
-        </header>
+        {brand ? null : header}
         {children}
       </div>
     </div>,

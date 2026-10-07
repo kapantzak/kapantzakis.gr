@@ -94,6 +94,129 @@ test("the close button and the browser Back button both close the sheet", async 
   await expect(row).toBeFocused();
 });
 
+test("the Netdata sheet opens on a brand band with its logo, and other sheets do not", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: /Netdata/ }).click();
+  const sheet = page.getByRole("dialog", { name: "Netdata" });
+  const band = sheet.locator("[data-brand]");
+  await expect(band).toHaveCSS("background-color", "rgb(2, 5, 3)");
+  const logo = band
+    .getByRole("heading", { level: 2 })
+    .getByRole("img", { name: "Netdata" });
+  await expect(logo).toBeVisible();
+  await expect
+    .poll(() => logo.evaluate((img: HTMLImageElement) => img.naturalWidth))
+    .toBeGreaterThan(0);
+  await expect(band.getByRole("list", { name: "Stack" })).toContainText(
+    "AI coding agents",
+  );
+  const site = band.getByRole("link", { name: /netdata\.cloud/ });
+  await site.hover();
+  // Dark text stays on the green fill; white would fall to 3:1 (decision 54).
+  await expect(site).toHaveCSS("color", "rgb(11, 13, 18)");
+  // Decorative brand art: right half on wide screens, a strip below the text on phones.
+  const visual = band.locator('[aria-hidden="true"]').filter({
+    has: page.locator('img[alt=""]'),
+  });
+  await expect
+    .poll(() =>
+      visual
+        .locator("img")
+        .evaluate((img: HTMLImageElement) => img.naturalWidth),
+    )
+    .toBeGreaterThan(0);
+  const viewportWidth = page.viewportSize()!.width;
+  await expect
+    .poll(async () => {
+      const art = (await visual.boundingBox())!;
+      const text = (await band.locator("header").boundingBox())!;
+      return viewportWidth >= 768
+        ? art.x >= viewportWidth / 2 - 1 && text.x + text.width <= art.x
+        : art.width >= viewportWidth - 1 && art.y >= text.y + text.height;
+    })
+    .toBe(true);
+  // Tilted in perspective on wide screens only (decisions 60–62).
+  await expect(visual.locator("img")).toHaveCSS(
+    "transform",
+    viewportWidth >= 768 ? /^matrix3d\(/ : "none",
+  );
+  // The tilted screen fills the band's full height, from its top edge (decision 70).
+  if (viewportWidth >= 768) {
+    await expect.poll(async () => (await visual.boundingBox())!.y).toBe(0);
+  }
+  // The band reaches up behind the close bar, leaving no paper strip above it.
+  await expect.poll(async () => (await band.boundingBox())?.y).toBe(0);
+  expect(
+    await sheet.evaluate((el) => el.scrollWidth - el.clientWidth),
+  ).toBeLessThanOrEqual(0);
+  await page.keyboard.press("Escape");
+  await expect(sheet).toHaveCount(0);
+
+  await page.getByRole("button", { name: /Independent/ }).click();
+  const plain = page.getByRole("dialog", { name: "Independent" });
+  await expect(plain).toBeVisible();
+  await expect(plain.locator("[data-brand]")).toHaveCount(0);
+  await expect(plain.getByRole("img")).toHaveCount(0);
+  await expect(
+    plain.locator("header").getByRole("list", { name: "Stack" }),
+  ).toContainText("jQuery");
+});
+
+// Light-toned bands: dark text on the brand background, the link filled in the brand's link colour.
+for (const [org, role, background, link] of [
+  [
+    "Adzuna",
+    "Senior frontend developer",
+    "rgb(255, 255, 255)",
+    "rgb(39, 155, 55)",
+  ],
+  ["Skroutz", "Software engineer", "rgb(246, 139, 36)", "rgb(255, 184, 0)"],
+  [
+    "EpsilonNet",
+    "Full stack developer",
+    "rgb(255, 255, 255)",
+    "rgb(240, 78, 35)",
+  ],
+]) {
+  test(`the ${org} sheet opens on its light band with dark text, its logo and link colour`, async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await page.getByRole("button", { name: new RegExp(org) }).click();
+    const band = page
+      .getByRole("dialog", { name: org })
+      .locator("[data-brand]");
+    await expect(band).toHaveCSS("background-color", background);
+    // Keeps a light band distinct from the off-white sheet (decision 65).
+    await expect(band).toHaveCSS("border-bottom-width", "1px");
+    await expect(
+      band.getByRole("heading", { level: 2 }).getByRole("img", { name: org }),
+    ).toBeVisible();
+    await expect(band.getByText(role, { exact: true })).toHaveCSS(
+      "color",
+      "rgb(11, 13, 18)",
+    );
+    await expect(
+      band.getByRole("list", { name: "Stack" }).getByRole("listitem").first(),
+    ).toHaveCSS("color", "rgb(11, 13, 18)");
+    // The date uses the body grey on light bands (decision 69).
+    await expect(band.locator("header > p").first()).toHaveCSS(
+      "color",
+      "rgb(42, 46, 55)",
+    );
+    await expect(band.getByRole("link")).toHaveCSS("background-color", link);
+    await expect
+      .poll(() =>
+        band
+          .locator('[aria-hidden="true"] img')
+          .evaluate((img: HTMLImageElement) => img.naturalWidth),
+      )
+      .toBeGreaterThan(0);
+  });
+}
+
 test("education and community sheets reveal their links", async ({ page }) => {
   await page.goto("/");
   await page

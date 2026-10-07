@@ -1,4 +1,27 @@
+import type { StaticImageData } from "next/image";
+import adzunaHome from "@/assets/brand/adzuna-home.png";
+import adzunaLogo from "@/assets/brand/adzuna-logo.svg";
+import epsilonnetHome from "@/assets/brand/epsilonnet-home.webp";
+import epsilonnetLogo from "@/assets/brand/epsilonnet-logo.svg";
+import netdataDashboard from "@/assets/brand/netdata-dashboard.png";
+import netdataLogo from "@/assets/brand/netdata-logo.svg";
+import skroutzHome from "@/assets/brand/skroutz-home.webp";
+import skroutzLogo from "@/assets/brand/skroutz-logo.svg";
 import type { Period } from "@/lib/period";
+
+/** An employer's own look for the top of its detail sheet (decisions 48–53). */
+export type Brand = {
+  /** The official logo, used unchanged; it must read on `background`. */
+  logo: StaticImageData;
+  background: string;
+  accent: string;
+  /** Fills the website link on the band (decision 68). */
+  link: string;
+  /** Which text colours the band takes: the dark page's or the light sheet's (decision 64). */
+  tone: "light" | "dark";
+  /** Decorative brand art for the band (decisions 55–59). */
+  visual?: StaticImageData;
+};
 
 export type Role = {
   org: string;
@@ -6,6 +29,7 @@ export type Role = {
   title: string;
   period: Period;
   stack: string[];
+  brand?: Brand;
 };
 export type Degree = {
   institution: string;
@@ -49,7 +73,16 @@ export const profile: Profile = {
       orgUrl: "https://www.netdata.cloud/",
       title: "Senior software engineer",
       period: { start: "Feb 2023" },
-      stack: [],
+      stack: ["JavaScript", "React", "AI coding agents"],
+      // From netdata.cloud: page background, logo green and the hero's dashboard.
+      brand: {
+        logo: netdataLogo,
+        background: "#020503",
+        accent: "#00ab44",
+        link: "#00ab44",
+        tone: "dark",
+        visual: netdataDashboard,
+      },
     },
     {
       org: "Adzuna",
@@ -57,20 +90,48 @@ export const profile: Profile = {
       title: "Senior frontend developer",
       period: { start: "Feb 2022", end: "Jan 2023" },
       stack: ["JavaScript", "React", "Next.js"],
+      // From adzuna.co.uk: header logo, brand green and the first screen.
+      brand: {
+        logo: adzunaLogo,
+        background: "#ffffff",
+        accent: "#279b37",
+        link: "#279b37",
+        tone: "light",
+        visual: adzunaHome,
+      },
     },
     {
       org: "Skroutz",
       orgUrl: "https://www.skroutz.gr/",
       title: "Software engineer",
       period: { start: "Jun 2020", end: "Jan 2022" },
-      stack: ["JavaScript", "React", "Ruby on Rails"],
+      stack: ["JavaScript", "React", "Ruby on Rails", "Hotwire"],
+      // From skroutz.gr: header logo (recoloured white), brand orange and primary yellow,
+      // and a signed-out screenshot of the home page.
+      brand: {
+        logo: skroutzLogo,
+        background: "#f68b24",
+        accent: "#f68b24",
+        link: "#ffb800",
+        tone: "light",
+        visual: skroutzHome,
+      },
     },
     {
       org: "EpsilonNet",
       orgUrl: "https://www.epsilonnet.gr/",
-      title: "Web developer",
+      title: "Full stack developer",
       period: { start: "Sep 2014", end: "May 2020" },
       stack: ["JavaScript", "TypeScript", "ASP.NET", "C#"],
+      // From epsilonnet.gr: logo (traced from its PNG), the logo's orange-red and the first screen.
+      brand: {
+        logo: epsilonnetLogo,
+        background: "#ffffff",
+        accent: "#f04e23",
+        link: "#f04e23",
+        tone: "light",
+        visual: epsilonnetHome,
+      },
     },
     {
       org: "Independent",

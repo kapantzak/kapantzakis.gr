@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { Profile } from "@/content/profile";
+import type { Brand, Profile } from "@/content/profile";
 import { formatPeriod } from "@/lib/period";
 import { ExpandableItem } from "./ExpandableItem";
 import styles from "./Experience.module.css";
@@ -9,6 +9,7 @@ type Entry = {
   period: string;
   title: string;
   subtitle: string;
+  brand?: Brand;
   details: ReactNode;
 };
 
@@ -39,8 +40,9 @@ function Group({ title, entries }: { title: string; entries: Entry[] }) {
             period={entry.period}
             title={entry.title}
             subtitle={entry.subtitle}
+            brand={entry.brand}
+            facts={<div className={styles.facts}>{entry.details}</div>}
           >
-            <div className={styles.facts}>{entry.details}</div>
             {/* Rich per-entry content is designed later (decision 45). */}
             {PLACEHOLDERS.map((label) => (
               <div key={label} className={styles.placeholder} data-placeholder>
@@ -61,6 +63,7 @@ export function Experience({ profile }: { profile: Profile }) {
     period: formatPeriod(role.period),
     title: role.org,
     subtitle: role.title,
+    brand: role.brand,
     details: (
       <>
         {role.stack.length > 0 ? (
