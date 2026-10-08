@@ -51,9 +51,10 @@
   color: var(--color-fg-strong);
 }
 
+/* Not --color-muted: it would drop below 4.5:1 on the aurora (decision 82). */
 .intro p + p {
   font-size: var(--text-body);
-  color: var(--color-muted);
+  color: var(--color-fg);
 }
 
 .cue {
@@ -63,7 +64,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   text-decoration: none;
-  color: var(--color-muted);
+  color: var(--color-fg);
 }
 
 .cue span {

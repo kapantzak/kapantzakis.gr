@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { HeroBackdrop } from "./HeroBackdrop";
+import { HeroAurora } from "./HeroAurora";
 import styles from "./Hero.module.css";
 
 type Props = { eyebrow: string; headline: string; intro: string[] };
@@ -15,7 +15,7 @@ export function Hero({ eyebrow, headline, intro }: Props) {
   const lines = splitHeadline(headline);
   let wordIndex = 0;
   return (
-    <HeroBackdrop>
+    <HeroAurora>
       <div className={styles.hero}>
         <p className={styles.eyebrow}>{eyebrow}</p>
         <h1 className={styles.headline}>
@@ -49,6 +49,6 @@ export function Hero({ eyebrow, headline, intro }: Props) {
           Scroll <span aria-hidden="true">↓</span>
         </a>
       </div>
-    </HeroBackdrop>
+    </HeroAurora>
   );
 }
