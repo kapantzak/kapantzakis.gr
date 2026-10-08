@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { HeroAurora } from "./HeroAurora";
 
 describe("HeroAurora", () => {
-  it("renders its content above a decorative glow layer", () => {
+  it("renders its content above a decorative layer of curtains", () => {
     const { container } = render(
       <HeroAurora>
         <h1>Headline</h1>
@@ -14,7 +14,7 @@ describe("HeroAurora", () => {
     ).toBeInTheDocument();
     const layer = container.querySelector("[data-hero-aurora]");
     expect(layer).toHaveAttribute("aria-hidden", "true");
-    expect(layer?.querySelectorAll("[data-glow]")).toHaveLength(3);
+    expect(layer?.querySelectorAll("[data-band]")).toHaveLength(4);
   });
 
   it("offers no controls of its own", () => {

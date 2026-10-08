@@ -3,27 +3,41 @@
 import { type ReactNode, useEffect, useRef } from "react";
 import styles from "./HeroAurora.module.css";
 
-// Mouse devices only; touch gets the drift alone, and reduced motion gets neither (decision 81).
+// Mouse devices only; touch gets the sway alone, and reduced motion gets neither (decision 85).
 const POINTER_QUERY =
   "(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)";
 
+const clamp = (value: number) => Math.max(-1, Math.min(1, value));
+
 function usePointerLean() {
-  const ref = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const auroraRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const hero = ref.current;
-    if (!hero || typeof window.matchMedia !== "function") return;
+    const root = rootRef.current;
+    const aurora = auroraRef.current;
+    if (!root || !aurora || typeof window.matchMedia !== "function") return;
     const query = window.matchMedia(POINTER_QUERY);
     let frame = 0;
     let pointer = { x: 0, y: 0 };
 
-    // -1…1 from the hero's centre; CSS turns it into a small offset and eases toward it.
+    const lean = (x: number, y: number) => {
+      root.style.setProperty("--pointer-x", x.toFixed(3));
+      root.style.setProperty("--pointer-y", y.toFixed(3));
+    };
+    // -1…1 from the aurora's centre. The aurora bleeds past the hero's column, so hit-test its box, not the hero's.
     const apply = () => {
       frame = 0;
-      const box = hero.getBoundingClientRect();
-      const x = ((pointer.x - box.left) / box.width) * 2 - 1;
-      const y = ((pointer.y - box.top) / box.height) * 2 - 1;
-      hero.style.setProperty("--pointer-x", x.toFixed(3));
-      hero.style.setProperty("--pointer-y", y.toFixed(3));
+      const box = aurora.getBoundingClientRect();
+      const inside =
+        pointer.x >= box.left &&
+        pointer.x <= box.right &&
+        pointer.y >= box.top &&
+        pointer.y <= box.bottom;
+      if (!inside) return lean(0, 0);
+      lean(
+        clamp(((pointer.x - box.left) / box.width) * 2 - 1),
+        clamp(((pointer.y - box.top) / box.height) * 2 - 1),
+      );
     };
     const onMove = (event: PointerEvent) => {
       if (event.pointerType !== "mouse" || !query.matches) return;
@@ -33,39 +47,41 @@ function usePointerLean() {
     const reset = () => {
       cancelAnimationFrame(frame);
       frame = 0;
-      if (query.matches) {
-        hero.style.setProperty("--pointer-x", "0");
-        hero.style.setProperty("--pointer-y", "0");
-      } else {
-        hero.style.removeProperty("--pointer-x");
-        hero.style.removeProperty("--pointer-y");
+      if (query.matches) lean(0, 0);
+      else {
+        root.style.removeProperty("--pointer-x");
+        root.style.removeProperty("--pointer-y");
       }
     };
 
-    hero.addEventListener("pointermove", onMove);
-    hero.addEventListener("pointerleave", reset);
+    window.addEventListener("pointermove", onMove, { passive: true });
+    document.documentElement.addEventListener("pointerleave", reset);
     query.addEventListener("change", reset);
     return () => {
       cancelAnimationFrame(frame);
-      hero.removeEventListener("pointermove", onMove);
-      hero.removeEventListener("pointerleave", reset);
+      window.removeEventListener("pointermove", onMove);
+      document.documentElement.removeEventListener("pointerleave", reset);
       query.removeEventListener("change", reset);
     };
   }, []);
-  return ref;
+  return { rootRef, auroraRef };
 }
 
-// Ambient aurora behind the Home hero (decisions 78–81); the drift is CSS, the pointer lean is the only script.
+// Ambient aurora behind the Home hero (decisions 78, 82–85); the sway is CSS, the pointer lean is the only script.
 export function HeroAurora({ children }: { children: ReactNode }) {
-  const ref = usePointerLean();
+  const { rootRef, auroraRef } = usePointerLean();
   return (
-    <div ref={ref} className={styles.hero} data-hero-aurora-root>
-      <div className={styles.aurora} aria-hidden="true" data-hero-aurora>
-        <div className={styles.field}>
-          <span className={`${styles.glow} ${styles.green}`} data-glow />
-          <span className={`${styles.glow} ${styles.teal}`} data-glow />
-          <span className={`${styles.glow} ${styles.violet}`} data-glow />
-        </div>
+    <div ref={rootRef} className={styles.hero} data-hero-aurora-root>
+      <div
+        ref={auroraRef}
+        className={styles.aurora}
+        aria-hidden="true"
+        data-hero-aurora
+      >
+        <span className={`${styles.band} ${styles.green}`} data-band />
+        <span className={`${styles.band} ${styles.teal}`} data-band />
+        <span className={`${styles.band} ${styles.violet}`} data-band />
+        <span className={`${styles.band} ${styles.greenNear}`} data-band />
       </div>
       {children}
     </div>

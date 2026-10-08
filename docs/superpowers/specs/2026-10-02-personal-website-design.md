@@ -22,7 +22,7 @@ The site is done when:
 
 ## 2. Decisions
 
-The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review, 22–25 for the Home hero backdrop, 26–29 for the logo, 30–40 for the one-page refactor on 2026-10-06, 41–47 for the detail sheet on 2026-10-06, 48–54 for the brand header on 2026-10-06, 55–59 for the brand visual on 2026-10-06, 60–62 for its perspective on 2026-10-06, 63–65 for the Adzuna brand on 2026-10-06, 66 for the Skroutz brand on 2026-10-06, 67–69 for its revision and brand link colours on 2026-10-07, 70 for the visual's full height on 2026-10-07, 71–72 for the EpsilonNet brand on 2026-10-07, 73–74 for the display font on 2026-10-08, 75–76 for the uppercase hero headline on 2026-10-08, 77 for removing the hero backdrop on 2026-10-08, and 78–81 for the hero aurora on 2026-10-08. Rows marked *superseded* are kept for history.
+The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review, 22–25 for the Home hero backdrop, 26–29 for the logo, 30–40 for the one-page refactor on 2026-10-06, 41–47 for the detail sheet on 2026-10-06, 48–54 for the brand header on 2026-10-06, 55–59 for the brand visual on 2026-10-06, 60–62 for its perspective on 2026-10-06, 63–65 for the Adzuna brand on 2026-10-06, 66 for the Skroutz brand on 2026-10-06, 67–69 for its revision and brand link colours on 2026-10-07, 70 for the visual's full height on 2026-10-07, 71–72 for the EpsilonNet brand on 2026-10-07, 73–74 for the display font on 2026-10-08, 75–76 for the uppercase hero headline on 2026-10-08, 77 for removing the hero backdrop on 2026-10-08, 78–81 for the hero aurora on 2026-10-08, and 82–85 for its revision on 2026-10-08. Rows marked *superseded* are kept for history.
 
 | #  | Topic                   | Decision                                                                                                  |
 |----|-------------------------|-----------------------------------------------------------------------------------------------------------|
@@ -102,11 +102,15 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 74 | Contact email size      | The email's fluid font size is retuned to Momo Trust Display's letter widths, so the address still fits one line at any width |
 | 75 | Hero headline case      | Uppercase through CSS `text-transform`; the source text, the meta description and the accessible name stay in sentence case |
 | 76 | Hero headline size      | Sized to the available width (`(100vw - 2 * var(--gutter)) / 8.2`, between 2.25rem and 13rem), so the longest uppercase line (about 7.9em in Momo Trust Display) never overflows, down to 320px |
-| 77 | Hero backdrop removed   | The drifting glyph backdrop and its "Pause motion" toggle are removed; the aurora of decisions 78–81 replaces it |
+| 77 | Hero backdrop removed   | The drifting glyph backdrop and its "Pause motion" toggle are removed; the aurora of decisions 78–85 replaces it |
 | 78 | Hero aurora             | Soft aurora glows behind the Home hero only; the layer bleeds to the viewport edges, scrolls away with the hero and fades out at its top and bottom edges; the desktop nav stays solid (decision 21) |
-| 79 | Aurora colours          | Classic aurora hues mixed into the page background: green `#2bf5a0` at 12% (`#0f2923`), teal `#22d3ee` at 12% (`#0e252c`) and violet `#8b5cf6` at 20% (`#251d40`); the glows blend with `lighten` over the page background, so no point is brighter than their per-channel maximum (`#252940`), and every page text colour keeps 4.5:1 against that worst case (unit-tested) |
-| 80 | Aurora motion           | Endless, transform-only drift with no pause control; only `prefers-reduced-motion: reduce` stops it. The user accepted the WCAG 2.2.2 (Pause, Stop, Hide) risk |
-| 81 | Aurora cursor reaction  | On mouse devices (`hover: hover` and `pointer: fine`) the aurora leans toward the pointer while it is over the hero and eases back when it leaves; a small client component writes two CSS variables at most once per frame; off under reduced motion; touch devices get the drift only |
+| 79 | Aurora colours          | *Superseded by 82.* Classic aurora hues mixed into the page background: green `#2bf5a0` at 12% (`#0f2923`), teal `#22d3ee` at 12% (`#0e252c`) and violet `#8b5cf6` at 20% (`#251d40`); the glows blend with `lighten` over the page background, so no point is brighter than their per-channel maximum (`#252940`), and every page text colour keeps 4.5:1 against that worst case (unit-tested) |
+| 80 | Aurora motion           | *Superseded by 84.* Endless, transform-only drift with no pause control; only `prefers-reduced-motion: reduce` stops it. The user accepted the WCAG 2.2.2 (Pause, Stop, Hide) risk |
+| 81 | Aurora cursor reaction  | *Superseded by 85.* On mouse devices (`hover: hover` and `pointer: fine`) the aurora leans toward the pointer while it is over the hero and eases back when it leaves; a small client component writes two CSS variables at most once per frame; off under reduced motion; touch devices get the drift only |
+| 82 | Aurora brightness       | Glows about 3.5× brighter: green `#2bf5a0` at 30% (`#15533d`), teal `#22d3ee` at 30% (`#124854`) and violet `#8b5cf6` at 40% (`#3e2d6d`), blended with `lighten` over the page background, so no point is brighter than `#3e536d`; the hero's grey text (second intro paragraph, scroll cue) uses `--color-fg`, and every hero text colour (`--color-fg-strong`, `--color-fg`, lime) keeps 4.5:1 against that worst case (unit-tested; e2e checks the hero uses no other text colour) |
+| 83 | Aurora shape            | Four long, thin, tilted curtains (two green, one teal, one violet), bright along their lower edge and fading upward and at both ends, instead of round glows |
+| 84 | Aurora motion           | Endless, transform-only sway: each curtain slides along its length, skews and stretches in 8–14s loops, so motion is visible within 1–2s; no pause control, and only `prefers-reduced-motion: reduce` stops it. The user accepted the WCAG 2.2.2 (Pause, Stop, Hide) risk |
+| 85 | Aurora cursor reaction  | On mouse devices (`hover: hover` and `pointer: fine`) the curtains lean toward the pointer while it is anywhere over the aurora (gutters included), each by a different depth up to 10vw, and ease back when it leaves; a small client component writes two CSS variables at most once per frame; off under reduced motion; touch devices get the sway only |
 
 ## 3. Scope
 
@@ -138,7 +142,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 - Typography first: big, bold headings; normal-size body text.
 - Fast: no page-transition animations, no scroll-linked motion, no custom cursor and no loader screen. The current site has one, and the new one drops it.
 - Motion is limited to short colour or underline transitions on hover and focus, and is disabled under `prefers-reduced-motion: reduce`.
-- One exception (decisions 78–81): the Home hero has an aurora of soft glows that drift endlessly and lean toward a mouse pointer. It animates `transform` only, has no pause control (an accepted WCAG 2.2.2 risk) and stops under `prefers-reduced-motion: reduce`. It replaces the drifting code glyphs of decisions 22–25, removed by decision 77.
+- One exception (decisions 78–85): the Home hero has an aurora of curtains that sway endlessly and lean toward a mouse pointer. It animates `transform` only, has no pause control (an accepted WCAG 2.2.2 risk) and stops under `prefers-reduced-motion: reduce`. It replaces the drifting code glyphs of decisions 22–25, removed by decision 77.
 - Full-width composition instead of a centred 1200px container.
 
 ### 4.2 Colour
@@ -305,7 +309,7 @@ The user asked for a single scrolling page with eye-catching scroll animations, 
 - **Page order:** hero → Experience (work, education, community) → Writing (all posts) → Say hello (email, social links).
 - **Headings:** each section heading is one nowrap line that slides sideways while the section crosses the viewport. Decorative repeats of the title are `aria-hidden`.
 - **Experience rows:** a button inside a heading (`aria-expanded`, `aria-controls`); the panel animates open and is `inert` while closed. Several rows can be open at once.
-- **Client JavaScript:** only the expandable row (now the detail sheet, section 14), the in-view nav marker and the hero aurora's pointer tracking (decision 81). Everything else, including scroll motion and the aurora's drift, is CSS.
+- **Client JavaScript:** only the expandable row (now the detail sheet, section 14), the in-view nav marker and the hero aurora's pointer tracking (decision 85). Everything else, including scroll motion and the aurora's drift, is CSS.
 - **Superseded:** success criteria 1, 3, 4 and 5; section 3 (pages, MDX pipeline, `/projects`); section 4.1 (no scroll-linked motion); section 4.2 (light theme, four accents); section 4.3 (display font); section 4.5 (route links); section 5 (page table); the `/projects` redirect in section 7; the draft tests in section 8.
 - **Open:** the rich content for each experience row (decision 33, now decision 45).
 

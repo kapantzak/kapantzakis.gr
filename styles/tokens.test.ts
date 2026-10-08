@@ -23,11 +23,16 @@ const PAPER_TEXT_TOKENS = [
 
 const ACCENT_FILLS = ["--color-accent-lime", "--color-accent-magenta"];
 
-// The hero aurora's glow peaks (decision 79).
+// The hero aurora's glow peaks, and the only text colours the hero uses on them (decision 82).
 const AURORA_TOKENS = [
   "--color-aurora-green",
   "--color-aurora-teal",
   "--color-aurora-violet",
+];
+const HERO_TEXT_TOKENS = [
+  "--color-fg",
+  "--color-fg-strong",
+  "--color-accent-lime",
 ];
 
 // A dark band reuses the page's text tokens, a light band the sheet's, with its body grey
@@ -82,7 +87,7 @@ function auroraWorstCase(): string {
 }
 
 describe("text on the hero aurora", () => {
-  it.each(TEXT_TOKENS)(
+  it.each(HERO_TEXT_TOKENS)(
     "%s has at least 4.5:1 contrast where the glows are brightest",
     (token) => {
       expect(
