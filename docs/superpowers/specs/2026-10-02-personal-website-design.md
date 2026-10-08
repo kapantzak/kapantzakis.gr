@@ -22,7 +22,7 @@ The site is done when:
 
 ## 2. Decisions
 
-The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review, 22–25 for the Home hero backdrop, 26–29 for the logo, 30–40 for the one-page refactor on 2026-10-06, 41–47 for the detail sheet on 2026-10-06, 48–54 for the brand header on 2026-10-06, 55–59 for the brand visual on 2026-10-06, 60–62 for its perspective on 2026-10-06, 63–65 for the Adzuna brand on 2026-10-06, 66 for the Skroutz brand on 2026-10-06, 67–69 for its revision and brand link colours on 2026-10-07, 70 for the visual's full height on 2026-10-07, 71–72 for the EpsilonNet brand on 2026-10-07, 73–74 for the display font on 2026-10-08, 75–76 for the uppercase hero headline on 2026-10-08, 77 for removing the hero backdrop on 2026-10-08, 78–81 for the hero aurora on 2026-10-08, and 82–85 for its revision on 2026-10-08. Rows marked *superseded* are kept for history.
+The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review, 22–25 for the Home hero backdrop, 26–29 for the logo, 30–40 for the one-page refactor on 2026-10-06, 41–47 for the detail sheet on 2026-10-06, 48–54 for the brand header on 2026-10-06, 55–59 for the brand visual on 2026-10-06, 60–62 for its perspective on 2026-10-06, 63–65 for the Adzuna brand on 2026-10-06, 66 for the Skroutz brand on 2026-10-06, 67–69 for its revision and brand link colours on 2026-10-07, 70 for the visual's full height on 2026-10-07, 71–72 for the EpsilonNet brand on 2026-10-07, 73–74 for the display font on 2026-10-08, 75–76 for the uppercase hero headline on 2026-10-08, 77 for removing the hero backdrop on 2026-10-08, 78–81 for the hero aurora on 2026-10-08, 82–85 for its revision on 2026-10-08, and 86 for the Firefox heading fallback on 2026-10-08. Rows marked *superseded* are kept for history.
 
 | #  | Topic                   | Decision                                                                                                  |
 |----|-------------------------|-----------------------------------------------------------------------------------------------------------|
@@ -64,7 +64,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 36 | Obsolete files          | Deleted (routes, `Timeline`, `PageHeader`, `Prose`, their tests and the route-specific e2e specs)          |
 | 37 | Display font            | *Superseded by 73.* BBH Hegarty (single weight, 400) for headings; Inter stays for body text                                   |
 | 38 | Colour                  | Dark only (except the detail sheet, decision 44); two vivid accents (lime, magenta); the Writing section uses a full-bleed lime background; blue, orange and the light theme removed |
-| 39 | Motion                  | Scroll-driven CSS animations (`animation-timeline`) as progressive enhancement; browsers without support show static content; all motion off under `prefers-reduced-motion` |
+| 39 | Motion                  | *Amended by 86 (section headings).* Scroll-driven CSS animations (`animation-timeline`) as progressive enhancement; browsers without support show static content; all motion off under `prefers-reduced-motion` |
 | 40 | Navigation              | In-page links (Experience, Writing, Contact); the section in view is marked with `aria-current="true"`; a scroll-progress bar sits on the top edge |
 | 41 | Detail sheet scope      | Every Experience row (work, education, community) opens a full-page detail sheet instead of expanding in place |
 | 42 | Detail sheet technique  | Custom modal overlay (`role="dialog"`, `aria-modal`), portalled to `<body>`; the rest of the page is `inert` and does not scroll while it is open |
@@ -111,6 +111,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 83 | Aurora shape            | Four long, thin, tilted curtains (two green, one teal, one violet), bright along their lower edge and fading upward and at both ends, instead of round glows |
 | 84 | Aurora motion           | Endless, transform-only sway: each curtain slides along its length, skews and stretches in 8–14s loops, so motion is visible within 1–2s; no pause control, and only `prefers-reduced-motion: reduce` stops it. The user accepted the WCAG 2.2.2 (Pause, Stop, Hide) risk |
 | 85 | Aurora cursor reaction  | On mouse devices (`hover: hover` and `pointer: fine`) the curtains lean toward the pointer while it is anywhere over the aurora (gutters included), each by a different depth up to 10vw, and ease back when it leaves; a small client component writes two CSS variables at most once per frame; off under reduced motion; touch devices get the sway only |
+| 86 | Heading slide fallback  | Where CSS scroll-driven animations are unsupported (Firefox stable), a small client script reports each section heading's progress through the viewport (the `cover` range) as `--slide-progress`, at most once per frame, and CSS maps it to the same slide as the native animation; it never runs where the native animation works, and is off under `prefers-reduced-motion: reduce`; the other scroll-driven effects stay static there (decision 39) |
 
 ## 3. Scope
 
@@ -309,7 +310,7 @@ The user asked for a single scrolling page with eye-catching scroll animations, 
 - **Page order:** hero → Experience (work, education, community) → Writing (all posts) → Say hello (email, social links).
 - **Headings:** each section heading is one nowrap line that slides sideways while the section crosses the viewport. Decorative repeats of the title are `aria-hidden`.
 - **Experience rows:** a button inside a heading (`aria-expanded`, `aria-controls`); the panel animates open and is `inert` while closed. Several rows can be open at once.
-- **Client JavaScript:** only the expandable row (now the detail sheet, section 14), the in-view nav marker and the hero aurora's pointer tracking (decision 85). Everything else, including scroll motion and the aurora's drift, is CSS.
+- **Client JavaScript:** only the expandable row (now the detail sheet, section 14), the in-view nav marker, the hero aurora's pointer tracking (decision 85) and the section-heading slide fallback for browsers without scroll-driven animations (decision 86). Everything else, including scroll motion where supported and the aurora's drift, is CSS.
 - **Superseded:** success criteria 1, 3, 4 and 5; section 3 (pages, MDX pipeline, `/projects`); section 4.1 (no scroll-linked motion); section 4.2 (light theme, four accents); section 4.3 (display font); section 4.5 (route links); section 5 (page table); the `/projects` redirect in section 7; the draft tests in section 8.
 - **Open:** the rich content for each experience row (decision 33, now decision 45).
 

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { SlideTrack } from "./SlideTrack";
 import styles from "./Section.module.css";
 
 type Props = {
@@ -32,7 +33,7 @@ export function Section({
       data-tone={tone}
     >
       <h2 id={headingId} className={styles.heading} data-direction={direction}>
-        <span className={styles.track}>
+        <SlideTrack className={styles.track}>
           <span className={styles.index} aria-hidden="true">
             {index}
           </span>
@@ -42,7 +43,7 @@ export function Section({
               {title}
             </span>
           ))}
-        </span>
+        </SlideTrack>
       </h2>
       <div className={styles.body}>{children}</div>
     </section>
