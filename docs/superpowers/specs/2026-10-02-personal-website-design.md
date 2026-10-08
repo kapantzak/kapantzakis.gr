@@ -22,7 +22,7 @@ The site is done when:
 
 ## 2. Decisions
 
-The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review, 22–25 for the Home hero backdrop, 26–29 for the logo, 30–40 for the one-page refactor on 2026-10-06, 41–47 for the detail sheet on 2026-10-06, 48–54 for the brand header on 2026-10-06, 55–59 for the brand visual on 2026-10-06, 60–62 for its perspective on 2026-10-06, 63–65 for the Adzuna brand on 2026-10-06, 66 for the Skroutz brand on 2026-10-06, 67–69 for its revision and brand link colours on 2026-10-07, 70 for the visual's full height on 2026-10-07, 71–72 for the EpsilonNet brand on 2026-10-07, 73–74 for the display font on 2026-10-08, and 75–76 for the uppercase hero headline on 2026-10-08. Rows marked *superseded* are kept for history.
+The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review, 22–25 for the Home hero backdrop, 26–29 for the logo, 30–40 for the one-page refactor on 2026-10-06, 41–47 for the detail sheet on 2026-10-06, 48–54 for the brand header on 2026-10-06, 55–59 for the brand visual on 2026-10-06, 60–62 for its perspective on 2026-10-06, 63–65 for the Adzuna brand on 2026-10-06, 66 for the Skroutz brand on 2026-10-06, 67–69 for its revision and brand link colours on 2026-10-07, 70 for the visual's full height on 2026-10-07, 71–72 for the EpsilonNet brand on 2026-10-07, 73–74 for the display font on 2026-10-08, 75–76 for the uppercase hero headline on 2026-10-08, and 77 for removing the hero backdrop on 2026-10-08. Rows marked *superseded* are kept for history.
 
 | #  | Topic                   | Decision                                                                                                  |
 |----|-------------------------|-----------------------------------------------------------------------------------------------------------|
@@ -48,9 +48,9 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 20 | Sticky nav              | Top bar sticks to the top on screens wider than 640px (40rem); on phones it scrolls away normally         |
 | 21 | Sticky bar look         | Solid page background (follows the light/dark theme) with a thin bottom rule; no blur or translucency     |
 | 22 | Hero backdrop scope     | *Superseded by 39.* Ambient animation behind the Home headline area only; every other page stays still |
-| 23 | Hero backdrop effect    | Floating outlined code glyphs in the display font, slow transform-only drift; CSS only, no JavaScript     |
-| 24 | Pausing (WCAG 2.2.2)    | CSS-only "Pause motion" toggle in the hero, plus the existing reduced-motion support                       |
-| 25 | Hero backdrop on phones | Same effect with fewer glyphs (7 instead of 12)                                                           |
+| 23 | Hero backdrop effect    | *Superseded by 77.* Floating outlined code glyphs in the display font, slow transform-only drift; CSS only, no JavaScript     |
+| 24 | Pausing (WCAG 2.2.2)    | *Superseded by 77.* CSS-only "Pause motion" toggle in the hero, plus the existing reduced-motion support                       |
+| 25 | Hero backdrop on phones | *Superseded by 77.* Same effect with fewer glyphs (7 instead of 12)                                                           |
 | 26 | Logo rendering          | The user's "refined" JK logo PNG used as-is (white serif JK on a black square tile)                       |
 | 27 | Logo size               | 40px in the nav on desktop, 32px on phones                                                                |
 | 28 | Site icon               | The same logo replaces the generated monogram: `favicon.ico`, a 512px icon and a 192px Apple touch icon    |
@@ -102,6 +102,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 74 | Contact email size      | The email's fluid font size is retuned to Momo Trust Display's letter widths, so the address still fits one line at any width |
 | 75 | Hero headline case      | Uppercase through CSS `text-transform`; the source text, the meta description and the accessible name stay in sentence case |
 | 76 | Hero headline size      | Sized to the available width (`(100vw - 2 * var(--gutter)) / 8.2`, between 2.25rem and 13rem), so the longest uppercase line (about 7.9em in Momo Trust Display) never overflows, down to 320px |
+| 77 | Hero backdrop removed   | The drifting glyph backdrop and its "Pause motion" toggle are removed; the hero keeps only its own finite entrance and scroll-driven motion |
 
 ## 3. Scope
 
@@ -133,7 +134,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 - Typography first: big, bold headings; normal-size body text.
 - Fast: no page-transition animations, no scroll-linked motion, no custom cursor and no loader screen. The current site has one, and the new one drops it.
 - Motion is limited to short colour or underline transitions on hover and focus, and is disabled under `prefers-reduced-motion: reduce`.
-- One exception (decisions 22–25): the Home hero has an ambient backdrop of faint, outlined code glyphs that drift slowly. It animates `transform` only, uses no JavaScript, can be paused with a CSS-only toggle, and is still under `prefers-reduced-motion: reduce`.
+- The Home hero once had an ambient backdrop of drifting code glyphs (decisions 22–25); decision 77 removed it, so the hero has no endless motion.
 - Full-width composition instead of a centred 1200px container.
 
 ### 4.2 Colour
