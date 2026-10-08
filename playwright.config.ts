@@ -16,6 +16,12 @@ export default defineConfig({
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },
     { name: "mobile", use: { ...devices["Pixel 7"] } },
+    // Firefox stable lacks scroll-driven animations; it exercises the heading fallback only (decision 86).
+    {
+      name: "firefox",
+      use: { ...devices["Desktop Firefox"] },
+      testMatch: /heading-slide\.spec\.ts$/,
+    },
   ],
   webServer: externalBaseURL
     ? undefined

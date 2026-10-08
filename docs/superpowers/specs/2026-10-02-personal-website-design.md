@@ -22,7 +22,7 @@ The site is done when:
 
 ## 2. Decisions
 
-The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review, 22–25 for the Home hero backdrop, 26–29 for the logo, 30–40 for the one-page refactor on 2026-10-06, 41–47 for the detail sheet on 2026-10-06, 48–54 for the brand header on 2026-10-06, 55–59 for the brand visual on 2026-10-06, 60–62 for its perspective on 2026-10-06, 63–65 for the Adzuna brand on 2026-10-06, 66 for the Skroutz brand on 2026-10-06, 67–69 for its revision and brand link colours on 2026-10-07, 70 for the visual's full height on 2026-10-07, 71–72 for the EpsilonNet brand on 2026-10-07, 73–74 for the display font on 2026-10-08, and 75–76 for the uppercase hero headline on 2026-10-08. Rows marked *superseded* are kept for history.
+The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review, 22–25 for the Home hero backdrop, 26–29 for the logo, 30–40 for the one-page refactor on 2026-10-06, 41–47 for the detail sheet on 2026-10-06, 48–54 for the brand header on 2026-10-06, 55–59 for the brand visual on 2026-10-06, 60–62 for its perspective on 2026-10-06, 63–65 for the Adzuna brand on 2026-10-06, 66 for the Skroutz brand on 2026-10-06, 67–69 for its revision and brand link colours on 2026-10-07, 70 for the visual's full height on 2026-10-07, 71–72 for the EpsilonNet brand on 2026-10-07, 73–74 for the display font on 2026-10-08, 75–76 for the uppercase hero headline on 2026-10-08, and 86 for the Firefox heading fallback on 2026-10-08 (77–85 are reserved by the hero aurora, PR #8). Rows marked *superseded* are kept for history.
 
 | #  | Topic                   | Decision                                                                                                  |
 |----|-------------------------|-----------------------------------------------------------------------------------------------------------|
@@ -64,7 +64,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 36 | Obsolete files          | Deleted (routes, `Timeline`, `PageHeader`, `Prose`, their tests and the route-specific e2e specs)          |
 | 37 | Display font            | *Superseded by 73.* BBH Hegarty (single weight, 400) for headings; Inter stays for body text                                   |
 | 38 | Colour                  | Dark only (except the detail sheet, decision 44); two vivid accents (lime, magenta); the Writing section uses a full-bleed lime background; blue, orange and the light theme removed |
-| 39 | Motion                  | Scroll-driven CSS animations (`animation-timeline`) as progressive enhancement; browsers without support show static content; all motion off under `prefers-reduced-motion` |
+| 39 | Motion                  | *Amended by 86 (section headings).* Scroll-driven CSS animations (`animation-timeline`) as progressive enhancement; browsers without support show static content; all motion off under `prefers-reduced-motion` |
 | 40 | Navigation              | In-page links (Experience, Writing, Contact); the section in view is marked with `aria-current="true"`; a scroll-progress bar sits on the top edge |
 | 41 | Detail sheet scope      | Every Experience row (work, education, community) opens a full-page detail sheet instead of expanding in place |
 | 42 | Detail sheet technique  | Custom modal overlay (`role="dialog"`, `aria-modal`), portalled to `<body>`; the rest of the page is `inert` and does not scroll while it is open |
@@ -102,6 +102,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 74 | Contact email size      | The email's fluid font size is retuned to Momo Trust Display's letter widths, so the address still fits one line at any width |
 | 75 | Hero headline case      | Uppercase through CSS `text-transform`; the source text, the meta description and the accessible name stay in sentence case |
 | 76 | Hero headline size      | Sized to the available width (`(100vw - 2 * var(--gutter)) / 8.2`, between 2.25rem and 13rem), so the longest uppercase line (about 7.9em in Momo Trust Display) never overflows, down to 320px |
+| 86 | Heading slide fallback  | Where CSS scroll-driven animations are unsupported (Firefox stable), a small client script reports each section heading's progress through the viewport (the `cover` range) as `--slide-progress`, at most once per frame, and CSS maps it to the same slide as the native animation; it never runs where the native animation works, and is off under `prefers-reduced-motion: reduce`; the other scroll-driven effects stay static there (decision 39) |
 
 ## 3. Scope
 
@@ -300,7 +301,7 @@ The user asked for a single scrolling page with eye-catching scroll animations, 
 - **Page order:** hero → Experience (work, education, community) → Writing (all posts) → Say hello (email, social links).
 - **Headings:** each section heading is one nowrap line that slides sideways while the section crosses the viewport. Decorative repeats of the title are `aria-hidden`.
 - **Experience rows:** a button inside a heading (`aria-expanded`, `aria-controls`); the panel animates open and is `inert` while closed. Several rows can be open at once.
-- **Client JavaScript:** only the expandable row (now the detail sheet, section 14) and the in-view nav marker. Everything else, including scroll motion, is CSS.
+- **Client JavaScript:** only the expandable row (now the detail sheet, section 14), the in-view nav marker and the section-heading slide fallback for browsers without scroll-driven animations (decision 86). Everything else, including scroll motion where supported, is CSS.
 - **Superseded:** success criteria 1, 3, 4 and 5; section 3 (pages, MDX pipeline, `/projects`); section 4.1 (no scroll-linked motion); section 4.2 (light theme, four accents); section 4.3 (display font); section 4.5 (route links); section 5 (page table); the `/projects` redirect in section 7; the draft tests in section 8.
 - **Open:** the rich content for each experience row (decision 33, now decision 45).
 

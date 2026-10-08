@@ -66,6 +66,20 @@
   }
 }
 
+/* Fallback where the slide above is unsupported: SlideTrack reports progress, mapped onto the same path (decision 86).
+   Until it does, the unset variable invalidates the transform, so the heading stays still. */
+@supports not (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .track {
+      transform: translateX(calc(20vw - 50vw * var(--slide-progress)));
+    }
+
+    .heading[data-direction="reverse"] .track {
+      transform: translateX(calc(20vw - 50vw * (1 - var(--slide-progress))));
+    }
+  }
+}
+
 @keyframes slide {
   from {
     transform: translateX(20vw);
