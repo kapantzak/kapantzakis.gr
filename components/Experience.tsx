@@ -97,6 +97,7 @@ export function Experience({ profile }: { profile: Profile }) {
     period: formatPeriod(entry.period),
     title: entry.org,
     subtitle: entry.title,
+    brand: entry.brand,
     details: (
       <>
         <p>{entry.summary}</p>

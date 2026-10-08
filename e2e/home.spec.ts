@@ -217,6 +217,50 @@ for (const [org, role, background, link] of [
   });
 }
 
+// A community entry takes a brand like a work role (decisions 87–90).
+test("the SKG JS sheet opens on its dark band with its logo, summary and site link", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const row = page.getByRole("button", { name: /SKG JS/ });
+  // The row wipes in the brand yellow the sheet grows out of (decision 53).
+  await expect
+    .poll(() =>
+      row.evaluate((el) =>
+        getComputedStyle(el.closest("li")!).getPropertyValue("--accent"),
+      ),
+    )
+    .toBe("#f7dd3e");
+  await row.click();
+  const band = page
+    .getByRole("dialog", { name: "SKG JS" })
+    .locator("[data-brand]");
+  await expect(band).toHaveCSS("background-color", "rgb(26, 26, 26)");
+  await expect(band).toHaveAttribute("data-tone", "dark");
+  const logo = band
+    .getByRole("heading", { level: 2 })
+    .getByRole("img", { name: "SKG JS" });
+  await expect(logo).toBeVisible();
+  await expect
+    .poll(() => logo.evaluate((img: HTMLImageElement) => img.naturalWidth))
+    .toBeGreaterThan(0);
+  await expect(band.getByText(/Organising meetups and talks/)).toHaveCSS(
+    "color",
+    "rgb(217, 220, 227)",
+  );
+  const site = band.getByRole("link", { name: /skgjs\.gr/ });
+  await expect(site).toHaveAttribute("href", "https://skgjs.gr/");
+  await expect(site).toHaveCSS("background-color", "rgb(247, 221, 62)");
+  await expect(site).toHaveCSS("color", "rgb(11, 13, 18)");
+  await expect
+    .poll(() =>
+      band
+        .locator('[aria-hidden="true"] img')
+        .evaluate((img: HTMLImageElement) => img.naturalWidth),
+    )
+    .toBeGreaterThan(0);
+});
+
 test("education and community sheets reveal their links", async ({ page }) => {
   await page.goto("/");
   await page

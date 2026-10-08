@@ -42,8 +42,8 @@ const BAND_TEXT_TOKENS = {
   light: ["--color-paper-fg", "--color-paper-fg-strong"],
 };
 
-const brands = profile.experience.flatMap((role) =>
-  role.brand ? [[role.org, role.brand] as const] : [],
+const brands = [...profile.experience, ...profile.community].flatMap((entry) =>
+  entry.brand ? [[entry.org, entry.brand] as const] : [],
 );
 
 function readColours(): Record<string, string> {
