@@ -15,8 +15,10 @@
 }
 
 .headline {
-  font-size: clamp(3rem, 0.5rem + 11vw, 13rem);
+  /* Sized so the longest line fits at any width (about 7.9em wide in uppercase in this font). */
+  font-size: clamp(2.25rem, calc((100vw - 2 * var(--gutter)) / 8.2), 13rem);
   line-height: 0.9;
+  text-transform: uppercase;
 }
 
 .line {

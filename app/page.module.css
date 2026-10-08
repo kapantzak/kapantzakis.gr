@@ -5,8 +5,8 @@
 
 .email {
   font-family: var(--font-display-stack);
-  /* Sized so the address fits one line at any width (about 12.5em wide in this font). */
-  font-size: clamp(1.25rem, calc((100vw - 2 * var(--gutter)) / 13), 9rem);
+  /* Sized so the address fits one line at any width (about 11.7em wide in this font). */
+  font-size: clamp(1.25rem, calc((100vw - 2 * var(--gutter)) / 12.2), 9rem);
   line-height: 1;
   /* Long addresses must wrap rather than widen the page on phones. */
   overflow-wrap: anywhere;
