@@ -75,7 +75,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 47 | Closing                 | A close button that stays in view while scrolling, plus Escape and Back; focus returns to the row that opened the sheet |
 | 48 | Brand header scope      | Optional per-entry `brand` (logo, background, accent) in `content/profile.ts`; only Netdata has one for now |
 | 49 | Brand band              | A full-width band in the brand background at the top of the sheet, reaching behind the close bar; Netdata uses `#020503` and its official logo, copied unchanged from netdata.cloud; the content below stays on paper; a light band uses the paper tokens instead (decision 64) |
-| 50 | Brand title             | The logo replaces the visible title text, inside the `h2` with the org name as `alt`, so the dialog keeps its accessible name |
+| 50 | Brand title             | The logo replaces the visible title text, inside the `h2` with the org name as `alt`, so the dialog keeps its accessible name; a brand with a lockup shows its name as text beside the logo instead (decision 92) |
 | 51 | Brand accent (sheet)    | The brand accent replaces `--accent` on the sheet, so it grows out of the brand colour and the close button fills with it on hover; Netdata uses `#00ab44` |
 | 52 | Close button ring       | A 2px white ring on the close button of every sheet, so it stays visible on dark bands and on paper |
 | 53 | Brand accent (row)      | A branded row wipes in its brand accent on hover, focus and while its sheet is open, so the sheet grows out of the same colour |
@@ -116,6 +116,9 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 88 | SKG JS brand            | Dark band in skgjs.gr's `js-black` `#1a1a1a` (`tone: "dark"`), with skgjs.gr's `js-yellow` `#f7dd3e` as both accent and link colour, mirroring the skgjs.gr hero; the logo's own yellow `#f7dd3d` differs by one unit |
 | 89 | SKG JS logo and visual  | The official square logo tile from skgjs.gr, copied unchanged and sized by the shared logo height rule; a screenshot of the skgjs.gr first screen as the visual, with the same fade and perspective |
 | 90 | SKG JS website          | The SKG JS entry links to the official site `https://skgjs.gr/` instead of its LinkedIn page |
+| 91 | Community name          | The community entry is named "Thessaloniki JavaScript Meetup" (row title and sheet name) instead of "SKG JS"; the hero intro reads "I co-organise the Thessaloniki JavaScript Meetup (SKG JS), …" |
+| 92 | Brand lockup            | Optional `brand.lockup`: the name as two lines of text set beside a symbol-only logo, inside the sheet's `h2`; the two lines together roughly match the logo's height, and the logo's `alt` is empty, so the text alone names the dialog; brands without a lockup are unchanged; Thessaloniki JavaScript Meetup uses "Thessaloniki" / "JavaScript Meetup" |
+| 93 | Lockup colours          | The first line takes the band's strong text colour and the second the brand accent, as in the skgjs.gr hero (white, then yellow); a brand with a lockup must keep 4.5:1 between its accent and its band background (unit-tested) |
 
 ## 3. Scope
 

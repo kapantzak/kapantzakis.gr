@@ -217,12 +217,19 @@ for (const [org, role, background, link] of [
   });
 }
 
-// A community entry takes a brand like a work role (decisions 87–90).
-test("the SKG JS sheet opens on its dark band with its logo, summary and site link", async ({
+// A community entry takes a brand like a work role (decisions 87–93).
+test("the Thessaloniki JavaScript Meetup sheet opens on its dark band with its lockup, summary and site link", async ({
   page,
 }) => {
   await page.goto("/");
-  const row = page.getByRole("button", { name: /SKG JS/ });
+  await expect(
+    page.getByText(
+      /I co-organise the Thessaloniki JavaScript Meetup \(SKG JS\)/,
+    ),
+  ).toBeVisible();
+  const row = page.getByRole("button", {
+    name: /Thessaloniki JavaScript Meetup/,
+  });
   // The row wipes in the brand yellow the sheet grows out of (decision 53).
   await expect
     .poll(() =>
@@ -232,18 +239,40 @@ test("the SKG JS sheet opens on its dark band with its logo, summary and site li
     )
     .toBe("#f7dd3e");
   await row.click();
-  const band = page
-    .getByRole("dialog", { name: "SKG JS" })
-    .locator("[data-brand]");
+  const sheet = page.getByRole("dialog", {
+    name: "Thessaloniki JavaScript Meetup",
+  });
+  const band = sheet.locator("[data-brand]");
   await expect(band).toHaveCSS("background-color", "rgb(26, 26, 26)");
   await expect(band).toHaveAttribute("data-tone", "dark");
-  const logo = band
-    .getByRole("heading", { level: 2 })
-    .getByRole("img", { name: "SKG JS" });
+  // The lockup names the heading; the logo beside it is decorative (decision 92).
+  const title = band.getByRole("heading", {
+    level: 2,
+    name: "Thessaloniki JavaScript Meetup",
+  });
+  const logo = title.locator("img");
+  await expect(logo).toHaveAttribute("alt", "");
   await expect(logo).toBeVisible();
   await expect
     .poll(() => logo.evaluate((img: HTMLImageElement) => img.naturalWidth))
     .toBeGreaterThan(0);
+  const first = title.getByText("Thessaloniki", { exact: true });
+  const second = title.getByText("JavaScript Meetup", { exact: true });
+  // White, then the brand yellow, as in the skgjs.gr hero (decision 93).
+  await expect(first).toHaveCSS("color", "rgb(255, 255, 255)");
+  await expect(second).toHaveCSS("color", "rgb(247, 221, 62)");
+  await expect
+    .poll(async () => {
+      const mark = (await logo.boundingBox())!;
+      const top = (await first.boundingBox())!;
+      const bottom = (await second.boundingBox())!;
+      return (
+        top.x >= mark.x + mark.width &&
+        top.y >= mark.y - 1 &&
+        bottom.y + bottom.height <= mark.y + mark.height + mark.height * 0.25
+      );
+    })
+    .toBe(true);
   await expect(band.getByText(/Organising meetups and talks/)).toHaveCSS(
     "color",
     "rgb(217, 220, 227)",
@@ -259,6 +288,9 @@ test("the SKG JS sheet opens on its dark band with its logo, summary and site li
         .evaluate((img: HTMLImageElement) => img.naturalWidth),
     )
     .toBeGreaterThan(0);
+  expect(
+    await sheet.evaluate((el) => el.scrollWidth - el.clientWidth),
+  ).toBeLessThanOrEqual(0);
 });
 
 test("education and community sheets reveal their links", async ({ page }) => {
@@ -272,7 +304,9 @@ test("education and community sheets reveal their links", async ({ page }) => {
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).toHaveCount(0);
 
-  await page.getByRole("button", { name: /SKG JS/ }).click();
+  await page
+    .getByRole("button", { name: /Thessaloniki JavaScript Meetup/ })
+    .click();
   await expect(
     page.getByRole("dialog").getByText(/Organising meetups and talks/),
   ).toBeVisible();

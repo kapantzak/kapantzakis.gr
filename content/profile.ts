@@ -23,6 +23,8 @@ export type Brand = {
   tone: "light" | "dark";
   /** Decorative brand art for the band (decisions 55–59). */
   visual?: StaticImageData;
+  /** The name as two lines set beside a symbol-only logo; it then names the sheet (decisions 92, 93). */
+  lockup?: [string, string];
 };
 
 export type Role = {
@@ -67,7 +69,7 @@ export const profile: Profile = {
   headline: "I build things for the web.",
   intro: [
     "I'm a frontend engineer based in Thessaloniki, Greece. I've been building for the web since 2008, and these days I work mostly with TypeScript, React and Next.js.",
-    "I co-organise SKG JS, a JavaScript community in Thessaloniki, and I write about frontend engineering here and on DEV.",
+    "I co-organise the Thessaloniki JavaScript Meetup (SKG JS), a JavaScript community in Thessaloniki, and I write about frontend engineering here and on DEV.",
   ],
   email: "kapantzak@gmail.com",
   experience: [
@@ -166,7 +168,7 @@ export const profile: Profile = {
   ],
   community: [
     {
-      org: "SKG JS",
+      org: "Thessaloniki JavaScript Meetup",
       orgUrl: "https://skgjs.gr/",
       title: "Co-organiser",
       period: { start: "Apr 2025" },
@@ -180,6 +182,7 @@ export const profile: Profile = {
         link: "#f7dd3e",
         tone: "dark",
         visual: skgjsHome,
+        lockup: ["Thessaloniki", "JavaScript Meetup"],
       },
     },
   ],
