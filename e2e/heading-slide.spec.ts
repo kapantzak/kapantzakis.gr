@@ -56,24 +56,22 @@ test("without native support, section headings slide on the native path", async 
     ["experience", false],
     ["writing", true],
   ] as const) {
+    const settled: number[] = [];
     for (const fraction of [0.85, 0.4]) {
       await scrollHeadingTo(page, sectionId, fraction);
+      // The fallback updates on the next frame; read only once it has caught up with the scroll.
       await expect
         .poll(async () => {
           const state = await headingState(page, sectionId);
           return Math.abs(state.x - expectedX(state.progress, width, reverse));
         })
         .toBeLessThan(4);
+      settled.push((await headingState(page, sectionId)).x);
     }
     // The slide must actually move between the two scroll positions.
-    await scrollHeadingTo(page, sectionId, 0.85);
-    const low = await headingState(page, sectionId);
-    await scrollHeadingTo(page, sectionId, 0.4);
-    await expect
-      .poll(async () => (await headingState(page, sectionId)).x - low.x)
-      [reverse ? "toBeGreaterThan" : "toBeLessThan"](
-        reverse ? width * 0.05 : -width * 0.05,
-      );
+    const moved = settled[1]! - settled[0]!;
+    if (reverse) expect(moved).toBeGreaterThan(width * 0.05);
+    else expect(moved).toBeLessThan(-width * 0.05);
   }
 });
 
