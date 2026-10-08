@@ -154,14 +154,16 @@ test("the Netdata sheet opens on a brand band with its logo, and other sheets do
   await page.keyboard.press("Escape");
   await expect(sheet).toHaveCount(0);
 
-  await page.getByRole("button", { name: /Independent/ }).click();
-  const plain = page.getByRole("dialog", { name: "Independent" });
+  // Every work role has a brand, so an education entry stands in for a plain sheet.
+  await page
+    .getByRole("button", { name: /MSc in Applied Informatics/ })
+    .click();
+  const plain = page.getByRole("dialog", {
+    name: "MSc in Applied Informatics",
+  });
   await expect(plain).toBeVisible();
   await expect(plain.locator("[data-brand]")).toHaveCount(0);
   await expect(plain.getByRole("img")).toHaveCount(0);
-  await expect(
-    plain.locator("header").getByRole("list", { name: "Stack" }),
-  ).toContainText("jQuery");
 });
 
 // Light-toned bands: dark text on the brand background, the link filled in the brand's link colour.
@@ -223,9 +225,7 @@ test("the Thessaloniki JavaScript Meetup sheet opens on its dark band with its l
 }) => {
   await page.goto("/");
   await expect(
-    page.getByText(
-      /I co-organise the Thessaloniki JavaScript Meetup \(SKG JS\)/,
-    ),
+    page.getByText(/I co-organise SKG JS, Thessaloniki’s JavaScript community/),
   ).toBeVisible();
   const row = page.getByRole("button", {
     name: /Thessaloniki JavaScript Meetup/,
