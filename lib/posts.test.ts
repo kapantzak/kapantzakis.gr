@@ -12,7 +12,7 @@ const VALID = {
   date: "2019-08-15",
   summary: "An external summary.",
   url: "https://dev.to/example/post",
-  source: "DEV",
+  source: "DEV.TO",
 };
 
 const post = (overrides: Partial<Post> = {}): Post => ({

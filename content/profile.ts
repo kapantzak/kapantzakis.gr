@@ -68,8 +68,8 @@ export const profile: Profile = {
   role: "Senior frontend engineer",
   headline: "I build things for the web.",
   intro: [
-    "I'm a frontend engineer based in Thessaloniki, Greece. I've been building for the web since 2008, and these days I work mostly with TypeScript, React and Next.js.",
-    "I co-organise the Thessaloniki JavaScript Meetup (SKG JS), a JavaScript community in Thessaloniki, and I write about frontend engineering here and on DEV.",
+    "I'm a frontend engineer based in Thessaloniki, Greece, with 15+ years of experience. Currently, I mostly work with React and AI agents.",
+    "I co-organise SKG JS, Thessaloniki’s JavaScript community, bringing developers together to learn, share, and connect. I’ve also written about frontend engineering on dev.to and Scalable Path.",
   ],
   email: "kapantzak@gmail.com",
   experience: [
@@ -138,12 +138,6 @@ export const profile: Profile = {
         visual: epsilonnetHome,
       },
     },
-    {
-      org: "Independent",
-      title: "Web developer (hobbyist)",
-      period: { start: "2008", end: "2014" },
-      stack: ["HTML", "CSS", "jQuery", "PHP", "MySQL", "Joomla"],
-    },
   ],
   education: [
     {
@@ -189,11 +183,11 @@ export const profile: Profile = {
   social: [
     { label: "LinkedIn", url: "https://www.linkedin.com/in/johnkapantzakis" },
     { label: "GitHub", url: "https://github.com/kapantzak" },
-    { label: "DEV", url: "https://dev.to/kapantzak" },
+    { label: "DEV.TO", url: "https://dev.to/kapantzak" },
     {
       label: "Stack Overflow",
       url: "https://stackoverflow.com/users/1221792/kapantzak",
     },
-    { label: "GitLab", url: "https://gitlab.com/kapantzak" },
+    { label: "OnlyNerds", url: "https://lnk.onlynerds.club/kapantzak" },
   ],
 };

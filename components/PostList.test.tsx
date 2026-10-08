@@ -13,7 +13,7 @@ const posts: Post[] = [
   },
   {
     url: "https://dev.to/kapantzak/event-loop",
-    source: "DEV",
+    source: "DEV.TO",
     title: "Event loop",
     date: "2019-08-15",
     summary: "External summary",
@@ -45,7 +45,7 @@ describe("PostList", () => {
   it("names the source and shows readable dates with machine-readable datetime", () => {
     render(<PostList posts={posts} label="All posts" />);
     expect(screen.getByRole("link", { name: /Event loop/ })).toHaveTextContent(
-      "DEV",
+      "DEV.TO",
     );
     expect(screen.getByText("15 Aug 2019")).toHaveAttribute(
       "dateTime",
