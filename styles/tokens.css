@@ -16,6 +16,10 @@
   --color-paper-fg-strong: #0b0d12;
   --color-paper-muted: #5a6070;
   --color-paper-rule: #d9d6cc;
+  /* Hero aurora glow peaks, pre-mixed into --color-bg so text keeps 4.5:1 where they overlap (decision 79). */
+  --color-aurora-green: #0f2923;
+  --color-aurora-teal: #0e252c;
+  --color-aurora-violet: #251d40;
 
   --accent: var(--color-accent-lime);
 

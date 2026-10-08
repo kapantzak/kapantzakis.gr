@@ -1,0 +1,94 @@
+.hero {
+  position: relative;
+  isolation: isolate;
+}
+
+/* Bleeds through PageMain's padding to the viewport edges, behind the hero content. */
+.aurora {
+  position: absolute;
+  z-index: -1;
+  top: calc(-1 * var(--page-pad-block));
+  right: calc(-1 * var(--gutter));
+  bottom: 0;
+  left: calc(-1 * var(--gutter));
+  overflow: hidden;
+  pointer-events: none;
+  /* Glows lighten this opaque fill, so no point outshines the brightest token (decision 79). */
+  background: var(--color-bg);
+  /* Soft edges: no hard line under the nav, and gone before Experience starts. */
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 15%,
+    #000 65%,
+    transparent
+  );
+}
+
+/* Leans toward the pointer; the transition eases each update and the return to centre. */
+.field {
+  position: absolute;
+  inset: 0;
+  transform: translate(
+    calc(var(--pointer-x, 0) * 3vw),
+    calc(var(--pointer-y, 0) * 3vh)
+  );
+  transition: transform 1.2s var(--ease-out);
+}
+
+.glow {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--size);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  background: radial-gradient(closest-side, var(--glow), transparent);
+  mix-blend-mode: lighten;
+  /* transform-only animation stays on the compositor: no layout or repaint per frame. */
+  animation: drift var(--duration) ease-in-out var(--delay) infinite alternate;
+  will-change: transform;
+}
+
+/* Negative delays start each loop mid-way so the glows never move in sync. */
+.green {
+  --glow: var(--color-aurora-green);
+  --x: 22%;
+  --y: 35%;
+  --size: 65vmax;
+  --duration: 23s;
+  --delay: -6s;
+  --dx: 10vw;
+  --dy: 6vh;
+}
+
+.teal {
+  --glow: var(--color-aurora-teal);
+  --x: 78%;
+  --y: 30%;
+  --size: 55vmax;
+  --duration: 29s;
+  --delay: -14s;
+  --dx: -12vw;
+  --dy: 8vh;
+}
+
+.violet {
+  --glow: var(--color-aurora-violet);
+  --x: 55%;
+  --y: 70%;
+  --size: 70vmax;
+  --duration: 37s;
+  --delay: -21s;
+  --dx: 8vw;
+  --dy: -10vh;
+}
+
+@keyframes drift {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(var(--dx), var(--dy)) scale(1.15);
+  }
+}
