@@ -1,0 +1,123 @@
+.hero {
+  position: relative;
+  isolation: isolate;
+}
+
+/* Bleeds through PageMain's padding to the viewport edges, behind the hero content. */
+.aurora {
+  position: absolute;
+  z-index: -1;
+  top: calc(-1 * var(--page-pad-block));
+  right: calc(-1 * var(--gutter));
+  bottom: 0;
+  left: calc(-1 * var(--gutter));
+  overflow: hidden;
+  pointer-events: none;
+  /* Curtains lighten this opaque fill, so no point outshines the brightest token (decision 82). */
+  background: var(--color-bg);
+  /* Soft edges: no hard line under the nav, and gone before Experience starts. */
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 12%,
+    #000 70%,
+    transparent
+  );
+}
+
+/* A curtain: bright along its lower edge, fading upward and at both ends (decision 83). */
+.band {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
+  height: var(--h);
+  /* Centres the band, plus the pointer lean scaled by its depth (decision 85); eased per update. */
+  translate: calc(-50% + var(--pointer-x, 0) * var(--depth))
+    calc(-50% + var(--pointer-y, 0) * var(--depth) * 0.5);
+  rotate: var(--tilt);
+  background: linear-gradient(
+    to top,
+    transparent,
+    var(--glow) 22%,
+    color-mix(in srgb, var(--glow) 45%, transparent) 55%,
+    transparent
+  );
+  mask-image: radial-gradient(closest-side, #000 35%, transparent);
+  mix-blend-mode: lighten;
+  transition: translate 1s var(--ease-out);
+  /* transform-only animation stays on the compositor: no layout or repaint per frame. */
+  animation: sway var(--duration) ease-in-out var(--delay) infinite alternate;
+  will-change: transform;
+}
+
+/* Back to front: deeper curtains lean further. Negative delays start each loop mid-way. */
+.green {
+  --glow: var(--color-aurora-green);
+  --x: 30%;
+  --y: 32%;
+  --w: 120vw;
+  --h: 34vmin;
+  --tilt: -14deg;
+  --depth: 3vw;
+  --duration: 11s;
+  --delay: -4s;
+  --travel: 18vw;
+  --skew: -22deg;
+  --stretch: 1.8;
+}
+
+.teal {
+  --glow: var(--color-aurora-teal);
+  --x: 72%;
+  --y: 24%;
+  --w: 100vw;
+  --h: 28vmin;
+  --tilt: 10deg;
+  --depth: 5vw;
+  --duration: 13s;
+  --delay: -9s;
+  --travel: -16vw;
+  --skew: 20deg;
+  --stretch: 1.7;
+}
+
+.violet {
+  --glow: var(--color-aurora-violet);
+  --x: 55%;
+  --y: 62%;
+  --w: 130vw;
+  --h: 36vmin;
+  --tilt: -6deg;
+  --depth: 7.5vw;
+  --duration: 14s;
+  --delay: -2s;
+  --travel: 14vw;
+  --skew: -18deg;
+  --stretch: 1.9;
+}
+
+.greenNear {
+  --glow: var(--color-aurora-green);
+  --x: 45%;
+  --y: 48%;
+  --w: 90vw;
+  --h: 22vmin;
+  --tilt: -22deg;
+  --depth: 10vw;
+  --duration: 8s;
+  --delay: -6s;
+  --travel: -14vw;
+  --skew: 24deg;
+  --stretch: 2;
+}
+
+@keyframes sway {
+  from {
+    transform: translateX(0) skewX(0deg) scaleY(1);
+  }
+  to {
+    transform: translateX(var(--travel)) skewX(var(--skew))
+      scaleY(var(--stretch));
+  }
+}

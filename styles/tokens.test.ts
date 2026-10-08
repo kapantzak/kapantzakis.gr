@@ -23,6 +23,18 @@ const PAPER_TEXT_TOKENS = [
 
 const ACCENT_FILLS = ["--color-accent-lime", "--color-accent-magenta"];
 
+// The hero aurora's glow peaks, and the only text colours the hero uses on them (decision 82).
+const AURORA_TOKENS = [
+  "--color-aurora-green",
+  "--color-aurora-teal",
+  "--color-aurora-violet",
+];
+const HERO_TEXT_TOKENS = [
+  "--color-fg",
+  "--color-fg-strong",
+  "--color-accent-lime",
+];
+
 // A dark band reuses the page's text tokens, a light band the sheet's, with its body grey
 // standing in for muted text (decisions 49, 64, 69).
 const BAND_TEXT_TOKENS = {
@@ -57,6 +69,32 @@ describe("text on the page background", () => {
   it.each(TEXT_TOKENS)("%s has at least 4.5:1 contrast", (token) => {
     expect(ratio(token, "--color-bg")).toBeGreaterThanOrEqual(4.5);
   });
+});
+
+// Glows blend with `lighten` over the page background, so no point is brighter than the per-channel maximum.
+function auroraWorstCase(): string {
+  const hexes = ["--color-bg", ...AURORA_TOKENS].map((token) => {
+    expect(colours[token], `${token} is not defined`).toBeDefined();
+    return colours[token]!;
+  });
+  return `#${[1, 3, 5]
+    .map((i) =>
+      Math.max(...hexes.map((hex) => parseInt(hex.slice(i, i + 2), 16)))
+        .toString(16)
+        .padStart(2, "0"),
+    )
+    .join("")}`;
+}
+
+describe("text on the hero aurora", () => {
+  it.each(HERO_TEXT_TOKENS)(
+    "%s has at least 4.5:1 contrast where the glows are brightest",
+    (token) => {
+      expect(
+        contrastRatio(colours[token]!, auroraWorstCase()),
+      ).toBeGreaterThanOrEqual(4.5);
+    },
+  );
 });
 
 describe("text on accent fills", () => {
