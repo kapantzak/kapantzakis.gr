@@ -5,11 +5,13 @@ import epsilonnetHome from "@/assets/brand/epsilonnet-home.webp";
 import epsilonnetLogo from "@/assets/brand/epsilonnet-logo.svg";
 import netdataDashboard from "@/assets/brand/netdata-dashboard.png";
 import netdataLogo from "@/assets/brand/netdata-logo.svg";
+import skgjsHome from "@/assets/brand/skgjs-home.webp";
+import skgjsLogo from "@/assets/brand/skgjs-logo.svg";
 import skroutzHome from "@/assets/brand/skroutz-home.webp";
 import skroutzLogo from "@/assets/brand/skroutz-logo.svg";
 import type { Period } from "@/lib/period";
 
-/** An employer's own look for the top of its detail sheet (decisions 48–53). */
+/** An organisation's own look for the top of its detail sheet (decisions 48–53, 87). */
 export type Brand = {
   /** The official logo, used unchanged; it must read on `background`. */
   logo: StaticImageData;
@@ -21,6 +23,8 @@ export type Brand = {
   tone: "light" | "dark";
   /** Decorative brand art for the band (decisions 55–59). */
   visual?: StaticImageData;
+  /** The name as two lines set beside a symbol-only logo; it then names the sheet (decisions 92, 93). */
+  lockup?: [string, string];
 };
 
 export type Role = {
@@ -43,6 +47,7 @@ export type CommunityRole = {
   title: string;
   period: Period;
   summary: string;
+  brand?: Brand;
 };
 export type SocialLink = { label: string; url: string };
 
@@ -64,7 +69,7 @@ export const profile: Profile = {
   headline: "I build things for the web.",
   intro: [
     "I'm a frontend engineer based in Thessaloniki, Greece. I've been building for the web since 2008, and these days I work mostly with TypeScript, React and Next.js.",
-    "I co-organise SKG JS, a JavaScript community in Thessaloniki, and I write about frontend engineering here and on DEV.",
+    "I co-organise the Thessaloniki JavaScript Meetup (SKG JS), a JavaScript community in Thessaloniki, and I write about frontend engineering here and on DEV.",
   ],
   email: "kapantzak@gmail.com",
   experience: [
@@ -163,12 +168,22 @@ export const profile: Profile = {
   ],
   community: [
     {
-      org: "SKG JS",
-      orgUrl: "https://www.linkedin.com/company/skg-js/",
+      org: "Thessaloniki JavaScript Meetup",
+      orgUrl: "https://skgjs.gr/",
       title: "Co-organiser",
       period: { start: "Apr 2025" },
       summary:
         "Organising meetups and talks for the JavaScript community in Thessaloniki.",
+      // From skgjs.gr: the square logo, its js-black and js-yellow CSS tokens and the first screen.
+      brand: {
+        logo: skgjsLogo,
+        background: "#1a1a1a",
+        accent: "#f7dd3e",
+        link: "#f7dd3e",
+        tone: "dark",
+        visual: skgjsHome,
+        lockup: ["Thessaloniki", "JavaScript Meetup"],
+      },
     },
   ],
   social: [

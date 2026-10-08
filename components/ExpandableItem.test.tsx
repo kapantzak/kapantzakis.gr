@@ -140,6 +140,19 @@ describe("ExpandableItem", () => {
     );
   });
 
+  it("sets a brand's lockup beside its logo, so the text alone names the dialog", () => {
+    renderItem({ ...BRAND, lockup: ["Netdata", "Cloud"] });
+    fireEvent.click(screen.getByRole("button", { name: /Netdata/ }));
+    const sheet = screen.getByRole("dialog", { name: "Netdata Cloud" });
+    const title = within(sheet).getByRole("heading", {
+      level: 2,
+      name: "Netdata Cloud",
+    });
+    expect(title.querySelector("img")).toHaveAttribute("alt", "");
+    expect(within(title).queryByRole("img")).toBeNull();
+    expect(within(title).getByText("Cloud")).toBeVisible();
+  });
+
   it("shows a brand's visual on its band as decoration only", () => {
     renderItem(BRAND_WITH_VISUAL);
     const { sheet } = openSheet();

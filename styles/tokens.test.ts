@@ -42,8 +42,8 @@ const BAND_TEXT_TOKENS = {
   light: ["--color-paper-fg", "--color-paper-fg-strong"],
 };
 
-const brands = profile.experience.flatMap((role) =>
-  role.brand ? [[role.org, role.brand] as const] : [],
+const brands = [...profile.experience, ...profile.community].flatMap((entry) =>
+  entry.brand ? [[entry.org, entry.brand] as const] : [],
 );
 
 function readColours(): Record<string, string> {
@@ -135,3 +135,15 @@ describe.each(brands)("the %s brand", (_org, brand) => {
     ).toBeGreaterThanOrEqual(4.5);
   });
 });
+
+// A lockup's second line is text in the accent colour (decision 93).
+describe.each(brands.filter(([, brand]) => brand.lockup))(
+  "the %s lockup",
+  (_org, brand) => {
+    it("its accent has at least 4.5:1 contrast on its band", () => {
+      expect(
+        contrastRatio(brand.accent, brand.background),
+      ).toBeGreaterThanOrEqual(4.5);
+    });
+  },
+);

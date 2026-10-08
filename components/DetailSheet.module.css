@@ -182,6 +182,8 @@
 }
 
 .title {
+  --logo-height: clamp(2.5rem, 1rem + 6vw, 7rem);
+
   font-size: clamp(3rem, 1rem + 8vw, 10rem);
 }
 
@@ -190,9 +192,35 @@
   display: block;
   width: auto;
   max-width: 100%;
-  height: clamp(2.5rem, 1rem + 6vw, 7rem);
+  height: var(--logo-height);
   object-fit: contain;
   object-position: left center;
+}
+
+/* A symbol-only logo with its name beside it (decision 92). */
+.title:has(> .lockup) {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--logo-height) / 4);
+}
+
+.title:has(> .lockup) .logo {
+  flex: none;
+}
+
+/* Two lines at line-height 1 together match the logo's height. */
+.lockup {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-size: calc(var(--logo-height) / 2);
+  line-height: 1;
+  color: var(--color-fg-strong);
+}
+
+/* The second line in the brand accent, as on the brand's own site (decision 93). */
+.lockup > :last-child {
+  color: var(--accent);
 }
 
 .subtitle {
