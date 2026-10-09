@@ -1,0 +1,178 @@
+/* Intro (decision 101): two labelled columns from 48rem up. */
+.intro {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  padding-top: clamp(1rem, 3vw, 2rem);
+}
+
+.introPart {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+  max-width: var(--measure);
+  padding-top: 1rem;
+  /* Accents are fills, never text, on the sheet (decision 44). */
+  border-top: 3px solid var(--accent);
+  font-size: var(--text-lead);
+}
+
+.introLabel {
+  font-size: var(--text-h3);
+}
+
+@media (min-width: 48rem) {
+  .intro {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--gutter);
+  }
+}
+
+/* The last panel meets the sheet's bottom edge instead of leaving a strip of paper under it. */
+.contributions {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  margin-bottom: calc(-1 * var(--page-pad-block));
+}
+
+.heading {
+  font-size: var(--text-h2);
+}
+
+/* Full-bleed panels: out of the sheet's side padding. */
+.list {
+  margin: 0 calc(-1 * var(--gutter));
+  padding: 0;
+  list-style: none;
+}
+
+.panel {
+  /* The outer side of the screen is nearer the viewer (decisions 102, 103). */
+  --tilt: 20deg;
+
+  position: relative;
+  /* `clip`, not `hidden`: a scroll container here would capture the view timeline below. */
+  overflow: clip;
+  padding: clamp(3rem, 8vw, 6rem) var(--gutter) 0;
+  background: var(--tint);
+  view-timeline: --panel block;
+}
+
+.panel[data-side="right"] {
+  --tilt: -20deg;
+}
+
+.text {
+  display: grid;
+  gap: 1rem;
+  max-width: var(--measure);
+}
+
+/* globals.css styles h1–h3 only. */
+.title {
+  margin: 0;
+  font-family: var(--font-display-stack);
+  font-size: clamp(1.75rem, 1rem + 2.5vw, 3.5rem);
+  font-weight: 400;
+  font-synthesis: none;
+  line-height: 1;
+  color: var(--color-fg-strong);
+  overflow-wrap: anywhere;
+}
+
+/* Phones (decision 106): a flat, full-width strip under the text, as in the brand band. */
+.visual {
+  position: relative;
+  aspect-ratio: 5 / 2;
+  margin: clamp(1.5rem, 4vw, 3rem) calc(-1 * var(--gutter)) 0;
+  mask-image: linear-gradient(to bottom, transparent, #000 60%);
+}
+
+.visualImage {
+  object-fit: cover;
+  object-position: left top;
+}
+
+/* Wide screens (decisions 102, 103): the band's tilted screen, mirrored on odd panels. */
+@media (min-width: 48rem) {
+  .panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    column-gap: var(--gutter);
+    min-height: clamp(26rem, 38vw, 40rem);
+    padding-bottom: clamp(3rem, 8vw, 6rem);
+  }
+
+  .text {
+    grid-column: 2;
+  }
+
+  .panel[data-side="right"] .text {
+    grid-column: 1;
+  }
+
+  .visual {
+    position: absolute;
+    /*
+     * Anchored at the middle: covering a tall panel's height makes the screen wider than its 58%,
+     * and the extra width must run off the outer edge, not under the text.
+     */
+    inset: 0 50% auto auto;
+    width: 58%;
+    aspect-ratio: 16 / 9;
+    min-height: 100%;
+    margin: 0;
+    perspective: 1400px;
+    mask-image: linear-gradient(to left, transparent, #000 35%);
+  }
+
+  .panel[data-side="right"] .visual {
+    inset: 0 auto auto 50%;
+    mask-image: linear-gradient(to right, transparent, #000 35%);
+  }
+
+  .visualImage {
+    border-radius: 10px;
+    /* Softer than the band's shadow, which sits on near-black. */
+    box-shadow: 0 30px 80px rgb(0 0 0 / 25%);
+    transform: rotateY(var(--tilt));
+    transform-origin: right center;
+  }
+
+  .panel[data-side="right"] .visualImage {
+    transform-origin: left center;
+  }
+}
+
+/* Motion (decision 107): driven by each panel's progress through the sheet's view. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .text {
+      animation: text-in linear both;
+      animation-timeline: --panel;
+      animation-range: entry 10% cover 40%;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) and (min-width: 48rem) {
+    .visualImage {
+      animation: turn-in linear both;
+      animation-timeline: --panel;
+      animation-range: entry 0% cover 45%;
+    }
+  }
+}
+
+@keyframes text-in {
+  from {
+    opacity: 0;
+    transform: translateY(3rem);
+  }
+}
+
+@keyframes turn-in {
+  from {
+    opacity: 0;
+    transform: rotateY(calc(var(--tilt) * 2));
+  }
+}

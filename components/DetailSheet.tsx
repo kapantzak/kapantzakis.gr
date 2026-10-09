@@ -79,7 +79,10 @@ export function DetailSheet({
   useEffect(() => {
     if (!closing) return;
     let cancelled = false;
-    const running = sheetRef.current?.getAnimations?.({ subtree: true }) ?? [];
+    // Scroll-driven animations finish only once scrolled through, so they would hold the sheet open.
+    const running = (
+      sheetRef.current?.getAnimations?.({ subtree: true }) ?? []
+    ).filter((a) => a.timeline === document.timeline);
     void Promise.allSettled(running.map((a) => a.finished)).then(() => {
       if (!cancelled) onClosed();
     });

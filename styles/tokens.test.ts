@@ -147,3 +147,28 @@ describe.each(brands.filter(([, brand]) => brand.lockup))(
     });
   },
 );
+
+// Contribution panels keep the sheet's paper text tokens on their own tints (decision 104).
+const stories = profile.experience.flatMap((role) =>
+  role.story ? [[role.org, role.story] as const] : [],
+);
+
+describe.each(stories)("the %s story", (_org, story) => {
+  it.each(story.contributions.map((c) => [c.title, c.tint] as const))(
+    "%s keeps 4.5:1 for the paper text tokens on its tint",
+    (_title, tint) => {
+      for (const token of PAPER_TEXT_TOKENS) {
+        expect(colours[token], `${token} is not defined`).toBeDefined();
+        expect(
+          contrastRatio(colours[token]!, tint),
+          `${token} on ${tint}`,
+        ).toBeGreaterThanOrEqual(4.5);
+      }
+    },
+  );
+
+  it("gives every contribution its own tint", () => {
+    const tints = story.contributions.map((c) => c.tint.toLowerCase());
+    expect(new Set(tints).size).toBe(tints.length);
+  });
+});

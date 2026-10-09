@@ -124,6 +124,17 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 96 | Back-to-top technique   | A button that shares the logo link's scroll-to-top behaviour: smooth through the existing CSS `scroll-behavior`, instant under `prefers-reduced-motion`, and the URL stays clean |
 | 97 | Back-to-top focus       | After scrolling up, focus moves to the logo link without scrolling again, so the next Tab continues from the top |
 | 98 | Back-to-top scope       | Shown on the home page only; the 404 page does not scroll |
+| 99 | Role story              | Optional `Role.story` in `content/profile.ts`: intro paragraphs, each with a label, and a list of contributions (title, body, screenshot, tint); one shared component renders it in the sheet body; Netdata is the first role with a story |
+| 100 | Sheets without a story  | Entries without a story keep the "Coming soon" placeholder blocks (decision 45) |
+| 101 | Story intro             | Two columns from 48rem up, each a small heading ("Netdata", "My role") over its paragraph; stacked on phones |
+| 102 | Contribution visual     | From 48rem up, each contribution is a full-bleed panel with a screenshot in one half, tilted in perspective with its outer side nearer the viewer, running off the panel's outer edge and fading out towards the text; the text keeps the other half; the left-side screenshot mirrors the brand band's visual (`rotateY(20deg)` around its right edge) |
+| 103 | Contribution sides      | Screenshots alternate sides: odd contributions on the left (mirrored, decision 102), even contributions on the right with the brand band's orientation (decisions 60, 61) |
+| 104 | Contribution tints      | Each contribution has its own light tint, in greens, teals and nearby hues, chosen so neighbouring panels differ; the panels keep the sheet's paper text tokens, and every tint must keep 4.5:1 for them (unit-tested); Netdata: `#dff3e4`, `#d7eeee`, `#e9f3d6`, `#d6eaf2`, `#e2f1dd`, `#d9efe7`, `#eef0d8`, `#dae7f0`, `#e0f2ea` |
+| 105 | Contribution screenshots | *Superseded by 108.* Until real screenshots exist, every Netdata contribution shows the brand band's dashboard screenshot; the screenshots are decorative (empty `alt`, hidden from assistive technology), since the text carries the content |
+| 106 | Contributions on phones | Below 48rem, the screenshot is a flat, full-width strip under the text, fading in from its top, as in the brand band (decisions 57, 62) |
+| 107 | Contribution motion     | Where CSS scroll-driven animations are supported, each panel's text rises in and its screenshot turns from a steeper angle into its final tilt as the panel enters the sheet's view; static in Firefox and under `prefers-reduced-motion: reduce` |
+| 108 | Real screenshots         | Each Netdata contribution shows the user's own screenshot of the matching Netdata Cloud feature (about 16:9, captured at about 1714×964), stored as quality-90 WebP under `assets/stories/netdata/`; still decorative (empty `alt`, hidden from assistive technology); the Dynamic configuration screenshot has its workspace name and node picker blurred, because they name a colleague and their machine; the CI screenshot is cropped below GitHub's header, which shows the private repository's name and its issue, pull request and security counts |
+| 109 | CI runtime claim         | The developer productivity text says the reported CI runtime dropped "by about 60%" instead of quoting minutes, so it agrees with the 15m 20s total run in its screenshot |
 
 ## 3. Scope
 
@@ -360,4 +371,13 @@ The user asked for a scroll-to-top control at the bottom of the site, and for th
 - **Cause:** a Next.js `Link` to the URL already shown is a no-op, so on `/` the logo link did nothing; on `/#section` it was a real navigation and already scrolled up.
 - **Shared behaviour:** one helper scrolls the window to the top, replaces any hash in the current history entry, and focuses the logo link with `preventScroll`. The logo link intercepts only plain left clicks on the home page, so modified clicks still open new tabs.
 - **History:** the hash is replaced, not pushed, so Back after scrolling up skips the `#section` entry that was showing.
+
+## 17. Role story (2026-10-09)
+
+The user asked for real content on the Netdata detail sheet: a short intro on what Netdata does and the user's role there, then the user's selected contributions, each with a title, a description, a screenshot with the band's perspective and fade, and its own background. The decisions are 99–107.
+
+- **Data:** the copy is the user's text, unchanged, in `content/profile.ts`. The panels' tints live with the story, like brand colours, because they belong to the entry, not the site.
+- **Layout:** the intro sits on the paper surface under the band. "Selected contributions" heads a list of full-bleed panels; each panel clips its tilted screenshot, so the sheet never scrolls sideways.
+- **Closing:** the sheet waits for its time-based animations before unmounting. Scroll-driven animations finish only when scrolled through, so the wait leaves them out.
+- **Screenshots:** the user's PNG captures, converted with `sharp` (bundled with Next.js) to quality-90 WebP, about 75% smaller (2.7 MB to 684 KB in total). Decision 108.
 
