@@ -9,6 +9,7 @@ import skgjsHome from "@/assets/brand/skgjs-home.webp";
 import skgjsLogo from "@/assets/brand/skgjs-logo.svg";
 import skroutzHome from "@/assets/brand/skroutz-home.webp";
 import skroutzLogo from "@/assets/brand/skroutz-logo.svg";
+import uomCampus from "@/assets/brand/uom-campus.webp";
 import aiChat from "@/assets/stories/netdata/ai-chat.webp";
 import aiInsights from "@/assets/stories/netdata/ai-insights.webp";
 import dyncfg from "@/assets/stories/netdata/dyncfg.webp";
@@ -29,12 +30,15 @@ import reduxUi from "@/assets/stories/epsilonnet/redux.webp";
 import typescriptWebpack from "@/assets/stories/epsilonnet/typescript-webpack.webp";
 import unitTests from "@/assets/stories/epsilonnet/unit-tests.webp";
 import essDevCli from "@/assets/stories/epsilonnet/cli.webp";
+import attendanceMobile from "@/assets/stories/msc/mobile-app.webp";
+import attendanceWeb from "@/assets/stories/msc/web-app.webp";
+import attendanceApi from "@/assets/stories/msc/web-api.webp";
 import type { Period } from "@/lib/period";
 
 /** An organisation's own look for the top of its detail sheet (decisions 48–53, 87). */
 export type Brand = {
-  /** The official logo, used unchanged; it must read on `background`. */
-  logo: StaticImageData;
+  /** The official logo, used unchanged; it must read on `background`. Without one, the title stays text (decision 151). */
+  logo?: StaticImageData;
   background: string;
   accent: string;
   /** Fills the website link on the band (decision 68). */
@@ -43,7 +47,7 @@ export type Brand = {
   tone: "light" | "dark";
   /** Decorative brand art for the band (decisions 55–59). */
   visual?: StaticImageData;
-  /** The name as two lines set beside a symbol-only logo; it then names the sheet (decisions 92, 93). */
+  /** The name as two lines set beside a symbol-only logo; it then names the sheet (decisions 92, 93). Needs a logo. */
   lockup?: [string, string];
 };
 
@@ -69,6 +73,8 @@ export type Stage = {
 /** Rich content for a role's detail sheet (decisions 99–101, 128). */
 export type Story = {
   intro: { label: string; text: string }[];
+  /** Defaults to "Selected contributions" (decision 156). */
+  contributionsHeading?: string;
   contributions?: Contribution[];
   /** Follows the contributions (decision 129). */
   timeline?: { heading: string; stages: Stage[] };
@@ -87,7 +93,10 @@ export type Degree = {
   institution: string;
   degree: string;
   period: Period;
+  program?: { label: string; url: string };
   thesis?: { label: string; url: string };
+  brand?: Brand;
+  story?: Story;
 };
 export type CommunityRole = {
   org: string;
@@ -449,9 +458,73 @@ export const profile: Profile = {
       institution: "University of Macedonia",
       degree: "MSc in Applied Informatics",
       period: { start: "2015", end: "2018" },
+      program: {
+        label: "MSc in Applied Informatics",
+        url: "https://www.uom.gr/en/mai",
+      },
       thesis: {
         label: "Thesis (English)",
         url: "https://dspace.lib.uom.gr/bitstream/2159/22942/4/KapantzakisIoannisMsc2018.pdf",
+      },
+      // The logo's orange-gold; the visual is a photo of the main building (decisions 152, 153).
+      brand: {
+        background: "#ffffff",
+        accent: "#f6a800",
+        link: "#f6a800",
+        tone: "light",
+        visual: uomCampus,
+      },
+      // The app screenshots are the user's own; the API image is an illustration (decisions 157–159).
+      story: {
+        intro: [
+          {
+            label: "The program",
+            text: "The MSc in Applied Informatics was the first master's degree of the University of Macedonia's Department of Applied Informatics in Thessaloniki, running since 2003–2004. It builds a strong scientific foundation in informatics and applies it to economic, administrative and educational problems.",
+          },
+          {
+            label: "My thesis",
+            text: "My thesis, “Developing a web-based application for student attendance management”, set out to replace the paper list professors pass around at the start of each lecture, which takes longer the more students attend. I studied existing systems and designed one that needs no special hardware: the professor shows a QR code, students scan it with their phones, and the server checks that each scan comes from the classroom, on time.",
+          },
+        ],
+        contributionsHeading: "The application",
+        contributions: [
+          {
+            title: "Mobile app for students",
+            body: "An Android app built with Ionic and Angular in TypeScript. Students sign in, see their enrolments and scan the QR code shown in class; the app asks them to confirm, then sends the scan to the API with the phone's location.",
+            image: attendanceMobile,
+            tint: "#fdf0cc",
+            links: [
+              {
+                label: "kapantzak/AttendanceMobileApp",
+                url: "https://github.com/kapantzak/AttendanceMobileApp",
+              },
+            ],
+          },
+          {
+            title: "Web app for professors and students",
+            body: "A React and TypeScript web client. Professors pick the current course and show a fresh QR code for the lecture; students and professors follow attendance per course, with charts of logged attendances against those still required.",
+            image: attendanceWeb,
+            tint: "#dce8f3",
+            links: [
+              {
+                label: "kapantzak/AttendanceWeb",
+                url: "https://github.com/kapantzak/AttendanceWeb",
+              },
+            ],
+          },
+          {
+            title: "Web API",
+            body: "An ASP.NET Core Web API in C#, with Entity Framework Core on SQL Server and JWT authentication. It generates each lecture's QR code with the course and its start time, and accepts a scan only if the device is within the classroom's range, the lecture started recently enough and the student is enrolled in the course.",
+            image: attendanceApi,
+            tint: "#fbe6cf",
+            links: [
+              {
+                label: "kapantzak/AttendanceWebAPI",
+                url: "https://github.com/kapantzak/AttendanceWebAPI",
+              },
+            ],
+          },
+        ],
       },
     },
     {

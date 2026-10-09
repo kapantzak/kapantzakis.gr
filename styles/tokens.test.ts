@@ -42,9 +42,12 @@ const BAND_TEXT_TOKENS = {
   light: ["--color-paper-fg", "--color-paper-fg-strong"],
 };
 
-const brands = [...profile.experience, ...profile.community].flatMap((entry) =>
-  entry.brand ? [[entry.org, entry.brand] as const] : [],
-);
+const brands = [
+  ...[...profile.experience, ...profile.community].map(
+    (entry) => [entry.org, entry.brand] as const,
+  ),
+  ...profile.education.map((degree) => [degree.degree, degree.brand] as const),
+].flatMap(([name, brand]) => (brand ? [[name, brand] as const] : []));
 
 function readColours(): Record<string, string> {
   const start = css.indexOf(":root {");
@@ -149,9 +152,10 @@ describe.each(brands.filter(([, brand]) => brand.lockup))(
 );
 
 // Contribution panels keep the sheet's paper text tokens on their own tints (decision 104).
-const stories = profile.experience.flatMap((role) =>
-  role.story ? [[role.org, role.story] as const] : [],
-);
+const stories = [
+  ...profile.experience.map((role) => [role.org, role.story] as const),
+  ...profile.education.map((degree) => [degree.degree, degree.story] as const),
+].flatMap(([name, story]) => (story ? [[name, story] as const] : []));
 
 describe.each(stories)("the %s story", (_org, story) => {
   const contributions = story.contributions ?? [];

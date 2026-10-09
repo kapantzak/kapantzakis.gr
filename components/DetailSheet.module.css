@@ -165,6 +165,18 @@
   border-bottom: 1px solid var(--color-rule);
 }
 
+/*
+ * A text title beside a visual (half the band on wide screens) is sized to its column, so
+ * "MSc in Applied" (7.54em) fits one line and the title two (decision 154).
+ */
+.band:has(> .visual) > .header:not(:has(.logo)) {
+  container-type: inline-size;
+}
+
+.band:has(> .visual) > .header:not(:has(.logo)) > .title {
+  font-size: min(clamp(3rem, 1rem + 8vw, 10rem), 12.5cqi);
+}
+
 .band + .content {
   padding-top: clamp(1.5rem, 4vw, 3rem);
 }

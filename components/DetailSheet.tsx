@@ -114,7 +114,7 @@ export function DetailSheet({
     <header className={styles.header}>
       <p className={styles.period}>{period}</p>
       <h2 id={titleId} className={styles.title}>
-        {brand?.lockup ? (
+        {brand?.logo && brand.lockup ? (
           // The lockup text names the dialog, so the logo beside it is decorative (decision 92).
           <>
             <Image src={brand.logo} alt="" className={styles.logo} />
@@ -122,7 +122,7 @@ export function DetailSheet({
               <span>{brand.lockup[0]}</span> <span>{brand.lockup[1]}</span>
             </span>
           </>
-        ) : brand ? (
+        ) : brand?.logo ? (
           // The logo is the title, so its alt text names the dialog (decision 50).
           <Image src={brand.logo} alt={title} className={styles.logo} />
         ) : (

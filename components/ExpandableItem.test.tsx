@@ -140,6 +140,21 @@ describe("ExpandableItem", () => {
     );
   });
 
+  it("keeps a text title on the band when the brand has no logo", () => {
+    renderItem({ ...BRAND_WITH_VISUAL, logo: undefined });
+    const { sheet } = openSheet();
+    const title = within(sheet).getByRole("heading", {
+      level: 2,
+      name: "Netdata",
+    });
+    expect(title).toHaveTextContent("Netdata");
+    expect(within(title).queryByRole("img")).toBeNull();
+    expect(title.closest("[data-brand]")).not.toBeNull();
+    expect(
+      sheet.querySelector('[data-brand] [aria-hidden="true"] img'),
+    ).not.toBeNull();
+  });
+
   it("sets a brand's lockup beside its logo, so the text alone names the dialog", () => {
     renderItem({ ...BRAND, lockup: ["Netdata", "Cloud"] });
     fireEvent.click(screen.getByRole("button", { name: /Netdata/ }));

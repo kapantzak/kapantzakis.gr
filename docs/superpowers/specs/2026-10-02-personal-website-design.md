@@ -174,6 +174,18 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 146 | CLI image format         | `cli.webp`, quality-90 WebP under `assets/stories/epsilonnet/`; decorative, as in decision 108; dark, in the terminal's own `#1e1e1e`, unlike the other EpsilonNet images |
 | 147 | CLI tint                 | `#f7e8dc`, a warm sand next to `#f8e2e0`; the paper text tokens keep 4.5:1 on it (decision 104) |
 | 148 | CLI and the timeline     | The timeline is unchanged, although its last stage mentions CLI tools, as in decision 140 |
+| 149 | Degree program link      | A degree can carry an optional `program: { label; url }`, the same shape as `thesis`; its sheet shows the program link before the thesis link |
+| 150 | MSc program link         | The University of Macedonia MSc links to `https://www.uom.gr/en/mai`, labelled "MSc in Applied Informatics" rather than a hostname |
+| 151 | Brand without a logo     | `brand.logo` is optional; a brand without one keeps the text title on its band, with the band, accent, link colour and visual unchanged; a lockup needs a logo; degrees take the same optional `brand` as work roles |
+| 152 | MSc brand                | White band, `tone: "light"`, accent and link `#f6a800`, the orange-gold of the University of Macedonia logo; its blue `#004f92` was ruled out because `--color-on-accent` on it is 2.34:1; no logo, so "MSc in Applied Informatics" stays the title |
+| 153 | MSc visual               | A photo of the University of Macedonia main building, its sign and its campus map, from `entreped2026.uom.gr` (`uom1.jpg`, 1600×1067), unchanged apart from conversion to quality-90 WebP; it takes the shared tilt, fade and phone strip (decisions 57, 60–62); it replaces an earlier logo-on-a-card visual |
+| 154 | Text title beside a visual | At every width, a brand without a logo but with a visual sizes its text title to its column (the left half from 48rem up), so "MSc in Applied Informatics" takes at most two lines and no word breaks; tuned to that title, so a longer one could take more lines |
+| 155 | Degree stories           | Degrees take the same optional `story` as work roles, rendered by the same intro, panels and timeline; a degree with a story drops the "Coming soon" placeholders |
+| 156 | Contributions heading    | Optional `story.contributionsHeading`, defaulting to "Selected contributions"; the MSc in Applied Informatics uses "The application" |
+| 157 | MSc story                | A "The program" / "My thesis" intro, from the program page and the thesis abstract, then three panels, one per repository of the thesis application, in the user's order: the Ionic mobile app, the React web app and the ASP.NET Core Web API, each linked to its GitHub repository and labelled with its name |
+| 158 | MSc screenshots          | The user's own screenshots of the mobile app (1077×736) and the web app (1439×759), padded with white to 16:9 (1308×736 and 1439×809), neither cropped nor upscaled, as quality-90 WebP under `assets/stories/msc/`; smaller than the other panels' 1714×964, so slightly soft on large high-density screens |
+| 159 | MSc API illustration     | The Web API panel shows a generated, generic illustration marked "Illustrative", with made-up data: a `POST /api/AttendanceLog` request and the API's real "too far from the classroom" reply, beside its three registration rules; its title, mark and reply sit in a middle column, a little below the top, because the left-hand panel runs the image's left side off the panel, fades its right side and, on wide screens, crops its top |
+| 160 | MSc tints                | From the University of Macedonia palette, in panel order: `#fdf0cc`, `#dce8f3`, `#fbe6cf`; the paper text tokens keep 4.5:1 on each (decision 104) |
 
 ## 3. Scope
 
@@ -303,7 +315,7 @@ e2e/                    # Playwright smoke tests
   - EpsilonNet: Web Developer, Sep 2014 – May 2020.
   - Hobbyist web developer, 2008–2014.
 - **Education:**
-  - University of Macedonia, MSc Applied Informatics, 2015–2018, with thesis link.
+  - University of Macedonia, MSc Applied Informatics, 2015–2018, with program and thesis links.
   - Aristotle University, MSc Informatics and Management, 2008–2010, with thesis link.
   - Aristotle University, BSc Economic Science, 2001–2006.
 - **Community:** SKG JS co-organiser, about March 2025 – present.
@@ -462,3 +474,11 @@ The user replaced the Epsilon ESS panel with three contributions: views that loa
 - **Facts checked:** the user's dev.to article "Using Redux in a legacy ASP.NET Web Forms project" (22 August 2019) describes a Redux store per user control, its initial state serialised into a hidden field by the code-behind, and the final state posted to a generic handler; its samples use jQuery and Kendo UI, not React, and it names TypeScript and webpack among the tools the team adopted.
 - **Images:** each illustration is an HTML page written for this purpose, captured with Playwright at 1714×964 and converted with `sharp` to quality-90 WebP, as in section 21.
 - **CLI panel:** the user added a fourth contribution, approving decisions 144–148 on 2026-10-10. Their dev.to article "Automating boilerplate code generation with Node.js and Handlebars" (18 February 2020) describes `ess-dev`, a project-specific Node.js CLI built on Handlebars, inquirer and xml-js, which writes a new form's files and adds them to the project's `.csproj`. Its two screenshots, taken from dev.to's uploads at their original sizes, are 560×250 and 858×584; the re-draw copies their text, colours and figlet Standard banner.
+
+## 23. MSc in Applied Informatics (2026-10-10)
+
+The user gave the MSc in Applied Informatics sheet a program link, a brand without a logo, a campus photo and a story about the thesis application, approving decisions 149–160 on 2026-10-10.
+
+- **Facts checked:** the program page (`https://www.uom.gr/en/mai`, read 2026-10-10) says the program started in 2003–2004 as the department's first master's degree; its three specialisations date from 2022–2023, after the user's studies (2015–2018), so the copy does not name them. The thesis repository (`dspace.lib.uom.gr`) blocks automated readers, so the thesis text comes from the abstract the user supplied.
+- **Repositories:** `kapantzak/AttendanceMobileApp` (Ionic and Angular, QR scanning with the phone's location), `kapantzak/AttendanceWeb` (React and TypeScript, QR codes and attendance charts) and `kapantzak/AttendanceWebAPI` (ASP.NET Core 2.0, Entity Framework Core on SQL Server, JWT, QRCoder); the API accepts a scan only within the classroom's range in metres, within a configured number of minutes from the lecture's start and for an enrolled student (`API/Helpers/LogHelper.cs`).
+- **Images:** the screenshots are padded with `sharp`; the API illustration is an HTML page written for this purpose, captured with Playwright at 1714×964 and converted with `sharp` to quality-90 WebP, as in section 22.
