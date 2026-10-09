@@ -204,7 +204,8 @@ test("the close button and the browser Back button both close the sheet", async 
   await expect(sheet).toBeVisible();
   await page.goBack();
   await expect(sheet).toHaveCount(0);
-  await expect(page).toHaveURL(/\/$/);
+  // Still on the home page; the hash may name the section scrolled into view (decision 124).
+  await expect(page).toHaveURL(/\/(#experience)?$/);
   await expect(row).toBeFocused();
 });
 

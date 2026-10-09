@@ -149,6 +149,9 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 121 | Adzuna tints             | Light greens near the brand green, in panel order: `#e4f2e0`, `#edf4dc`, `#ddeee6`; the paper text tokens keep 4.5:1 on each (decision 104) |
 | 122 | Adzuna images            | The first panel shows Adzuna's public product screenshot (the platform page's laptop image), cut from its laptop frame to 16:9 above the chart legend; the other two show generated, generic illustrations (a hex-tile regional map with line and bar charts, and a filtered search with grouping, KPI tiles, a location table and a salary histogram) with made-up figures marked "Illustrative figures", no Adzuna logo or name, and a slate sidebar instead of Adzuna's green, so they do not pass for the real product |
 | 123 | Adzuna image format      | 1714×964, quality-90 WebP under `assets/stories/adzuna/`; decorative, as in decision 108; each keeps its search bar and filters at the top left, so they survive the phones' 5:2 strip (decision 106) |
+| 124 | Hash follows scroll      | On the home page the URL hash names the section marked current in the nav (decision 40), so scrolling updates it like a nav click; the current history entry is replaced, never a new one pushed |
+| 125 | Hash with no section     | When no section is current (the hero, the footer, a gap between sections) the hash is dropped, so Back to top still leaves a clean URL (decision 96) |
+| 126 | Hash during nav glide    | Updates are not paused while a nav click glides to its section, so the hash briefly names the sections passed and settles on the target |
 
 ## 3. Scope
 
@@ -411,3 +414,11 @@ The user described their Adzuna role: hired to build a new product, Labour Marke
 - **Facts checked:** Adzuna's public pages (`/adzuna-intelligence/` and `/adzuna-intelligence/platform/`) brand the product "Adzuna Intelligence" and state 1bn+ job postings, 15m+ jobseekers a month and 20 countries. Their only product image is a laptop mock-up whose screen shows an occupation dashboard with data for 28/07/2021 – 28/01/2022; its marketing assets were uploaded in March 2023.
 - **Copy:** the user chose copy based only on what they said, without library or ownership details (decision 120). The intro paraphrases Adzuna's public description.
 - **Images:** the public screenshot is cropped with `sharp`; the illustrations are HTML pages written for this purpose, captured with Playwright at 1714×964. Their map ramp was checked with the dataviz palette validator (single hue, monotone lightness). All are converted with `sharp` to quality-90 WebP.
+
+## 20. Hash follows scroll (2026-10-09)
+
+The user asked for the URL hash to update while scrolling through the sections, as it does after a nav click. The decisions are 124–126.
+
+- **Source:** the hash follows the same observer that sets `aria-current`, so the URL and the highlighted link never disagree.
+- **History:** the hash is replaced in the current entry, keeping the router's state object, as in section 16; Back is unaffected by scrolling.
+- **Load:** nothing is written until the observer first reports, so a page opened at `/#section` keeps its hash while the browser scrolls there.
