@@ -1,4 +1,5 @@
 import { profile } from "@/content/profile";
+import { BackToTop } from "./BackToTop";
 import styles from "./Footer.module.css";
 
 export function Footer() {
@@ -13,9 +14,12 @@ export function Footer() {
           </li>
         ))}
       </ul>
-      <p className={styles.copy}>
-        © {new Date().getFullYear()} {profile.name}
-      </p>
+      <div className={styles.end}>
+        <BackToTop />
+        <p className={styles.copy}>
+          © {new Date().getFullYear()} {profile.name}
+        </p>
+      </div>
     </footer>
   );
 }
