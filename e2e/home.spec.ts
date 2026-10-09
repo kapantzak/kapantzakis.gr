@@ -159,11 +159,23 @@ test("the EpsilonNet sheet tells its story, ending with a timeline that fills in
     await expect(sheet.getByRole("heading", { level: 3, name })).toBeVisible();
   }
   const region = sheet.getByRole("region", { name: "Selected contributions" });
-  await expect(region.locator("li[data-side]")).toHaveCount(1);
+  await expect(region.locator("li[data-side]")).toHaveCount(4);
   await expect(sheet.locator("[data-placeholder]")).toHaveCount(0);
-  await expect(
-    region.getByRole("link", { name: "Epsilon ESS on epsilonnet.gr" }),
-  ).toHaveAttribute("href", "https://epsilonnet.gr/proionta/epsilon-ess/");
+  for (const [name, href] of [
+    [
+      "Using Redux in a legacy ASP.NET Web Forms project",
+      "https://dev.to/kapantzak/using-redux-in-a-legacy-asp-net-web-forms-project-1805",
+    ],
+    [
+      "Automating boilerplate code generation with Node.js and Handlebars",
+      "https://dev.to/kapantzak/automating-boilerplate-code-generation-with-node-js-and-handlebars-2c09",
+    ],
+  ] as const) {
+    await expect(region.getByRole("link", { name })).toHaveAttribute(
+      "href",
+      href,
+    );
+  }
 
   const timeline = sheet.getByRole("region", {
     name: "From web designer to full stack developer",
