@@ -18,6 +18,9 @@ import infraKnowledge from "@/assets/stories/netdata/infra-knowledge.webp";
 import integrations from "@/assets/stories/netdata/integrations.webp";
 import scim from "@/assets/stories/netdata/scim.webp";
 import githubCi from "@/assets/stories/netdata/github-ci.webp";
+import platformDashboard from "@/assets/stories/adzuna/platform-dashboard.webp";
+import chartsAndMaps from "@/assets/stories/adzuna/charts-and-maps.webp";
+import explore from "@/assets/stories/adzuna/explore.webp";
 import merchantDashboard from "@/assets/stories/skroutz/merchant-dashboard.webp";
 import turboPr327 from "@/assets/stories/skroutz/turbo-pr-327.webp";
 import turboPr367 from "@/assets/stories/skroutz/turbo-pr-367.webp";
@@ -204,6 +207,45 @@ export const profile: Profile = {
         link: "#279b37",
         tone: "light",
         visual: adzunaHome,
+      },
+      // The first image is Adzuna's public screenshot; the others are illustrations (decision 122).
+      story: {
+        intro: [
+          {
+            label: "Adzuna",
+            text: "Adzuna is a job search engine used by more than 15 million jobseekers a month across 20 countries. The job ads it collects add up to a detailed picture of the labour market.",
+          },
+          {
+            label: "My role",
+            text: "I joined Adzuna to build a brand-new product, Labour Market Intelligence, which turns that data into insight about the state of the labour market. We were a team of three, a product manager and two developers. Work moved quickly, and the collaboration within the team was exceptional.",
+          },
+        ],
+        contributions: [
+          {
+            title: "A product from zero",
+            body: "Labour Market Intelligence didn’t exist when I joined. Together with a product manager and another developer, we built it from the ground up on Next.js, and we shipped it in less than a year.",
+            image: platformDashboard,
+            tint: "#e4f2e0",
+            links: [
+              {
+                label: "The product on adzuna.co.uk",
+                url: "https://www.adzuna.co.uk/adzuna-intelligence/",
+              },
+            ],
+          },
+          {
+            title: "Charts and maps",
+            body: "The product is built around data visualisation. Charts and maps present Adzuna’s labour market data, so users can see demand, salaries and trends across regions at a glance.",
+            image: chartsAndMaps,
+            tint: "#edf4dc",
+          },
+          {
+            title: "Exploring the labour market",
+            body: "Users can search the data and group and filter it by location, sector, salary and many other dimensions, to answer their own questions about the labour market in different countries.",
+            image: explore,
+            tint: "#ddeee6",
+          },
+        ],
       },
     },
     {
