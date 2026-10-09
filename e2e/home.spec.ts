@@ -59,7 +59,9 @@ test("an experience row opens a full-page light sheet that scrolls and closes on
   await expect(
     sheet.getByRole("link", { name: /netdata\.cloud/ }),
   ).toBeVisible();
-  await expect(sheet.locator("[data-placeholder]").first()).toBeVisible();
+  await expect(
+    sheet.getByRole("region", { name: "Selected contributions" }),
+  ).toBeAttached();
   const box = await sheet.boundingBox();
   const viewport = page.viewportSize()!;
   expect(box).toMatchObject({ x: 0, y: 0, width: viewport.width });
@@ -73,6 +75,71 @@ test("an experience row opens a full-page light sheet that scrolls and closes on
   await expect(row).toBeFocused();
   await expect(page.locator("main")).not.toHaveAttribute("inert");
   await expectNoHorizontalOverflow(page);
+});
+
+test("the Netdata sheet tells its story, and sheets without one keep their placeholders", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: /Netdata/ }).click();
+  const sheet = page.getByRole("dialog", { name: "Netdata" });
+  for (const name of ["Netdata", "My role"]) {
+    await expect(sheet.getByRole("heading", { level: 3, name })).toBeVisible();
+  }
+  const region = sheet.getByRole("region", { name: "Selected contributions" });
+  const panels = region.getByRole("listitem");
+  await expect(panels).toHaveCount(9);
+  await expect(sheet.locator("[data-placeholder]")).toHaveCount(0);
+
+  // Screenshot and text share each panel without overlapping (decisions 102, 103, 106).
+  const viewportWidth = page.viewportSize()!.width;
+  for (const index of [0, 1]) {
+    const panel = panels.nth(index);
+    await panel.scrollIntoViewIfNeeded();
+    const visual = panel.locator('[aria-hidden="true"]');
+    await expect
+      .poll(async () => {
+        const art = (await visual.boundingBox())!;
+        const text = (await panel.locator("h4").boundingBox())!;
+        if (viewportWidth < 768) {
+          return (
+            art.width >= viewportWidth - 1 && art.y >= text.y + text.height
+          );
+        }
+        return index === 0
+          ? art.x + art.width <= viewportWidth / 2 + 1 &&
+              text.x >= art.x + art.width
+          : art.x >= viewportWidth / 2 - 1 && text.x + text.width <= art.x;
+      })
+      .toBe(true);
+  }
+  expect(
+    await sheet.evaluate((el) => el.scrollWidth - el.clientWidth),
+  ).toBeLessThanOrEqual(0);
+
+  await page.keyboard.press("Escape");
+  await expect(sheet).toHaveCount(0);
+  await page.getByRole("button", { name: /Adzuna/ }).click();
+  await expect(
+    page.getByRole("dialog", { name: "Adzuna" }).locator("[data-placeholder]"),
+  ).toHaveCount(3);
+});
+
+// Scroll-driven reveals never finish mid-scroll; closing must not wait for them.
+test("the sheet closes while a contribution is halfway through its reveal", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const row = page.getByRole("button", { name: /Netdata/ });
+  await row.click();
+  const sheet = page.getByRole("dialog", { name: "Netdata" });
+  await sheet.evaluate((el) => {
+    const panel = el.querySelectorAll("li[data-side]")[4]!;
+    el.scrollTop += panel.getBoundingClientRect().top - el.clientHeight * 0.8;
+  });
+  await page.keyboard.press("Escape");
+  await expect(sheet).toHaveCount(0);
+  await expect(row).toBeFocused();
 });
 
 test("the close button and the browser Back button both close the sheet", async ({

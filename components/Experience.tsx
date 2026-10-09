@@ -1,8 +1,9 @@
 import type { ReactNode } from "react";
-import type { Brand, Profile } from "@/content/profile";
+import type { Brand, Profile, Story } from "@/content/profile";
 import { formatPeriod } from "@/lib/period";
 import { ExpandableItem } from "./ExpandableItem";
 import styles from "./Experience.module.css";
+import { RoleStory } from "./RoleStory";
 
 type Entry = {
   id: string;
@@ -11,6 +12,7 @@ type Entry = {
   subtitle: string;
   brand?: Brand;
   details: ReactNode;
+  story?: Story;
 };
 
 // Enough blocks for the sheet to scroll, so long content is exercised.
@@ -43,13 +45,21 @@ function Group({ title, entries }: { title: string; entries: Entry[] }) {
             brand={entry.brand}
             facts={<div className={styles.facts}>{entry.details}</div>}
           >
-            {/* Rich per-entry content is designed later (decision 45). */}
-            {PLACEHOLDERS.map((label) => (
-              <div key={label} className={styles.placeholder} data-placeholder>
-                <span className={styles.placeholderLabel}>{label}</span>
-                <p>Coming soon.</p>
-              </div>
-            ))}
+            {entry.story ? (
+              <RoleStory story={entry.story} />
+            ) : (
+              // Entries without a story keep the placeholders (decision 100).
+              PLACEHOLDERS.map((label) => (
+                <div
+                  key={label}
+                  className={styles.placeholder}
+                  data-placeholder
+                >
+                  <span className={styles.placeholderLabel}>{label}</span>
+                  <p>Coming soon.</p>
+                </div>
+              ))
+            )}
           </ExpandableItem>
         ))}
       </ol>
@@ -64,6 +74,7 @@ export function Experience({ profile }: { profile: Profile }) {
     title: role.org,
     subtitle: role.title,
     brand: role.brand,
+    story: role.story,
     details: (
       <>
         {role.stack.length > 0 ? (
