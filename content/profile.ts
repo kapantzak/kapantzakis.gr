@@ -18,6 +18,10 @@ import infraKnowledge from "@/assets/stories/netdata/infra-knowledge.webp";
 import integrations from "@/assets/stories/netdata/integrations.webp";
 import scim from "@/assets/stories/netdata/scim.webp";
 import githubCi from "@/assets/stories/netdata/github-ci.webp";
+import merchantDashboard from "@/assets/stories/skroutz/merchant-dashboard.webp";
+import turboPr327 from "@/assets/stories/skroutz/turbo-pr-327.webp";
+import turboPr367 from "@/assets/stories/skroutz/turbo-pr-367.webp";
+import turbo7Announcement from "@/assets/stories/skroutz/turbo-7-announcement.webp";
 import type { Period } from "@/lib/period";
 
 /** An organisation's own look for the top of its detail sheet (decisions 48–53, 87). */
@@ -44,6 +48,8 @@ export type Contribution = {
   image: StaticImageData;
   /** Light panel background; the sheet's paper text tokens must keep 4.5:1 on it (decision 104). */
   tint: string;
+  /** External links listed under the text (decision 111). */
+  links?: { label: string; url: string }[];
 };
 
 /** Rich content for a role's detail sheet (decisions 99–101). */
@@ -215,6 +221,67 @@ export const profile: Profile = {
         link: "#ffb800",
         tone: "light",
         visual: skroutzHome,
+      },
+      // Turbo images are captures of public pages; the dashboard is an illustration (decisions 113, 114).
+      story: {
+        intro: [
+          {
+            label: "Skroutz",
+            text: "Skroutz is one of Greece’s leading e-commerce marketplaces, connecting consumers with merchants through an online shopping platform.",
+          },
+          {
+            label: "My role",
+            text: "I worked in the Partners department, building and maintaining the tools merchants use to run their business on the marketplace. Working in an established engineering team strengthened my foundations in Git workflows, code review, collaborative development and maintainable code.",
+          },
+        ],
+        contributions: [
+          {
+            title: "Merchant platform",
+            body: "Developed and maintained features for the platform where merchants monitor orders, track payments and manage their day-to-day activities. Interfaces were server-rendered with Rails forms and Hotwire Turbo, with React for selected views, keeping the application interactive without a client-heavy architecture.",
+            image: merchantDashboard,
+            tint: "#fde8d2",
+          },
+          {
+            title: "The turbo:frame-render event",
+            body: "Introduced the turbo:frame-render event to Hotwire Turbo, so applications can respond when a Turbo Frame finishes rendering, with access to the fetch response that produced it.",
+            image: turboPr327,
+            tint: "#fdf0cc",
+            links: [
+              {
+                label: "PR #327 on GitHub",
+                url: "https://github.com/hotwired/turbo/pull/327",
+              },
+            ],
+          },
+          {
+            title: "Fetch events that know their target",
+            body: "Added the target element to Turbo’s fetch request and response events, making it easier to handle them at the form or frame that started the request.",
+            image: turboPr367,
+            tint: "#fbe2d6",
+            links: [
+              {
+                label: "PR #367 on GitHub",
+                url: "https://github.com/hotwired/turbo/pull/367",
+              },
+            ],
+          },
+          {
+            title: "Recognised in the Turbo 7 release",
+            body: "Both pull requests shipped in Turbo 7. The release announcement thanked me, together with Sean Doyle, for the new frame events.",
+            image: turbo7Announcement,
+            tint: "#f5ead6",
+            links: [
+              {
+                label: "Turbo 7 announcement",
+                url: "https://world.hey.com/hotwired/turbo-7-0dd7a27f",
+              },
+              {
+                label: "Hotwire Turbo on GitHub",
+                url: "https://github.com/hotwired/turbo",
+              },
+            ],
+          },
+        ],
       },
     },
     {

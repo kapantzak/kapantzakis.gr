@@ -1,6 +1,7 @@
 import { type CSSProperties, useId } from "react";
 import Image from "next/image";
 import type { Story } from "@/content/profile";
+import { ExternalLink } from "./ExternalLink";
 import styles from "./RoleStory.module.css";
 
 // Body of a role's detail sheet: an intro, then a full-bleed panel per contribution (decisions 99–107).
@@ -33,6 +34,17 @@ export function RoleStory({ story }: { story: Story }) {
               <div className={styles.text}>
                 <h4 className={styles.title}>{item.title}</h4>
                 <p>{item.body}</p>
+                {item.links ? (
+                  <ul className={styles.links}>
+                    {item.links.map((link) => (
+                      <li key={link.url}>
+                        <ExternalLink href={link.url}>
+                          {link.label}
+                        </ExternalLink>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
               </div>
               <div className={styles.visual} aria-hidden="true">
                 <Image

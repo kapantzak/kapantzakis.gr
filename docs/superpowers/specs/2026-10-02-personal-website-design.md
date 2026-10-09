@@ -135,6 +135,13 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 107 | Contribution motion     | Where CSS scroll-driven animations are supported, each panel's text rises in and its screenshot turns from a steeper angle into its final tilt as the panel enters the sheet's view; static in Firefox and under `prefers-reduced-motion: reduce` |
 | 108 | Real screenshots         | Each Netdata contribution shows the user's own screenshot of the matching Netdata Cloud feature (about 16:9, captured at about 1714×964), stored as quality-90 WebP under `assets/stories/netdata/`; still decorative (empty `alt`, hidden from assistive technology); the Dynamic configuration screenshot has its workspace name and node picker blurred, because they name a colleague and their machine; the CI screenshot is cropped below GitHub's header, which shows the private repository's name and its issue, pull request and security counts |
 | 109 | CI runtime claim         | The developer productivity text says the reported CI runtime dropped "by about 60%" instead of quoting minutes, so it agrees with the 15m 20s total run in its screenshot |
+| 110 | Skroutz story            | Skroutz is the second role with a story: a "Skroutz" / "My role" intro and four contributions, the merchant platform first, then the two Hotwire Turbo pull requests (#327, #367) and their recognition in the Turbo 7 release |
+| 111 | Contribution links       | Optional `Contribution.links`: a list of labelled links under the panel's text, as plain underlined links with a trailing ↗ that open in a new tab (`noopener noreferrer`); panels without links are unchanged |
+| 112 | Skroutz tints            | Light warm tints near the brand orange, in panel order: `#fde8d2`, `#fdf0cc`, `#fbe2d6`, `#f5ead6`; the paper text tokens keep 4.5:1 on each (decision 104) |
+| 113 | Public screenshots       | The Turbo panels show screenshots of public pages: the "Conversation" tab of each pull request on GitHub, in its light theme, and the Turbo 7 announcement at its frame events paragraph; they show the pages as they are today, cropped for framing only |
+| 114 | Illustrated dashboard    | No screenshots of the real merchant panel exist, so its contribution shows a generated, generic merchant dashboard: orders, payouts and KPI tiles with made-up figures in euros, in warm colours, with no Skroutz logo or name, so it does not pass for the real product |
+| 115 | Skroutz images           | Captured at 1714×964 and stored as quality-90 WebP under `assets/stories/skroutz/`; decorative, as in decision 108; the dashboard keeps its KPI tiles at the top left, so they survive the phones' 5:2 strip, which is anchored there (decision 106) |
+| 116 | Skroutz copy             | The draft's engineering practices section is folded into "My role" as one sentence; its role and dates heading is dropped, since the sheet header already shows both; the Turbo 7 thanks is described as shared with Sean Doyle, as the announcement words it |
 
 ## 3. Scope
 
@@ -381,3 +388,11 @@ The user asked for real content on the Netdata detail sheet: a short intro on wh
 - **Closing:** the sheet waits for its time-based animations before unmounting. Scroll-driven animations finish only when scrolled through, so the wait leaves them out.
 - **Screenshots:** the user's PNG captures, converted with `sharp` (bundled with Next.js) to quality-90 WebP, about 75% smaller (2.7 MB to 684 KB in total). Decision 108.
 
+
+## 18. Skroutz story (2026-10-09)
+
+The user supplied a draft of their Skroutz role and has no screenshots of the merchant panel they worked on. The decisions are 110–116.
+
+- **Facts checked:** PR #327 (`turbo:frame-render`, merged 2021-08-25) and PR #367 (target element on the fetch events, merged 2021-09-01) are the user's and both merge commits are in `v7.0.0` (published 2021-09-24). The Turbo 7 announcement reads "Many thanks to John Kapantzakis and Sean Doyle for these contributions" after describing the frame events.
+- **Copy:** the user's draft, restructured into an intro and four contributions (decision 116). Two of the draft's sections described what the user learned rather than built, so they live in "My role" and the merchant platform panel.
+- **Images:** the public pages are captured with Playwright; the dashboard is an HTML page written for this purpose and captured the same way. All are converted with `sharp` to quality-90 WebP.

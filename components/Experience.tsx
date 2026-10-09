@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import type { Brand, Profile, Story } from "@/content/profile";
 import { formatPeriod } from "@/lib/period";
 import { ExpandableItem } from "./ExpandableItem";
+import { ExternalLink } from "./ExternalLink";
 import styles from "./Experience.module.css";
 import { RoleStory } from "./RoleStory";
 
@@ -17,15 +18,6 @@ type Entry = {
 
 // Enough blocks for the sheet to scroll, so long content is exercised.
 const PLACEHOLDERS = ["Highlights", "Projects", "Stories"];
-
-function ExternalLink({ href, children }: { href: string; children: string }) {
-  return (
-    <a href={href} target="_blank" rel="noopener noreferrer">
-      {children}
-      <span aria-hidden="true"> ↗</span>
-    </a>
-  );
-}
 
 function hostOf(url: string): string {
   return new URL(url).hostname.replace(/^www\./, "");

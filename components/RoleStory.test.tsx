@@ -56,6 +56,43 @@ describe("RoleStory", () => {
     );
   });
 
+  it("lists a contribution's links under its text, opening in a new tab (decision 111)", () => {
+    const story: Story = {
+      ...STORY,
+      contributions: [
+        {
+          ...STORY.contributions[0]!,
+          links: [
+            {
+              label: "PR #1 on GitHub",
+              url: "https://github.com/acme/x/pull/1",
+            },
+            { label: "Release notes", url: "https://acme.example/release" },
+          ],
+        },
+        STORY.contributions[1]!,
+      ],
+    };
+    const { container } = render(<RoleStory story={story} />);
+    const panels = container.querySelectorAll("li[data-side]");
+    const links = within(panels[0] as HTMLElement).getAllByRole("link");
+    expect(links.map((link) => link.textContent)).toEqual([
+      "PR #1 on GitHub ↗",
+      "Release notes ↗",
+    ]);
+    expect(links[0]).toHaveAttribute(
+      "href",
+      "https://github.com/acme/x/pull/1",
+    );
+    for (const link of links) {
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
+    }
+    expect(
+      within(panels[1] as HTMLElement).queryAllByRole("link"),
+    ).toHaveLength(0);
+  });
+
   it("keeps the screenshots decorative (decision 105)", () => {
     const { container } = render(<RoleStory story={STORY} />);
     expect(screen.queryAllByRole("img")).toHaveLength(0);
