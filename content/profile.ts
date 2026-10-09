@@ -25,7 +25,10 @@ import merchantDashboard from "@/assets/stories/skroutz/merchant-dashboard.webp"
 import turboPr327 from "@/assets/stories/skroutz/turbo-pr-327.webp";
 import turboPr367 from "@/assets/stories/skroutz/turbo-pr-367.webp";
 import turbo7Announcement from "@/assets/stories/skroutz/turbo-7-announcement.webp";
-import selfService from "@/assets/stories/epsilonnet/self-service.webp";
+import reduxUi from "@/assets/stories/epsilonnet/redux.webp";
+import typescriptWebpack from "@/assets/stories/epsilonnet/typescript-webpack.webp";
+import unitTests from "@/assets/stories/epsilonnet/unit-tests.webp";
+import essDevCli from "@/assets/stories/epsilonnet/cli.webp";
 import type { Period } from "@/lib/period";
 
 /** An organisation's own look for the top of its detail sheet (decisions 48–53, 87). */
@@ -351,7 +354,8 @@ export const profile: Profile = {
         tone: "light",
         visual: epsilonnetHome,
       },
-      // The panel shows an illustration, since the only public ESS image is too small (decision 135).
+      // No screenshots of ESS exist, so the panels show generated illustrations (decision 141);
+      // the CLI panel re-draws the user's own terminal screenshots (decision 145).
       story: {
         intro: [
           {
@@ -365,14 +369,39 @@ export const profile: Profile = {
         ],
         contributions: [
           {
-            title: "Epsilon ESS",
-            body: "Epsilon ESS is EpsilonNet’s Employee Self Service platform. I worked on it for almost six years, from its HTML and CSS to its ASP.NET backend.",
-            image: selfService,
+            title: "Async UI with Redux",
+            body: "Turned parts of the interface into views that load and update asynchronously, with their state managed by Redux on the frontend.",
+            image: reduxUi,
             tint: "#fde6dc",
             links: [
               {
-                label: "Epsilon ESS on epsilonnet.gr",
-                url: "https://epsilonnet.gr/proionta/epsilon-ess/",
+                label: "Using Redux in a legacy ASP.NET Web Forms project",
+                url: "https://dev.to/kapantzak/using-redux-in-a-legacy-asp-net-web-forms-project-1805",
+              },
+            ],
+          },
+          {
+            title: "TypeScript and webpack",
+            body: "Introduced TypeScript and webpack to the frontend code, adding type checking and a build step that bundles its modules.",
+            image: typescriptWebpack,
+            tint: "#fdeed6",
+          },
+          {
+            title: "Unit tests, front and back",
+            body: "Added unit tests on both sides of the product: Mocha and Chai for the frontend code, xUnit for the C# backend.",
+            image: unitTests,
+            tint: "#f8e2e0",
+          },
+          {
+            title: "Developer productivity CLI tool",
+            body: "Built a Node.js command-line tool that asks a few questions and generates the boilerplate a new form needs: the ASP.NET user control and its async handler, the TypeScript page script and Redux state, and the C# data models. Its templates are written in Handlebars.",
+            image: essDevCli,
+            tint: "#f7e8dc",
+            links: [
+              {
+                label:
+                  "Automating boilerplate code generation with Node.js and Handlebars",
+                url: "https://dev.to/kapantzak/automating-boilerplate-code-generation-with-node-js-and-handlebars-2c09",
               },
             ],
           },
