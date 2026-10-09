@@ -119,10 +119,32 @@ test("the Netdata sheet tells its story, and sheets without one keep their place
 
   await page.keyboard.press("Escape");
   await expect(sheet).toHaveCount(0);
-  await page.getByRole("button", { name: /Adzuna/ }).click();
+  await page.getByRole("button", { name: /EpsilonNet/ }).click();
   await expect(
-    page.getByRole("dialog", { name: "Adzuna" }).locator("[data-placeholder]"),
+    page
+      .getByRole("dialog", { name: "EpsilonNet" })
+      .locator("[data-placeholder]"),
   ).toHaveCount(3);
+});
+
+test("the Adzuna sheet tells its story, with a link to the product", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: /Adzuna/ }).click();
+  const sheet = page.getByRole("dialog", { name: "Adzuna" });
+  for (const name of ["Adzuna", "My role"]) {
+    await expect(sheet.getByRole("heading", { level: 3, name })).toBeVisible();
+  }
+  const region = sheet.getByRole("region", { name: "Selected contributions" });
+  await expect(region.locator("li[data-side]")).toHaveCount(3);
+  await expect(sheet.locator("[data-placeholder]")).toHaveCount(0);
+  await expect(
+    region.getByRole("link", { name: "The product on adzuna.co.uk" }),
+  ).toHaveAttribute("href", "https://www.adzuna.co.uk/adzuna-intelligence/");
+  expect(
+    await sheet.evaluate((el) => el.scrollWidth - el.clientWidth),
+  ).toBeLessThanOrEqual(0);
 });
 
 test("the Skroutz sheet tells its story, with links to the pull requests", async ({

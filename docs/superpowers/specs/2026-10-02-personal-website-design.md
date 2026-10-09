@@ -142,6 +142,13 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 114 | Illustrated dashboard    | No screenshots of the real merchant panel exist, so its contribution shows a generated, generic merchant dashboard: orders, payouts and KPI tiles with made-up figures in euros, in warm colours, with no Skroutz logo or name, so it does not pass for the real product |
 | 115 | Skroutz images           | Captured at 1714×964 and stored as quality-90 WebP under `assets/stories/skroutz/`; decorative, as in decision 108; the dashboard keeps its KPI tiles at the top left, so they survive the phones' 5:2 strip, which is anchored there (decision 106) |
 | 116 | Skroutz copy             | The draft's engineering practices section is folded into "My role" as one sentence; its role and dates heading is dropped, since the sheet header already shows both; the Turbo 7 thanks is described as shared with Sean Doyle, as the announcement words it |
+| 117 | Adzuna story             | Adzuna is the third role with a story: an "Adzuna" / "My role" intro and three contributions: the product built from zero, its charts and maps, and exploring the data; the team's collaboration is told in "My role" rather than in a panel of its own |
+| 118 | Product name             | The copy calls the product "Labour Market Intelligence", as the user knew it; Adzuna markets it today as "Adzuna Intelligence", so its link is labelled "The product on adzuna.co.uk" instead of by either name |
+| 119 | Shipping claim           | The first panel says the team shipped the product in less than a year; the user confirmed it reached release within their time at Adzuna (Feb 2022 – Jan 2023), although Adzuna's public marketing pages for it date from March 2023 |
+| 120 | Adzuna copy              | Written only from the user's own account and Adzuna's public pages, with no claims about libraries or individual ownership; the intro quotes Adzuna's current public figures (more than 15 million jobseekers a month, 20 countries) |
+| 121 | Adzuna tints             | Light greens near the brand green, in panel order: `#e4f2e0`, `#edf4dc`, `#ddeee6`; the paper text tokens keep 4.5:1 on each (decision 104) |
+| 122 | Adzuna images            | The first panel shows Adzuna's public product screenshot (the platform page's laptop image), cut from its laptop frame to 16:9 above the chart legend; the other two show generated, generic illustrations (a hex-tile regional map with line and bar charts, and a filtered search with grouping, KPI tiles, a location table and a salary histogram) with made-up figures marked "Illustrative figures", no Adzuna logo or name, and a slate sidebar instead of Adzuna's green, so they do not pass for the real product |
+| 123 | Adzuna image format      | 1714×964, quality-90 WebP under `assets/stories/adzuna/`; decorative, as in decision 108; each keeps its search bar and filters at the top left, so they survive the phones' 5:2 strip (decision 106) |
 
 ## 3. Scope
 
@@ -396,3 +403,11 @@ The user supplied a draft of their Skroutz role and has no screenshots of the me
 - **Facts checked:** PR #327 (`turbo:frame-render`, merged 2021-08-25) and PR #367 (target element on the fetch events, merged 2021-09-01) are the user's and both merge commits are in `v7.0.0` (published 2021-09-24). The Turbo 7 announcement reads "Many thanks to John Kapantzakis and Sean Doyle for these contributions" after describing the frame events.
 - **Copy:** the user's draft, restructured into an intro and four contributions (decision 116). Two of the draft's sections described what the user learned rather than built, so they live in "My role" and the merchant platform panel.
 - **Images:** the public pages are captured with Playwright; the dashboard is an HTML page written for this purpose and captured the same way. All are converted with `sharp` to quality-90 WebP.
+
+## 19. Adzuna story (2026-10-09)
+
+The user described their Adzuna role: hired to build a new product, Labour Market Intelligence, in a team of a product manager and two developers, on Next.js, shipped in less than a year. The decisions are 117–123.
+
+- **Facts checked:** Adzuna's public pages (`/adzuna-intelligence/` and `/adzuna-intelligence/platform/`) brand the product "Adzuna Intelligence" and state 1bn+ job postings, 15m+ jobseekers a month and 20 countries. Their only product image is a laptop mock-up whose screen shows an occupation dashboard with data for 28/07/2021 – 28/01/2022; its marketing assets were uploaded in March 2023.
+- **Copy:** the user chose copy based only on what they said, without library or ownership details (decision 120). The intro paraphrases Adzuna's public description.
+- **Images:** the public screenshot is cropped with `sharp`; the illustrations are HTML pages written for this purpose, captured with Playwright at 1714×964. Their map ramp was checked with the dataviz palette validator (single hue, monotone lightness). All are converted with `sharp` to quality-90 WebP.
