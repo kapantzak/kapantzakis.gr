@@ -174,6 +174,12 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 146 | CLI image format         | `cli.webp`, quality-90 WebP under `assets/stories/epsilonnet/`; decorative, as in decision 108; dark, in the terminal's own `#1e1e1e`, unlike the other EpsilonNet images |
 | 147 | CLI tint                 | `#f7e8dc`, a warm sand next to `#f8e2e0`; the paper text tokens keep 4.5:1 on it (decision 104) |
 | 148 | CLI and the timeline     | The timeline is unchanged, although its last stage mentions CLI tools, as in decision 140 |
+| 149 | Degree program link      | A degree can carry an optional `program: { label; url }`, the same shape as `thesis`; its sheet shows the program link before the thesis link |
+| 150 | MSc program link         | The University of Macedonia MSc links to `https://www.uom.gr/en/mai`, labelled "MSc in Applied Informatics" rather than a hostname |
+| 151 | Brand without a logo     | `brand.logo` is optional; a brand without one keeps the text title on its band, with the band, accent, link colour and visual unchanged; a lockup needs a logo; degrees take the same optional `brand` as work roles |
+| 152 | MSc brand                | White band, `tone: "light"`, accent and link `#f6a800`, the orange-gold of the University of Macedonia logo; its blue `#004f92` was ruled out because `--color-on-accent` on it is 2.34:1; no logo, so "MSc in Applied Informatics" stays the title |
+| 153 | MSc visual               | A photo of the University of Macedonia main building, its sign and its campus map, from `entreped2026.uom.gr` (`uom1.jpg`, 1600×1067), unchanged apart from conversion to quality-90 WebP; it takes the shared tilt, fade and phone strip (decisions 57, 60–62); it replaces an earlier logo-on-a-card visual |
+| 154 | Text title beside a visual | At every width, a brand without a logo but with a visual sizes its text title to its column (the left half from 48rem up), so "MSc in Applied Informatics" takes at most two lines and no word breaks; tuned to that title, so a longer one could take more lines |
 
 ## 3. Scope
 
@@ -303,7 +309,7 @@ e2e/                    # Playwright smoke tests
   - EpsilonNet: Web Developer, Sep 2014 – May 2020.
   - Hobbyist web developer, 2008–2014.
 - **Education:**
-  - University of Macedonia, MSc Applied Informatics, 2015–2018, with thesis link.
+  - University of Macedonia, MSc Applied Informatics, 2015–2018, with program and thesis links.
   - Aristotle University, MSc Informatics and Management, 2008–2010, with thesis link.
   - Aristotle University, BSc Economic Science, 2001–2006.
 - **Community:** SKG JS co-organiser, about March 2025 – present.

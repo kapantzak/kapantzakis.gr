@@ -42,9 +42,12 @@ const BAND_TEXT_TOKENS = {
   light: ["--color-paper-fg", "--color-paper-fg-strong"],
 };
 
-const brands = [...profile.experience, ...profile.community].flatMap((entry) =>
-  entry.brand ? [[entry.org, entry.brand] as const] : [],
-);
+const brands = [
+  ...[...profile.experience, ...profile.community].map(
+    (entry) => [entry.org, entry.brand] as const,
+  ),
+  ...profile.education.map((degree) => [degree.degree, degree.brand] as const),
+].flatMap(([name, brand]) => (brand ? [[name, brand] as const] : []));
 
 function readColours(): Record<string, string> {
   const start = css.indexOf(":root {");

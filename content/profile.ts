@@ -9,6 +9,7 @@ import skgjsHome from "@/assets/brand/skgjs-home.webp";
 import skgjsLogo from "@/assets/brand/skgjs-logo.svg";
 import skroutzHome from "@/assets/brand/skroutz-home.webp";
 import skroutzLogo from "@/assets/brand/skroutz-logo.svg";
+import uomCampus from "@/assets/brand/uom-campus.webp";
 import aiChat from "@/assets/stories/netdata/ai-chat.webp";
 import aiInsights from "@/assets/stories/netdata/ai-insights.webp";
 import dyncfg from "@/assets/stories/netdata/dyncfg.webp";
@@ -33,8 +34,8 @@ import type { Period } from "@/lib/period";
 
 /** An organisation's own look for the top of its detail sheet (decisions 48–53, 87). */
 export type Brand = {
-  /** The official logo, used unchanged; it must read on `background`. */
-  logo: StaticImageData;
+  /** The official logo, used unchanged; it must read on `background`. Without one, the title stays text (decision 151). */
+  logo?: StaticImageData;
   background: string;
   accent: string;
   /** Fills the website link on the band (decision 68). */
@@ -43,7 +44,7 @@ export type Brand = {
   tone: "light" | "dark";
   /** Decorative brand art for the band (decisions 55–59). */
   visual?: StaticImageData;
-  /** The name as two lines set beside a symbol-only logo; it then names the sheet (decisions 92, 93). */
+  /** The name as two lines set beside a symbol-only logo; it then names the sheet (decisions 92, 93). Needs a logo. */
   lockup?: [string, string];
 };
 
@@ -87,7 +88,9 @@ export type Degree = {
   institution: string;
   degree: string;
   period: Period;
+  program?: { label: string; url: string };
   thesis?: { label: string; url: string };
+  brand?: Brand;
 };
 export type CommunityRole = {
   org: string;
@@ -449,9 +452,21 @@ export const profile: Profile = {
       institution: "University of Macedonia",
       degree: "MSc in Applied Informatics",
       period: { start: "2015", end: "2018" },
+      program: {
+        label: "MSc in Applied Informatics",
+        url: "https://www.uom.gr/en/mai",
+      },
       thesis: {
         label: "Thesis (English)",
         url: "https://dspace.lib.uom.gr/bitstream/2159/22942/4/KapantzakisIoannisMsc2018.pdf",
+      },
+      // The logo's orange-gold; the visual is a photo of the main building (decisions 152, 153).
+      brand: {
+        background: "#ffffff",
+        accent: "#f6a800",
+        link: "#f6a800",
+        tone: "light",
+        visual: uomCampus,
       },
     },
     {

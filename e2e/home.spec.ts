@@ -329,12 +329,12 @@ test("the Netdata sheet opens on a brand band with its logo, and other sheets do
   await page.keyboard.press("Escape");
   await expect(sheet).toHaveCount(0);
 
-  // Every work role has a brand, so an education entry stands in for a plain sheet.
+  // Every work role has a brand, so an unbranded education entry stands in for a plain sheet.
   await page
-    .getByRole("button", { name: /MSc in Applied Informatics/ })
+    .getByRole("button", { name: /MSc in Informatics and Management/ })
     .click();
   const plain = page.getByRole("dialog", {
-    name: "MSc in Applied Informatics",
+    name: "MSc in Informatics and Management",
   });
   await expect(plain).toBeVisible();
   await expect(plain.locator("[data-brand]")).toHaveCount(0);
@@ -393,6 +393,59 @@ for (const [org, role, background, link] of [
       .toBeGreaterThan(0);
   });
 }
+
+// A degree takes a brand without a logo, so its title stays text (decisions 151–154).
+test("the MSc in Applied Informatics sheet opens on a light band with a text title, gold links and the campus photo", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page
+    .getByRole("button", { name: /MSc in Applied Informatics/ })
+    .click();
+  const band = page
+    .getByRole("dialog", { name: "MSc in Applied Informatics" })
+    .locator("[data-brand]");
+  await expect(band).toHaveCSS("background-color", "rgb(255, 255, 255)");
+  await expect(band).toHaveCSS("border-bottom-width", "1px");
+  const title = band.getByRole("heading", { level: 2 });
+  await expect(title).toHaveText("MSc in Applied Informatics");
+  await expect(title.getByRole("img")).toHaveCount(0);
+  // A word split across lines draws more than one box (decision 154).
+  expect(
+    await title.evaluate((el) => {
+      const text = el.firstChild!;
+      return [...text.textContent!.matchAll(/\S+/g)].flatMap((word) => {
+        const range = document.createRange();
+        range.setStart(text, word.index);
+        range.setEnd(text, word.index + word[0].length);
+        return range.getClientRects().length > 1 ? [word[0]] : [];
+      });
+    }),
+  ).toEqual([]);
+  // At most two lines (decision 154).
+  expect(
+    await title.evaluate((el) => {
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      return new Set(
+        [...range.getClientRects()].map((rect) => Math.round(rect.top)),
+      ).size;
+    }),
+  ).toBeLessThanOrEqual(2);
+  for (const name of [/MSc in Applied Informatics/, /Thesis \(English\)/]) {
+    await expect(band.getByRole("link", { name })).toHaveCSS(
+      "background-color",
+      "rgb(246, 168, 0)",
+    );
+  }
+  await expect
+    .poll(() =>
+      band
+        .locator('[aria-hidden="true"] img')
+        .evaluate((img: HTMLImageElement) => img.naturalWidth),
+    )
+    .toBeGreaterThan(0);
+});
 
 // A community entry takes a brand like a work role (decisions 87–93).
 test("the Thessaloniki JavaScript Meetup sheet opens on its dark band with its lockup, summary and site link", async ({
@@ -473,6 +526,11 @@ test("education and community sheets reveal their links", async ({ page }) => {
   await page
     .getByRole("button", { name: /MSc in Applied Informatics/ })
     .click();
+  await expect(
+    page
+      .getByRole("dialog")
+      .getByRole("link", { name: /MSc in Applied Informatics/ }),
+  ).toHaveAttribute("href", "https://www.uom.gr/en/mai");
   await expect(
     page.getByRole("dialog").getByRole("link", { name: /Thesis \(English\)/ }),
   ).toBeVisible();

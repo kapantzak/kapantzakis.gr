@@ -88,11 +88,21 @@ export function Experience({ profile }: { profile: Profile }) {
     period: formatPeriod(degree.period),
     title: degree.degree,
     subtitle: degree.institution,
-    details: degree.thesis ? (
-      <ExternalLink href={degree.thesis.url}>
-        {degree.thesis.label}
-      </ExternalLink>
-    ) : null,
+    brand: degree.brand,
+    details: (
+      <>
+        {degree.program ? (
+          <ExternalLink href={degree.program.url}>
+            {degree.program.label}
+          </ExternalLink>
+        ) : null}
+        {degree.thesis ? (
+          <ExternalLink href={degree.thesis.url}>
+            {degree.thesis.label}
+          </ExternalLink>
+        ) : null}
+      </>
+    ),
   }));
 
   const community: Entry[] = profile.community.map((entry) => ({

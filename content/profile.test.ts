@@ -4,6 +4,7 @@ import { profile } from "./profile";
 function allUrls(): string[] {
   return [
     ...profile.experience.flatMap((r) => (r.orgUrl ? [r.orgUrl] : [])),
+    ...profile.education.flatMap((d) => (d.program ? [d.program.url] : [])),
     ...profile.education.flatMap((d) => (d.thesis ? [d.thesis.url] : [])),
     ...profile.community.map((c) => c.orgUrl),
     ...profile.social.map((s) => s.url),
