@@ -154,7 +154,9 @@ const stories = profile.experience.flatMap((role) =>
 );
 
 describe.each(stories)("the %s story", (_org, story) => {
-  it.each(story.contributions.map((c) => [c.title, c.tint] as const))(
+  const contributions = story.contributions ?? [];
+
+  it.each(contributions.map((c) => [c.title, c.tint] as const))(
     "%s keeps 4.5:1 for the paper text tokens on its tint",
     (_title, tint) => {
       for (const token of PAPER_TEXT_TOKENS) {
@@ -168,7 +170,21 @@ describe.each(stories)("the %s story", (_org, story) => {
   );
 
   it("gives every contribution its own tint", () => {
-    const tints = story.contributions.map((c) => c.tint.toLowerCase());
+    const tints = contributions.map((c) => c.tint.toLowerCase());
     expect(new Set(tints).size).toBe(tints.length);
+  });
+});
+
+// The timeline's rail and dots are graphics in the brand accent on the paper (decision 133).
+const timelines = profile.experience.flatMap((role) =>
+  role.story?.timeline ? [[role.org, role.brand?.accent] as const] : [],
+);
+
+describe.each(timelines)("the %s timeline", (_org, accent) => {
+  it("its accent has at least 3:1 contrast on the paper", () => {
+    expect(accent, "a timeline needs a brand accent").toBeDefined();
+    expect(
+      contrastRatio(accent!, colours["--color-paper"]!),
+    ).toBeGreaterThanOrEqual(3);
   });
 });

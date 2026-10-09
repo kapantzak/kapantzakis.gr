@@ -27,10 +27,13 @@
   }
 }
 
-/* The last panel meets the sheet's bottom edge instead of leaving a strip of paper under it. */
 .contributions {
   display: grid;
   gap: clamp(1.5rem, 4vw, 3rem);
+}
+
+/* Closing the sheet, the last panel meets its bottom edge instead of leaving a strip of paper (decision 129). */
+.contributions:last-child {
   margin-bottom: calc(-1 * var(--page-pad-block));
 }
 
@@ -155,6 +158,99 @@
   }
 }
 
+/* Timeline (decisions 130, 131): one column, with a rail down the left and a dot per stage. */
+.timeline {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+}
+
+.stages {
+  --dot: 0.875rem;
+  --rail: 3px;
+  --indent: clamp(2rem, 5vw, 3.5rem);
+
+  position: relative;
+  display: grid;
+  gap: clamp(2rem, 5vw, 3.5rem);
+  max-width: calc(var(--measure) + var(--indent));
+  margin: 0;
+  padding: 0 0 0 var(--indent);
+  list-style: none;
+  view-timeline: --stages block;
+}
+
+/* The rail and its accent fill are decorative; the list carries the order. */
+.stages::before,
+.stages::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc((var(--dot) - var(--rail)) / 2);
+  width: var(--rail);
+  border-radius: var(--rail);
+}
+
+.stages::before {
+  background: var(--color-rule);
+}
+
+/* Drawn in full unless scroll-driven motion fills it (decision 132). */
+.stages::after {
+  background: var(--accent);
+  transform-origin: top;
+}
+
+.stage {
+  position: relative;
+  display: grid;
+  gap: 1rem;
+  view-timeline: --stage block;
+}
+
+.stageTitle {
+  margin: 0;
+  font-family: var(--font-display-stack);
+  font-size: clamp(1.5rem, 1rem + 1.5vw, 2.5rem);
+  font-weight: 400;
+  font-synthesis: none;
+  line-height: 1;
+  color: var(--color-fg-strong);
+  overflow-wrap: anywhere;
+}
+
+/* Centred on the title's first line; the paper ring cuts the rail around it. Accents are fills (decision 44). */
+.stageTitle::before {
+  content: "";
+  position: absolute;
+  top: calc(0.5em - var(--dot) / 2);
+  left: calc(-1 * var(--indent));
+  z-index: 1;
+  width: var(--dot);
+  height: var(--dot);
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 0.3rem var(--color-paper);
+}
+
+/* Styled like the role's stack tags (decision 131). */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tags li {
+  padding: 0.25rem 0.85rem;
+  border: 1px solid var(--color-fg-strong);
+  border-radius: 999px;
+  color: var(--color-fg-strong);
+  font-size: 0.9rem;
+}
+
 /* Motion (decision 107): driven by each panel's progress through the sheet's view. */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
@@ -162,6 +258,26 @@
       animation: text-in linear both;
       animation-timeline: --panel;
       animation-range: entry 10% cover 40%;
+    }
+  }
+
+  /*
+   * Ranges end once the subject has fully entered: the timeline closes the sheet, so ranges that
+   * need it to scroll further up would never finish (decision 132).
+   */
+  @media (prefers-reduced-motion: no-preference) {
+    /* The children move, not the stage, so its own view timeline is not shifted by the motion. */
+    .stage > * {
+      animation: text-in linear both;
+      animation-timeline: --stage;
+      animation-range: entry 0% entry 100%;
+    }
+
+    /* The fill's tip runs from two-thirds down the view to its bottom edge as the list enters. */
+    .stages::after {
+      animation: rail-fill linear both;
+      animation-timeline: --stages;
+      animation-range: entry-crossing 33vh entry-crossing 100%;
     }
   }
 
@@ -185,5 +301,11 @@
   from {
     opacity: 0;
     transform: rotateY(calc(var(--tilt) * 2));
+  }
+}
+
+@keyframes rail-fill {
+  from {
+    transform: scaleY(0);
   }
 }
