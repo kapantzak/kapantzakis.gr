@@ -22,7 +22,7 @@ The site is done when:
 
 ## 2. Decisions
 
-The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review, 22–25 for the Home hero backdrop, 26–29 for the logo, 30–40 for the one-page refactor on 2026-10-06, 41–47 for the detail sheet on 2026-10-06, 48–54 for the brand header on 2026-10-06, 55–59 for the brand visual on 2026-10-06, 60–62 for its perspective on 2026-10-06, 63–65 for the Adzuna brand on 2026-10-06, 66 for the Skroutz brand on 2026-10-06, 67–69 for its revision and brand link colours on 2026-10-07, 70 for the visual's full height on 2026-10-07, 71–72 for the EpsilonNet brand on 2026-10-07, 73–74 for the display font on 2026-10-08, 75–76 for the uppercase hero headline on 2026-10-08, 77 for removing the hero backdrop on 2026-10-08, 78–81 for the hero aurora on 2026-10-08, 82–85 for its revision on 2026-10-08, and 86 for the Firefox heading fallback on 2026-10-08. Rows marked *superseded* are kept for history.
+The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–16 in the second, 17–19 at plan review, 20–21 after the first PR review, 22–25 for the Home hero backdrop, 26–29 for the logo, 30–40 for the one-page refactor on 2026-10-06, 41–47 for the detail sheet on 2026-10-06, 48–54 for the brand header on 2026-10-06, 55–59 for the brand visual on 2026-10-06, 60–62 for its perspective on 2026-10-06, 63–65 for the Adzuna brand on 2026-10-06, 66 for the Skroutz brand on 2026-10-06, 67–69 for its revision and brand link colours on 2026-10-07, 70 for the visual's full height on 2026-10-07, 71–72 for the EpsilonNet brand on 2026-10-07, 73–74 for the display font on 2026-10-08, 75–76 for the uppercase hero headline on 2026-10-08, 77 for removing the hero backdrop on 2026-10-08, 78–81 for the hero aurora on 2026-10-08, 82–85 for its revision on 2026-10-08, 86 for the Firefox heading fallback on 2026-10-08, and 94–98 for scrolling back to the top on 2026-10-09. Rows marked *superseded* are kept for history.
 
 | #  | Topic                   | Decision                                                                                                  |
 |----|-------------------------|-----------------------------------------------------------------------------------------------------------|
@@ -119,6 +119,11 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 91 | Community name          | The community entry is named "Thessaloniki JavaScript Meetup" (row title and sheet name) instead of "SKG JS"; the hero intro reads "I co-organise the Thessaloniki JavaScript Meetup (SKG JS), …" |
 | 92 | Brand lockup            | Optional `brand.lockup`: the name as two lines of text set beside a symbol-only logo, inside the sheet's `h2`; the two lines together roughly match the logo's height, and the logo's `alt` is empty, so the text alone names the dialog; brands without a lockup are unchanged; Thessaloniki JavaScript Meetup uses "Thessaloniki" / "JavaScript Meetup" |
 | 93 | Lockup colours          | The first line takes the band's strong text colour and the second the brand accent, as in the skgjs.gr hero (white, then yellow); a brand with a lockup must keep 4.5:1 between its accent and its band background (unit-tested) |
+| 94 | Logo link scroll        | On the home page the logo-and-name link scrolls to the top on every click and drops any `#section` from the URL; on other pages it navigates to `/`; its `href` stays `/` |
+| 95 | Back-to-top link        | A quiet "Back to top ↑" text control in the footer beside the © line, styled like the footer links |
+| 96 | Back-to-top technique   | A button that shares the logo link's scroll-to-top behaviour: smooth through the existing CSS `scroll-behavior`, instant under `prefers-reduced-motion`, and the URL stays clean |
+| 97 | Back-to-top focus       | After scrolling up, focus moves to the logo link without scrolling again, so the next Tab continues from the top |
+| 98 | Back-to-top scope       | Shown on the home page only; the 404 page does not scroll |
 
 ## 3. Scope
 
@@ -317,7 +322,7 @@ The user asked for a single scrolling page with eye-catching scroll animations, 
 - **Page order:** hero → Experience (work, education, community) → Writing (all posts) → Say hello (email, social links).
 - **Headings:** each section heading is one nowrap line that slides sideways while the section crosses the viewport. Decorative repeats of the title are `aria-hidden`.
 - **Experience rows:** a button inside a heading (`aria-expanded`, `aria-controls`); the panel animates open and is `inert` while closed. Several rows can be open at once.
-- **Client JavaScript:** only the expandable row (now the detail sheet, section 14), the in-view nav marker, the hero aurora's pointer tracking (decision 85) and the section-heading slide fallback for browsers without scroll-driven animations (decision 86). Everything else, including scroll motion where supported and the aurora's drift, is CSS.
+- **Client JavaScript:** only the expandable row (now the detail sheet, section 14), the in-view nav marker, the hero aurora's pointer tracking (decision 85) the section-heading slide fallback for browsers without scroll-driven animations (decision 86) and the scroll-to-top behaviour of the logo link and the footer's back-to-top button (decisions 94–98). Everything else, including scroll motion where supported and the aurora's drift, is CSS.
 - **Superseded:** success criteria 1, 3, 4 and 5; section 3 (pages, MDX pipeline, `/projects`); section 4.1 (no scroll-linked motion); section 4.2 (light theme, four accents); section 4.3 (display font); section 4.5 (route links); section 5 (page table); the `/projects` redirect in section 7; the draft tests in section 8.
 - **Open:** the rich content for each experience row (decision 33, now decision 45).
 
@@ -347,3 +352,12 @@ The user asked for the top of the Netdata detail sheet to be brand oriented, wit
 - **EpsilonNet:** the logo source is `https://epsilonnet.gr/wp-content/uploads/2024/06/EPSILONNET_logo.png`, traced to `assets/brand/epsilonnet-logo.svg`. The visual is a 1440×900 capture at 2× of epsilonnet.gr's first screen, taken with the cookie banner hidden rather than answered, stored as `assets/brand/epsilonnet-home.webp`. Decisions 71–72.
 - **SKG JS:** the logo is `https://skgjs.gr/images/logo.svg`, stored unchanged at `assets/brand/skgjs-logo.svg`; the colours are skgjs.gr's `js-black` and `js-yellow` CSS tokens. The visual is a 1440×900 capture at 2× of skgjs.gr's first screen, stored as `assets/brand/skgjs-home.webp`. Decisions 87–90.
 - **Out of scope:** Netdata's fonts.
+
+## 16. Back to top (2026-10-09)
+
+The user asked for a scroll-to-top control at the bottom of the site, and for the logo link to scroll to the top. The decisions are 94–98.
+
+- **Cause:** a Next.js `Link` to the URL already shown is a no-op, so on `/` the logo link did nothing; on `/#section` it was a real navigation and already scrolled up.
+- **Shared behaviour:** one helper scrolls the window to the top, replaces any hash in the current history entry, and focuses the logo link with `preventScroll`. The logo link intercepts only plain left clicks on the home page, so modified clicks still open new tabs.
+- **History:** the hash is replaced, not pushed, so Back after scrolling up skips the `#section` entry that was showing.
+

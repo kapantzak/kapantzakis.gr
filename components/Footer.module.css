@@ -16,3 +16,34 @@
   padding: 0;
   list-style: none;
 }
+
+.end {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.5rem;
+}
+
+/* Looks like the footer links beside it (decision 95). */
+.backToTop {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.2em;
+  transition: color var(--transition-fast);
+}
+
+.backToTop:hover {
+  color: var(--accent);
+}
+
+/* inline-block keeps the underline off the arrow. */
+.arrow {
+  display: inline-block;
+  margin-left: 0.4em;
+}
