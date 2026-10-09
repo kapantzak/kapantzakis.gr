@@ -25,6 +25,7 @@ import merchantDashboard from "@/assets/stories/skroutz/merchant-dashboard.webp"
 import turboPr327 from "@/assets/stories/skroutz/turbo-pr-327.webp";
 import turboPr367 from "@/assets/stories/skroutz/turbo-pr-367.webp";
 import turbo7Announcement from "@/assets/stories/skroutz/turbo-7-announcement.webp";
+import selfService from "@/assets/stories/epsilonnet/self-service.webp";
 import type { Period } from "@/lib/period";
 
 /** An organisation's own look for the top of its detail sheet (decisions 48–53, 87). */
@@ -55,10 +56,19 @@ export type Contribution = {
   links?: { label: string; url: string }[];
 };
 
-/** Rich content for a role's detail sheet (decisions 99–101). */
+/** A step in a role's timeline (decisions 128–131). */
+export type Stage = {
+  title: string;
+  body: string;
+  tags: string[];
+};
+
+/** Rich content for a role's detail sheet (decisions 99–101, 128). */
 export type Story = {
   intro: { label: string; text: string }[];
-  contributions: Contribution[];
+  contributions?: Contribution[];
+  /** Follows the contributions (decision 129). */
+  timeline?: { heading: string; stages: Stage[] };
 };
 
 export type Role = {
@@ -340,6 +350,68 @@ export const profile: Profile = {
         link: "#f04e23",
         tone: "light",
         visual: epsilonnetHome,
+      },
+      // The panel shows an illustration, since the only public ESS image is too small (decision 135).
+      story: {
+        intro: [
+          {
+            label: "EpsilonNet",
+            text: "EpsilonNet is a Greek software company. It builds ERP, CRM, retail, HR and business intelligence software for businesses, and also works in digital content and education.",
+          },
+          {
+            label: "My role",
+            text: "I worked on Epsilon ESS, a web platform that companies use to manage their interactions with their employees. I joined as a junior web designer and left as a full stack developer, responsible for the product’s frontend.",
+          },
+        ],
+        contributions: [
+          {
+            title: "Epsilon ESS",
+            body: "Epsilon ESS is EpsilonNet’s Employee Self Service platform. I worked on it for almost six years, from its HTML and CSS to its ASP.NET backend.",
+            image: selfService,
+            tint: "#fde6dc",
+            links: [
+              {
+                label: "Epsilon ESS on epsilonnet.gr",
+                url: "https://epsilonnet.gr/proionta/epsilon-ess/",
+              },
+            ],
+          },
+        ],
+        timeline: {
+          heading: "From web designer to full stack developer",
+          stages: [
+            {
+              title: "Junior web designer",
+              body: "I started by designing mock-ups in Adobe Photoshop and turning them into HTML and CSS.",
+              tags: ["Photoshop", "HTML", "CSS"],
+            },
+            {
+              title: "Going deeper with jQuery",
+              body: "I dug deeper into jQuery and brought new techniques into the codebase, such as a new menu.",
+              tags: ["JavaScript", "jQuery"],
+            },
+            {
+              title: "Into the backend",
+              body: "When a senior backend developer left, I started working on the C# code, first with small changes such as translations. After a few months, I was contributing to more advanced parts of the backend.",
+              tags: ["C#", "ASP.NET"],
+            },
+            {
+              title: "From forms to APIs",
+              body: "I turned parts of the frontend from server-rendered forms into content loaded with AJAX calls, from backend APIs that I built in ASP.NET and C#.",
+              tags: ["AJAX", "ASP.NET", "C#"],
+            },
+            {
+              title: "Introducing TypeScript",
+              body: "I introduced TypeScript next to the existing jQuery code and replaced parts of it over time, to enforce type safety and reduce runtime errors.",
+              tags: ["TypeScript", "jQuery"],
+            },
+            {
+              title: "Full stack developer",
+              body: "By the time I left, I was responsible for the frontend and implemented all features end to end, from the backend to the frontend, except for the SQL queries. I also built CLI tools that automate parts of development.",
+              tags: ["TypeScript", "ASP.NET", "C#", "CLI tools"],
+            },
+          ],
+        },
       },
     },
   ],

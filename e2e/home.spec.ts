@@ -119,10 +119,12 @@ test("the Netdata sheet tells its story, and sheets without one keep their place
 
   await page.keyboard.press("Escape");
   await expect(sheet).toHaveCount(0);
-  await page.getByRole("button", { name: /EpsilonNet/ }).click();
+  await page
+    .getByRole("button", { name: /MSc in Applied Informatics/ })
+    .click();
   await expect(
     page
-      .getByRole("dialog", { name: "EpsilonNet" })
+      .getByRole("dialog", { name: "MSc in Applied Informatics" })
       .locator("[data-placeholder]"),
   ).toHaveCount(3);
 });
@@ -142,6 +144,52 @@ test("the Adzuna sheet tells its story, with a link to the product", async ({
   await expect(
     region.getByRole("link", { name: "The product on adzuna.co.uk" }),
   ).toHaveAttribute("href", "https://www.adzuna.co.uk/adzuna-intelligence/");
+  expect(
+    await sheet.evaluate((el) => el.scrollWidth - el.clientWidth),
+  ).toBeLessThanOrEqual(0);
+});
+
+test("the EpsilonNet sheet tells its story, ending with a timeline that fills in", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: /EpsilonNet/ }).click();
+  const sheet = page.getByRole("dialog", { name: "EpsilonNet" });
+  for (const name of ["EpsilonNet", "My role"]) {
+    await expect(sheet.getByRole("heading", { level: 3, name })).toBeVisible();
+  }
+  const region = sheet.getByRole("region", { name: "Selected contributions" });
+  await expect(region.locator("li[data-side]")).toHaveCount(1);
+  await expect(sheet.locator("[data-placeholder]")).toHaveCount(0);
+  await expect(
+    region.getByRole("link", { name: "Epsilon ESS on epsilonnet.gr" }),
+  ).toHaveAttribute("href", "https://epsilonnet.gr/proionta/epsilon-ess/");
+
+  const timeline = sheet.getByRole("region", {
+    name: "From web designer to full stack developer",
+  });
+  const stages = timeline.locator(":scope > ol > li");
+  await expect(stages).toHaveCount(6);
+  await expect(stages.first().getByRole("heading", { level: 4 })).toHaveText(
+    "Junior web designer",
+  );
+
+  // The timeline closes the sheet, so its motion must finish at the bottom (decisions 129, 132).
+  await sheet.evaluate((el) => el.scrollTo(0, el.scrollHeight));
+  const lastTitle = stages.last().getByRole("heading", { level: 4 });
+  await expect(lastTitle).toBeInViewport();
+  await expect
+    .poll(() =>
+      timeline
+        .locator("ol")
+        .first()
+        .evaluate((list) => ({
+          rail: getComputedStyle(list, "::after").transform,
+          title: getComputedStyle(list.querySelector("li:last-child h4")!)
+            .opacity,
+        })),
+    )
+    .toEqual({ rail: "matrix(1, 0, 0, 1, 0, 0)", title: "1" });
   expect(
     await sheet.evaluate((el) => el.scrollWidth - el.clientWidth),
   ).toBeLessThanOrEqual(0);

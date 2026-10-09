@@ -152,6 +152,17 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 124 | Hash follows scroll      | On the home page the URL hash names the section marked current in the nav (decision 40), so scrolling updates it like a nav click; the current history entry is replaced, never a new one pushed |
 | 125 | Hash with no section     | When no section is current (the hero, the footer, a gap between sections) the hash is dropped, so Back to top still leaves a clean URL (decision 96) |
 | 126 | Hash during nav glide    | Updates are not paused while a nav click glides to its section, so the hash briefly names the sections passed and settles on the target |
+| 127 | EpsilonNet story         | EpsilonNet is the fourth role with a story: an "EpsilonNet" / "My role" intro, one contribution panel about Epsilon ESS, then a timeline of the user's path from junior web designer to full stack developer |
+| 128 | Role timeline            | Optional `Story.timeline`: a heading and an ordered list of stages, each with a title, a body and tags; `Story.contributions` becomes optional, so a story can have panels, a timeline or both; the existing stories are unchanged |
+| 129 | Timeline order           | The contributions come first and the timeline last; the panels meet the sheet's bottom edge only when they close the sheet, and the timeline otherwise keeps the sheet's bottom padding |
+| 130 | Timeline layout          | One column at every width: a rail down the left with a dot per stage, in the brand accent (fills only, decision 44); each stage shows its title, body and tags; stages are ordered, with no dates; the heading reads "From web designer to full stack developer" |
+| 131 | Stage tags               | Each stage lists its technologies as small outlined pills, styled like the role's stack tags |
+| 132 | Timeline motion          | Where CSS scroll-driven animations are supported, each stage rises in as the panels' text does (decision 107), and the rail fills from top to bottom as the timeline scrolls through the sheet's view; in Firefox and under `prefers-reduced-motion: reduce` the rail is drawn in full and nothing moves |
+| 133 | Rail contrast            | A story with a timeline needs a brand accent with at least 3:1 against the paper, as a graphic (WCAG 1.4.11; unit-tested); EpsilonNet's `#f04e23` has about 3.3:1 |
+| 134 | EpsilonNet copy          | Written from the user's account and epsilonnet.gr's public description; no company figures, since today's describe a much later company; no claim about how ESS was deployed; no features taken from today's product page; the TypeScript stage says it was introduced alongside jQuery and replaced parts of the code over time, not that jQuery was removed |
+| 135 | ESS illustration         | The only public ESS image is a 542×377 monitor-and-laptop mock-up, about 4× too small for a panel, so the ESS panel shows a generated, generic employee self-service screen (leave balance, payslips, requests) with made-up data marked "Illustrative", no EpsilonNet logo or name and a slate sidebar, so it does not pass for the real product |
+| 136 | EpsilonNet image format  | 1714×964, quality-90 WebP under `assets/stories/epsilonnet/`; decorative, as in decision 108; it keeps its page title and leave balance at the top left, so they survive the phones' 5:2 strip (decision 106) |
+| 137 | EpsilonNet tint          | A light warm tint near the brand orange, `#fde6dc`; the paper text tokens keep 4.5:1 on it (decision 104) |
 
 ## 3. Scope
 
@@ -422,3 +433,13 @@ The user asked for the URL hash to update while scrolling through the sections, 
 - **Source:** the hash follows the same observer that sets `aria-current`, so the URL and the highlighted link never disagree.
 - **History:** the hash is replaced in the current entry, keeping the router's state object, as in section 16; Back is unaffected by scrolling.
 - **Load:** nothing is written until the observer first reports, so a page opened at `/#section` keeps its hash while the browser scrolls there.
+
+## 21. EpsilonNet story (2026-10-09)
+
+The user described their path at EpsilonNet (Sep 2014 – May 2020) on Epsilon ESS: from a junior web designer turning Photoshop mock-ups into HTML and CSS, through jQuery, C# on the backend, AJAX-loaded views over ASP.NET APIs and TypeScript, to owning the frontend and building features end to end except the SQL queries, with CLI tools that automate development. The user approved decisions 127–137 on 2026-10-09.
+
+- **Facts checked:** epsilonnet.gr describes the company as working in IT, digital content development and education, with ERP, CRM, Retail, Mobile, WMS, HRM and Business Intelligence products, and today 1,700+ employees and 28 group companies. The ESS page describes an Employee Self Service web platform for leave, payslips, attendance, travel and expenses and evaluations; it does not say how ESS is deployed, and some of its features may postdate the user's time. Its only product image was uploaded in April 2023.
+- **TypeScript:** the user introduced TypeScript next to the existing jQuery code and replaced parts of it over time; jQuery was still in the codebase when they left (decision 134).
+- **Layout:** the intro, one panel, then the timeline (decision 129). The timeline is an ordered list; the rail and its fill are decorative pseudo-elements, so assistive technology reads only the stages.
+- **Motion:** the timeline closes the sheet, so it can never scroll far up the view. Its ranges therefore end once their subject has fully entered: each stage rises in as it enters, and the rail's tip runs from two-thirds down the view to its bottom edge, so both finish at the bottom of the sheet (end-to-end tested).
+- **Image:** the illustration is an HTML page written for this purpose, captured with Playwright at 1714×964 and converted with `sharp` to quality-90 WebP.
