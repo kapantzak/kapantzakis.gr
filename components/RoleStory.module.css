@@ -67,6 +67,17 @@
   max-width: var(--measure);
 }
 
+/* Decision 111: plain links on the tint, which keeps 4.5:1 for the paper text (decision 104). */
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-weight: 600;
+}
+
 /* globals.css styles h1–h3 only. */
 .title {
   margin: 0;

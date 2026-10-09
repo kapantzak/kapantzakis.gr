@@ -125,6 +125,31 @@ test("the Netdata sheet tells its story, and sheets without one keep their place
   ).toHaveCount(3);
 });
 
+test("the Skroutz sheet tells its story, with links to the pull requests", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: /Skroutz/ }).click();
+  const sheet = page.getByRole("dialog", { name: "Skroutz" });
+  for (const name of ["Skroutz", "My role"]) {
+    await expect(sheet.getByRole("heading", { level: 3, name })).toBeVisible();
+  }
+  const region = sheet.getByRole("region", { name: "Selected contributions" });
+  await expect(region.locator("li[data-side]")).toHaveCount(4);
+  await expect(sheet.locator("[data-placeholder]")).toHaveCount(0);
+  for (const n of [327, 367]) {
+    await expect(
+      region.getByRole("link", { name: `PR #${n} on GitHub` }),
+    ).toHaveAttribute("href", `https://github.com/hotwired/turbo/pull/${n}`);
+  }
+  await expect(
+    region.getByRole("link", { name: "Turbo 7 announcement" }),
+  ).toHaveAttribute("href", "https://world.hey.com/hotwired/turbo-7-0dd7a27f");
+  expect(
+    await sheet.evaluate((el) => el.scrollWidth - el.clientWidth),
+  ).toBeLessThanOrEqual(0);
+});
+
 // Scroll-driven reveals never finish mid-scroll; closing must not wait for them.
 test("the sheet closes while a contribution is halfway through its reveal", async ({
   page,
