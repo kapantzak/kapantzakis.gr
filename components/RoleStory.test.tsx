@@ -53,6 +53,20 @@ describe("RoleStory", () => {
     expect(items[1]).toHaveTextContent("Two.");
   });
 
+  it("names the contributions region with the story's own heading (decision 156)", () => {
+    render(
+      <RoleStory
+        story={{ ...STORY, contributionsHeading: "The application" }}
+      />,
+    );
+    expect(
+      screen.getByRole("region", { name: "The application" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("region", { name: "Selected contributions" }),
+    ).toBeNull();
+  });
+
   it("alternates the screenshot's side and gives each panel its own tint (decisions 103, 104)", () => {
     render(<RoleStory story={STORY} />);
     const items = screen.getAllByRole("listitem");

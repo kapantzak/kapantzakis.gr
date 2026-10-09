@@ -23,7 +23,7 @@ export function RoleStory({ story }: { story: Story }) {
       {story.contributions?.length ? (
         <section className={styles.contributions} aria-labelledby={headingId}>
           <h3 id={headingId} className={styles.heading}>
-            Selected contributions
+            {story.contributionsHeading ?? "Selected contributions"}
           </h3>
           <ol className={styles.list}>
             {story.contributions.map((item, index) => (

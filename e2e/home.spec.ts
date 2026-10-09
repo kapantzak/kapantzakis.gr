@@ -120,11 +120,11 @@ test("the Netdata sheet tells its story, and sheets without one keep their place
   await page.keyboard.press("Escape");
   await expect(sheet).toHaveCount(0);
   await page
-    .getByRole("button", { name: /MSc in Applied Informatics/ })
+    .getByRole("button", { name: /MSc in Informatics and Management/ })
     .click();
   await expect(
     page
-      .getByRole("dialog", { name: "MSc in Applied Informatics" })
+      .getByRole("dialog", { name: "MSc in Informatics and Management" })
       .locator("[data-placeholder]"),
   ).toHaveCount(3);
 });
@@ -445,6 +445,45 @@ test("the MSc in Applied Informatics sheet opens on a light band with a text tit
         .evaluate((img: HTMLImageElement) => img.naturalWidth),
     )
     .toBeGreaterThan(0);
+});
+
+// A degree takes a story like a work role, with its own panels heading (decisions 155–157).
+test("the MSc in Applied Informatics sheet tells the thesis story, with a panel per repository", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page
+    .getByRole("button", { name: /MSc in Applied Informatics/ })
+    .click();
+  const sheet = page.getByRole("dialog", {
+    name: "MSc in Applied Informatics",
+  });
+  for (const label of ["The program", "My thesis"]) {
+    await expect(
+      sheet.getByRole("heading", { level: 3, name: label }),
+    ).toBeVisible();
+  }
+  await expect(sheet.locator("[data-placeholder]")).toHaveCount(0);
+  const region = sheet.getByRole("region", { name: "The application" });
+  await expect(region.getByRole("heading", { level: 4 })).toHaveText([
+    "Mobile app for students",
+    "Web app for professors and students",
+    "Web API",
+  ]);
+  for (const repo of [
+    "AttendanceMobileApp",
+    "AttendanceWeb",
+    "AttendanceWebAPI",
+  ]) {
+    const link = region.getByRole("link", {
+      name: new RegExp(`kapantzak/${repo}\\b`),
+    });
+    await expect(link).toHaveAttribute(
+      "href",
+      `https://github.com/kapantzak/${repo}`,
+    );
+    await expect(link).toHaveAttribute("target", "_blank");
+  }
 });
 
 // A community entry takes a brand like a work role (decisions 87–93).

@@ -89,6 +89,7 @@ export function Experience({ profile }: { profile: Profile }) {
     title: degree.degree,
     subtitle: degree.institution,
     brand: degree.brand,
+    story: degree.story,
     details: (
       <>
         {degree.program ? (

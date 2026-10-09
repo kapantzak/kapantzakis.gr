@@ -152,9 +152,10 @@ describe.each(brands.filter(([, brand]) => brand.lockup))(
 );
 
 // Contribution panels keep the sheet's paper text tokens on their own tints (decision 104).
-const stories = profile.experience.flatMap((role) =>
-  role.story ? [[role.org, role.story] as const] : [],
-);
+const stories = [
+  ...profile.experience.map((role) => [role.org, role.story] as const),
+  ...profile.education.map((degree) => [degree.degree, degree.story] as const),
+].flatMap(([name, story]) => (story ? [[name, story] as const] : []));
 
 describe.each(stories)("the %s story", (_org, story) => {
   const contributions = story.contributions ?? [];
