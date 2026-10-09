@@ -130,9 +130,11 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 102 | Contribution visual     | From 48rem up, each contribution is a full-bleed panel with a screenshot in one half, tilted in perspective with its outer side nearer the viewer, running off the panel's outer edge and fading out towards the text; the text keeps the other half; the left-side screenshot mirrors the brand band's visual (`rotateY(20deg)` around its right edge) |
 | 103 | Contribution sides      | Screenshots alternate sides: odd contributions on the left (mirrored, decision 102), even contributions on the right with the brand band's orientation (decisions 60, 61) |
 | 104 | Contribution tints      | Each contribution has its own light tint, in greens, teals and nearby hues, chosen so neighbouring panels differ; the panels keep the sheet's paper text tokens, and every tint must keep 4.5:1 for them (unit-tested); Netdata: `#dff3e4`, `#d7eeee`, `#e9f3d6`, `#d6eaf2`, `#e2f1dd`, `#d9efe7`, `#eef0d8`, `#dae7f0`, `#e0f2ea` |
-| 105 | Contribution screenshots | Until real screenshots exist, every Netdata contribution shows the brand band's dashboard screenshot; the screenshots are decorative (empty `alt`, hidden from assistive technology), since the text carries the content |
+| 105 | Contribution screenshots | *Superseded by 108.* Until real screenshots exist, every Netdata contribution shows the brand band's dashboard screenshot; the screenshots are decorative (empty `alt`, hidden from assistive technology), since the text carries the content |
 | 106 | Contributions on phones | Below 48rem, the screenshot is a flat, full-width strip under the text, fading in from its top, as in the brand band (decisions 57, 62) |
 | 107 | Contribution motion     | Where CSS scroll-driven animations are supported, each panel's text rises in and its screenshot turns from a steeper angle into its final tilt as the panel enters the sheet's view; static in Firefox and under `prefers-reduced-motion: reduce` |
+| 108 | Real screenshots         | Each Netdata contribution shows the user's own screenshot of the matching Netdata Cloud feature (about 16:9, captured at about 1714×964), stored as quality-90 WebP under `assets/stories/netdata/`; still decorative (empty `alt`, hidden from assistive technology); the Dynamic configuration screenshot has its workspace name and node picker blurred, because they name a colleague and their machine |
+| 109 | CI runtime claim         | The developer productivity text says the reported CI runtime dropped "by about 60%" instead of quoting minutes, so it agrees with the 15m 20s total run in its screenshot |
 
 ## 3. Scope
 
@@ -377,5 +379,5 @@ The user asked for real content on the Netdata detail sheet: a short intro on wh
 - **Data:** the copy is the user's text, unchanged, in `content/profile.ts`. The panels' tints live with the story, like brand colours, because they belong to the entry, not the site.
 - **Layout:** the intro sits on the paper surface under the band. "Selected contributions" heads a list of full-bleed panels; each panel clips its tilted screenshot, so the sheet never scrolls sideways.
 - **Closing:** the sheet waits for its time-based animations before unmounting. Scroll-driven animations finish only when scrolled through, so the wait leaves them out.
-- **Open:** real screenshots for each contribution (decision 105).
+- **Screenshots:** the user's PNG captures, converted with `sharp` (bundled with Next.js) to quality-90 WebP, about 75% smaller (2.7 MB to 684 KB in total). Decision 108.
 

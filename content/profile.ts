@@ -9,6 +9,15 @@ import skgjsHome from "@/assets/brand/skgjs-home.webp";
 import skgjsLogo from "@/assets/brand/skgjs-logo.svg";
 import skroutzHome from "@/assets/brand/skroutz-home.webp";
 import skroutzLogo from "@/assets/brand/skroutz-logo.svg";
+import aiChat from "@/assets/stories/netdata/ai-chat.webp";
+import aiInsights from "@/assets/stories/netdata/ai-insights.webp";
+import dyncfg from "@/assets/stories/netdata/dyncfg.webp";
+import performance from "@/assets/stories/netdata/performance.webp";
+import silencingRules from "@/assets/stories/netdata/silencing-rules.webp";
+import infraKnowledge from "@/assets/stories/netdata/infra-knowledge.webp";
+import integrations from "@/assets/stories/netdata/integrations.webp";
+import scim from "@/assets/stories/netdata/scim.webp";
+import githubCi from "@/assets/stories/netdata/github-ci.webp";
 import type { Period } from "@/lib/period";
 
 /** An organisation's own look for the top of its detail sheet (decisions 48–53, 87). */
@@ -105,7 +114,7 @@ export const profile: Profile = {
         tone: "dark",
         visual: netdataDashboard,
       },
-      // Every screenshot is the band's dashboard until real ones exist (decision 105).
+      // Screenshots of Netdata Cloud taken by the user (decision 108).
       story: {
         intro: [
           {
@@ -121,55 +130,55 @@ export const profile: Profile = {
           {
             title: "AI-powered observability",
             body: "Contributed to the evolution of Netdata's AI assistant, from conversational interfaces and streaming responses to persistent conversations, AI-assisted alert configuration, and investigation workflows. I also implemented frontend support for Model Context Protocol (MCP), connecting AI experiences with external tools and services.",
-            image: netdataDashboard,
+            image: aiChat,
             tint: "#dff3e4",
           },
           {
             title: "AI Insights and investigation reports",
             body: "Helped build an end-to-end reporting experience for infrastructure investigations, including report generation, rendering, scheduling, email delivery, and the integration of operational log data. This work brings investigation and reporting capabilities together in a cohesive product experience.",
-            image: netdataDashboard,
+            image: aiInsights,
             tint: "#d7eeee",
           },
           {
             title: "Dynamic configuration system",
             body: "Built the foundational Dynamic Configurations UI and continued evolving it to support complex, dynamically generated configuration forms. This included reusable widgets, autocomplete, nested interfaces, password masking, and improvements to configuration editing and reliability.",
-            image: netdataDashboard,
+            image: dyncfg,
             tint: "#e9f3d6",
           },
           {
             title: "Frontend performance engineering",
             body: "Improved performance in data-intensive parts of Netdata Cloud, including node processing and grouping logic. Two hot-path optimizations replaced quadratic-time operations with linear-time alternatives, addressing a documented 12–15-second main-thread freeze in large environments.",
-            image: netdataDashboard,
+            image: performance,
             tint: "#d6eaf2",
           },
           {
             title: "Alerting and scheduling",
             body: "Contributed to alert configuration, silencing, recurring schedules, and historical alert evaluation. This work included advanced recurrence rules, timezone and daylight-saving considerations, and interfaces for exploring alert behavior over time.",
-            image: netdataDashboard,
+            image: silencingRules,
             tint: "#e2f1dd",
           },
           {
             title: "Infrastructure knowledge and AI context",
             body: "Implemented interfaces for managing infrastructure knowledge and AI memories, including Markdown editing with live preview, version history, diff comparison, restore, and save-conflict resolution.",
-            image: netdataDashboard,
+            image: infraKnowledge,
             tint: "#d9efe7",
           },
           {
             title: "Integrations and onboarding",
             body: "Built the integrations onboarding experience and contributed to its continued evolution. I also implemented onboarding flows that guide new users through connecting their infrastructure and getting started with monitoring.",
-            image: netdataDashboard,
+            image: integrations,
             tint: "#eef0d8",
           },
           {
             title: "Enterprise capabilities",
             body: "Contributed to enterprise identity and access features, including SCIM integration, SSO, role and room mappings, and rule-based room membership driven by infrastructure labels.",
-            image: netdataDashboard,
+            image: scim,
             tint: "#dae7f0",
           },
           {
             title: "Developer productivity and release engineering",
-            body: "Improved the frontend testing and CI workflow through test reliability fixes, additional linting rules, and Jest test sharding. The reported CI runtime dropped from approximately 37–42 minutes to 7.5–9.2 minutes. I also contribute to the ongoing release process and use AI coding agents to accelerate implementation and refactoring while maintaining engineering oversight.",
-            image: netdataDashboard,
+            body: "Improved the frontend testing and CI workflow through test reliability fixes, additional linting rules, and Jest test sharding. The reported CI runtime dropped by about 60%. I also contribute to the ongoing release process and use AI coding agents to accelerate implementation and refactoring while maintaining engineering oversight.",
+            image: githubCi,
             tint: "#e0f2ea",
           },
         ],
