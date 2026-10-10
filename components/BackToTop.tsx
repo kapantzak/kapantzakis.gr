@@ -1,12 +1,13 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { isHomePath } from "@/lib/nav";
 import { scrollToTop } from "@/lib/scroll-top";
 import styles from "./Footer.module.css";
 
-// Home page only: the other pages do not scroll (decision 98).
+// Home page only, on any of its paths: the other pages do not scroll (decisions 98, 183).
 export function BackToTop() {
-  if (usePathname() !== "/") return null;
+  if (!isHomePath(usePathname())) return null;
   return (
     <button type="button" className={styles.backToTop} onClick={scrollToTop}>
       Back to top

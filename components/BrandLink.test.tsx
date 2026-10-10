@@ -33,6 +33,13 @@ describe("BrandLink", () => {
     expect(scrollToTop).toHaveBeenCalledOnce();
   });
 
+  it("scrolls to the top on a section path too (decision 183)", () => {
+    pathname.current = "/writing";
+    const notPrevented = fireEvent.click(renderLink());
+    expect(notPrevented).toBe(false);
+    expect(scrollToTop).toHaveBeenCalledOnce();
+  });
+
   it.each(["metaKey", "ctrlKey", "shiftKey", "altKey"])(
     "leaves a %s click to the browser",
     (key) => {
