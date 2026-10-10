@@ -58,3 +58,75 @@ test("a section path load counts once, under its own path (decision 180)", async
     .poll(() => pageviews(page))
     .toEqual([{ route: "/writing", path: "/writing" }]);
 });
+
+/** Waits for hydration and two frames, so the observer has reported. */
+async function settled(page: Page): Promise<void> {
+  await page.waitForLoadState("networkidle");
+  await page.evaluate(
+    () =>
+      new Promise((resolve) =>
+        requestAnimationFrame(() => requestAnimationFrame(resolve)),
+      ),
+  );
+}
+
+test("a loaded /community keeps its path and marks Experience until the first scroll, on any screen (decision 184)", async ({
+  page,
+}) => {
+  await page.goto("/community");
+  await expect(page.locator("#community")).toBeInViewport();
+  await settled(page);
+  await expect(page).toHaveURL(/\/community$/);
+  await expect(
+    page
+      .getByRole("navigation", { name: "Main" })
+      .getByRole("link", { name: "Experience" }),
+  ).toHaveAttribute("aria-current", "true");
+});
+
+test("Back from a sheet opened at /education returns to /education", async ({
+  page,
+}) => {
+  await page.goto("/education");
+  await page
+    .getByRole("button", { name: /MSc in Applied Informatics/ })
+    .click();
+  const sheet = page.getByRole("dialog", {
+    name: "MSc in Applied Informatics",
+  });
+  await expect(sheet).toBeVisible();
+  await expect(page).toHaveURL(/\/education\/msc-applied-informatics$/);
+  await page.goBack();
+  await expect(sheet).toHaveCount(0);
+  await expect(page).toHaveURL(/\/education$/);
+});
+
+test("closing a sheet opened by URL lands on its group's path", async ({
+  page,
+}) => {
+  await page.goto("/education/bsc-economic-science");
+  const sheet = page.getByRole("dialog", { name: "BSc in Economic Science" });
+  await expect(sheet.getByRole("button", { name: "Close" })).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(sheet).toHaveCount(0);
+  await expect(page).toHaveURL(/\/education$/);
+});
+
+test("scrolling between the home page's paths sends no page view (decision 180)", async ({
+  page,
+}) => {
+  await page.goto("/writing");
+  await settled(page);
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+  await expect(page).toHaveURL(/\/$/);
+  await page.evaluate(() =>
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "instant",
+    }),
+  );
+  await expect(page).toHaveURL(/\/contact$/);
+  expect(await pageviews(page)).toEqual([
+    { route: "/writing", path: "/writing" },
+  ]);
+});

@@ -69,7 +69,7 @@ test("Back closes the sheet and Forward opens it again, without remounting the p
 
   await page.goBack();
   await expect(sheet).toHaveCount(0);
-  await expect(page).toHaveURL(/\/(#experience)?$/);
+  await expect(page).toHaveURL(/\/(experience)?$/);
   await expect(page).toHaveTitle(HOME_TITLE);
   await expect(row).toBeFocused();
 
@@ -96,21 +96,19 @@ test("Forward during the closing animation leaves the sheet open", async ({
   await expect(sheet).not.toHaveAttribute("data-closing");
 });
 
-test("Back from a sheet returns to the section hash it opened from", async ({
+test("Back from a sheet returns to the section path it opened from", async ({
   page,
 }) => {
-  await page.goto("/#experience");
+  await page.goto("/experience");
   await page.getByRole("button", { name: /Adzuna/ }).click();
   await expect(page.getByRole("dialog", { name: "Adzuna" })).toBeVisible();
   await expect(page).toHaveURL(/\/experience\/adzuna$/);
   await page.goBack();
   await expect(page.getByRole("dialog", { name: "Adzuna" })).toHaveCount(0);
-  await expect(page).toHaveURL(/\/#experience$/);
+  await expect(page).toHaveURL(/\/experience$/);
 });
 
-test("the section hash is never written onto a sheet path", async ({
-  page,
-}) => {
+test("the section path never replaces a sheet path", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: /Netdata/ }).click();
   const sheet = page.getByRole("dialog", { name: "Netdata" });
@@ -171,7 +169,7 @@ test("a sheet opened by URL starts full screen and closes into its row at /", as
   const row = page.getByRole("button", { name: /Skroutz/ });
   await expect(row).toBeFocused();
   await expect(row).toBeInViewport();
-  await expect(page).toHaveURL(/\/(#experience)?$/);
+  await expect(page).toHaveURL(/\/(experience)?$/);
   await expect(page).toHaveTitle(HOME_TITLE);
   expect(await page.evaluate(() => history.length)).toBe(before);
   await expectNoHorizontalOverflow(page);
@@ -192,7 +190,7 @@ test("after closing a sheet opened by URL, a nav link scrolls without remounting
     .getByRole("navigation", { name: "Main" })
     .getByRole("link", { name: "Writing" })
     .click();
-  await expect(page).toHaveURL(/\/#writing$/);
+  await expect(page).toHaveURL(/\/writing$/);
   await expect(
     page.getByRole("heading", { level: 2, name: "Writing" }),
   ).toBeInViewport();
@@ -211,7 +209,7 @@ test("reloading on a sheet opened by a click keeps it open, and closing lands on
   await expect(close).toBeFocused();
   await close.click();
   await expect(sheet).toHaveCount(0);
-  await expect(page).toHaveURL(/\/(#experience)?$/);
+  await expect(page).toHaveURL(/\/(experience)?$/);
 });
 
 test("a trailing slash lands on the sheet", async ({ page }) => {

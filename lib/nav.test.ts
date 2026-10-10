@@ -5,7 +5,6 @@ import {
   isHomePath,
   regionOf,
   regionPath,
-  sectionHref,
   sectionOf,
 } from "./nav";
 
@@ -16,12 +15,6 @@ describe("NAV_ITEMS", () => {
       "writing",
       "contact",
     ]);
-  });
-});
-
-describe("sectionHref", () => {
-  it("points at the section on the home page", () => {
-    expect(sectionHref("writing")).toBe("/#writing");
   });
 });
 

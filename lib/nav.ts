@@ -7,11 +7,6 @@ export const NAV_ITEMS = [
 
 export type SectionId = (typeof NAV_ITEMS)[number]["id"];
 
-/** Absolute so the links also work from the 404 page. */
-export function sectionHref(id: SectionId): string {
-  return `/#${id}`;
-}
-
 // Each place with a path of its own (decision 173) and the nav item it marks as current (decision 181).
 const REGION_SECTIONS = {
   experience: "experience",
