@@ -81,6 +81,8 @@ export type Story = {
 };
 
 export type Role = {
+  /** Its sheet's path segment, unique within its group (decision 162). */
+  slug: string;
   org: string;
   orgUrl?: string;
   title: string;
@@ -90,6 +92,8 @@ export type Role = {
   story?: Story;
 };
 export type Degree = {
+  /** Its sheet's path segment, unique within its group (decision 162). */
+  slug: string;
   institution: string;
   degree: string;
   period: Period;
@@ -99,6 +103,8 @@ export type Degree = {
   story?: Story;
 };
 export type CommunityRole = {
+  /** Its sheet's path segment, unique within its group (decision 162). */
+  slug: string;
   org: string;
   orgUrl: string;
   title: string;
@@ -131,6 +137,7 @@ export const profile: Profile = {
   email: "kapantzak@gmail.com",
   experience: [
     {
+      slug: "netdata",
       org: "Netdata",
       orgUrl: "https://www.netdata.cloud/",
       title: "Senior software engineer",
@@ -216,6 +223,7 @@ export const profile: Profile = {
       },
     },
     {
+      slug: "adzuna",
       org: "Adzuna",
       orgUrl: "https://www.adzuna.co.uk/",
       title: "Senior frontend developer",
@@ -271,6 +279,7 @@ export const profile: Profile = {
       },
     },
     {
+      slug: "skroutz",
       org: "Skroutz",
       orgUrl: "https://www.skroutz.gr/",
       title: "Software engineer",
@@ -349,6 +358,7 @@ export const profile: Profile = {
       },
     },
     {
+      slug: "epsilonnet",
       org: "EpsilonNet",
       orgUrl: "https://www.epsilonnet.gr/",
       title: "Full stack developer",
@@ -455,6 +465,7 @@ export const profile: Profile = {
   ],
   education: [
     {
+      slug: "msc-applied-informatics",
       institution: "University of Macedonia",
       degree: "MSc in Applied Informatics",
       period: { start: "2015", end: "2018" },
@@ -528,11 +539,13 @@ export const profile: Profile = {
       },
     },
     {
+      slug: "msc-informatics-and-management",
       institution: "Aristotle University of Thessaloniki",
       degree: "MSc in Informatics and Management",
       period: { start: "2008", end: "2010" },
     },
     {
+      slug: "bsc-economic-science",
       institution: "Aristotle University of Thessaloniki",
       degree: "BSc in Economic Science",
       period: { start: "2001", end: "2006" },
@@ -540,6 +553,7 @@ export const profile: Profile = {
   ],
   community: [
     {
+      slug: "skgjs",
       org: "Thessaloniki JavaScript Meetup",
       orgUrl: "https://skgjs.gr/",
       title: "Co-organiser",

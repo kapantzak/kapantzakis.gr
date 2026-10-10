@@ -36,4 +36,16 @@ describe("profile", () => {
   it("has intro copy for the hero", () => {
     expect(profile.intro.length).toBeGreaterThan(0);
   });
+
+  it("gives every sheet a URL-safe slug, unique within its group", () => {
+    for (const group of [
+      profile.experience,
+      profile.education,
+      profile.community,
+    ]) {
+      const slugs = group.map((entry) => entry.slug);
+      expect(new Set(slugs).size).toBe(slugs.length);
+      for (const slug of slugs) expect(slug).toMatch(/^[a-z0-9-]+$/);
+    }
+  });
 });
