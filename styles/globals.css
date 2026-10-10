@@ -21,6 +21,11 @@ html[data-sheet-open] {
   padding-right: var(--scrollbar-gap, 0px);
 }
 
+/* A fresh load of a section path shows nothing until its region's script has jumped there (decision 186). */
+html[data-region-pending] body {
+  visibility: hidden;
+}
+
 /* Keep anchor targets and focused elements clear of the sticky header (Nav.module.css). */
 @media (min-width: 40rem) {
   html {

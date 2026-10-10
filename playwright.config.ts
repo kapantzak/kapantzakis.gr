@@ -16,11 +16,12 @@ export default defineConfig({
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },
     { name: "mobile", use: { ...devices["Pixel 7"] } },
-    // Firefox stable lacks scroll-driven animations; it exercises the heading fallback only (decision 86).
+    // Firefox stable lacks scroll-driven animations; it exercises the heading fallback (decision 86) and the section
+    // paths, whose reload rule exists for Firefox (decision 176).
     {
       name: "firefox",
       use: { ...devices["Desktop Firefox"] },
-      testMatch: /heading-slide\.spec\.ts$/,
+      testMatch: /(heading-slide|section-routes|navigation)\.spec\.ts$/,
     },
   ],
   webServer: externalBaseURL

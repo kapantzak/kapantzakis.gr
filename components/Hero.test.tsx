@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { Hero, splitHeadline } from "./Hero";
+
+vi.mock("next/navigation", () => ({ usePathname: () => "/" }));
 
 describe("splitHeadline", () => {
   it("splits into two lines, the first one longer when odd", () => {
@@ -25,5 +27,19 @@ describe("Hero", () => {
       /^I build things for the web\.$/,
     );
     expect(screen.getByText("Second.")).toBeInTheDocument();
+  });
+
+  it("cues the reader to Experience's path (decision 175)", () => {
+    render(
+      <Hero
+        eyebrow="Role"
+        headline="I build things for the web."
+        intro={["Intro."]}
+      />,
+    );
+    expect(screen.getByRole("link", { name: "Scroll" })).toHaveAttribute(
+      "href",
+      "/experience",
+    );
   });
 });

@@ -4,12 +4,14 @@ import { computeRoute } from "@vercel/analytics";
 import { Analytics } from "@vercel/analytics/react";
 import { useParams, usePathname } from "next/navigation";
 import { useState } from "react";
+import { isHomePath } from "@/lib/nav";
 
 type View = { route: string; path: string };
 
 type Tracked = {
   path: string;
   onSheet: boolean;
+  home: boolean;
   homeCounted: boolean;
   /** The page view to report, or null for one that does not count. */
   view: View | null;
@@ -21,12 +23,17 @@ function track(
   route: string,
   onSheet: boolean,
 ): Tracked {
-  const home = path === "/";
-  // Closing a sheet over a home page already counted is not a new view of it (decision 172).
-  const counts = !(home && previous?.onSheet && previous.homeCounted);
+  const home = isHomePath(path);
+  // `/` and the section paths are one page, so moving between them is not a view (decision 180), nor is closing a
+  // sheet over the home page once it has counted (decision 172).
+  const counts = !(
+    home &&
+    (previous?.home || (previous?.onSheet && previous.homeCounted))
+  );
   return {
     path,
     onSheet,
+    home,
     homeCounted: (previous?.homeCounted ?? false) || home,
     view: counts ? { route, path } : null,
   };
