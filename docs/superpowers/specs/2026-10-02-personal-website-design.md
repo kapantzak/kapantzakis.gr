@@ -56,7 +56,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 28 | Site icon               | The same logo replaces the generated monogram: `favicon.ico`, a 512px icon and a 192px Apple touch icon    |
 | 29 | Logo link               | Logo sits inside the existing name link before the name; the image is decorative (`alt=""`)              |
 | 30 | One-page site           | `/` holds everything, read by scrolling: hero, experience, writing, contact                               |
-| 31 | Old routes              | *Sitemap superseded by 168.* `/about`, `/posts`, `/contact` removed (404); the `/projects` redirect removed; the sitemap lists `/` only |
+| 31 | Old routes              | *Sitemap superseded by 168; `/contact` by 173.* `/about`, `/posts`, `/contact` removed (404); the `/projects` redirect removed; the sitemap lists `/` only |
 | 32 | Education and community | Expandable rows inside the Experience section, under their own subheadings                               |
 | 33 | Experience details      | *Superseded by 41.* Big rows that expand with an animation; the panel shows existing facts plus a placeholder for rich content to be designed later |
 | 34 | Posts                   | Every post as a tile with a hover animation; every tile opens the article in a new tab                    |
@@ -119,9 +119,9 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 91 | Community name          | The community entry is named "Thessaloniki JavaScript Meetup" (row title and sheet name) instead of "SKG JS"; the hero intro reads "I co-organise the Thessaloniki JavaScript Meetup (SKG JS), …" |
 | 92 | Brand lockup            | Optional `brand.lockup`: the name as two lines of text set beside a symbol-only logo, inside the sheet's `h2`; the two lines together roughly match the logo's height, and the logo's `alt` is empty, so the text alone names the dialog; brands without a lockup are unchanged; Thessaloniki JavaScript Meetup uses "Thessaloniki" / "JavaScript Meetup" |
 | 93 | Lockup colours          | The first line takes the band's strong text colour and the second the brand accent, as in the skgjs.gr hero (white, then yellow); a brand with a lockup must keep 4.5:1 between its accent and its band background (unit-tested) |
-| 94 | Logo link scroll        | On the home page the logo-and-name link scrolls to the top on every click and drops any `#section` from the URL; on other pages it navigates to `/`; its `href` stays `/` |
+| 94 | Logo link scroll        | *URL amended by 174.* On the home page the logo-and-name link scrolls to the top on every click and drops any `#section` from the URL; on other pages it navigates to `/`; its `href` stays `/` |
 | 95 | Back-to-top link        | A quiet "Back to top ↑" text control in the footer beside the © line, styled like the footer links |
-| 96 | Back-to-top technique   | A button that shares the logo link's scroll-to-top behaviour: smooth through the existing CSS `scroll-behavior`, instant under `prefers-reduced-motion`, and the URL stays clean |
+| 96 | Back-to-top technique   | *URL amended by 174.* A button that shares the logo link's scroll-to-top behaviour: smooth through the existing CSS `scroll-behavior`, instant under `prefers-reduced-motion`, and the URL stays clean |
 | 97 | Back-to-top focus       | After scrolling up, focus moves to the logo link without scrolling again, so the next Tab continues from the top |
 | 98 | Back-to-top scope       | Shown on the home page only; the 404 page does not scroll |
 | 99 | Role story              | Optional `Role.story` in `content/profile.ts`: intro paragraphs, each with a label, and a list of contributions (title, body, screenshot, tint); one shared component renders it in the sheet body; Netdata is the first role with a story |
@@ -149,8 +149,8 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 121 | Adzuna tints             | Light greens near the brand green, in panel order: `#e4f2e0`, `#edf4dc`, `#ddeee6`; the paper text tokens keep 4.5:1 on each (decision 104) |
 | 122 | Adzuna images            | The first panel shows Adzuna's public product screenshot (the platform page's laptop image), cut from its laptop frame to 16:9 above the chart legend; the other two show generated, generic illustrations (a hex-tile regional map with line and bar charts, and a filtered search with grouping, KPI tiles, a location table and a salary histogram) with made-up figures marked "Illustrative figures", no Adzuna logo or name, and a slate sidebar instead of Adzuna's green, so they do not pass for the real product |
 | 123 | Adzuna image format      | 1714×964, quality-90 WebP under `assets/stories/adzuna/`; decorative, as in decision 108; each keeps its search bar and filters at the top left, so they survive the phones' 5:2 strip (decision 106) |
-| 124 | Hash follows scroll      | On the home page the URL hash names the section marked current in the nav (decision 40), so scrolling updates it like a nav click; the current history entry is replaced, never a new one pushed |
-| 125 | Hash with no section     | When no section is current (the hero, the footer, a gap between sections) the hash is dropped, so Back to top still leaves a clean URL (decision 96) |
+| 124 | Hash follows scroll      | *Superseded by 174.* On the home page the URL hash names the section marked current in the nav (decision 40), so scrolling updates it like a nav click; the current history entry is replaced, never a new one pushed |
+| 125 | Hash with no section     | *Superseded by 174.* When no section is current (the hero, the footer, a gap between sections) the hash is dropped, so Back to top still leaves a clean URL (decision 96) |
 | 126 | Hash during nav glide    | Updates are not paused while a nav click glides to its section, so the hash briefly names the sections passed and settles on the target |
 | 127 | EpsilonNet story         | *Superseded by 138.* EpsilonNet is the fourth role with a story: an "EpsilonNet" / "My role" intro, one contribution panel about Epsilon ESS, then a timeline of the user's path from junior web designer to full stack developer |
 | 128 | Role timeline            | Optional `Story.timeline`: a heading and an ordered list of stages, each with a title, a body and tags; `Story.contributions` becomes optional, so a story can have panels, a timeline or both; the existing stories are unchanged |
@@ -195,9 +195,20 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 167 | Closing a sheet opened by URL | A sheet opened by the page load closes by replacing its URL with `/` (Back then leaves the site); one opened in the loaded page closes through `history.back()`, as before |
 | 168 | Sheet metadata           | Each sheet path has a title (the sheet's title, through the site's title template), a description built from its data (work and community: "{subtitle} at {title}, {period}."; education: "{title}, {subtitle}, {period}.") and a canonical URL of its own path; the sitemap lists `/` and every sheet path; unknown slugs return 404 |
 | 169 | Tab title                | Opening a sheet in a loaded page sets the tab title to that sheet's title, and closing restores the home title, since a sheet only opens over `/`, so the tab and history entries match the URL |
-| 170 | Home-only behaviour      | The section tracking and hash (decisions 124–125), Back to top and the brand link's scroll (decisions 94–98) stay keyed to `usePathname() === "/"`; on a sheet path they are off, so the hash is never written onto a sheet path |
+| 170 | Home-only behaviour      | *Amended by 183.* The section tracking and hash (decisions 124–125), Back to top and the brand link's scroll (decisions 94–98) stay keyed to `usePathname() === "/"`; on a sheet path they are off, so the hash is never written onto a sheet path |
 | 171 | Analytics routes         | Vercel Web Analytics reports a sheet's page view under its route, `/experience/[slug]`, `/education/[slug]` or `/community/[slug]`, whether a row, Back, Forward or the page load opened it; a site component wraps `@vercel/analytics/react`'s `Analytics` and replaces `@vercel/analytics/next`'s, passing the same settings (`framework: "next"`, and the base path and client config from the `NEXT_PUBLIC_VERCEL_OBSERVABILITY_*` build variables); other paths keep the route the Next.js component reported |
 | 172 | Home page views          | Every sheet opening counts as a page view of that sheet; `/` counts when the page loads on it, and the first time a page load that opened a sheet shows it; a return to `/` from a sheet after `/` has counted in that page load is not a new view |
+| 173 | Section paths            | Five paths name places on the home page: `/experience`, `/writing` and `/contact` for the sections, and `/education` and `/community` for the Education and Community groups inside Experience; each is a real route that renders the home page; `/contact` is live again (decision 31) |
+| 174 | Path follows scroll      | On the home page the URL path names the region in the reading band (decision 40's band): a group inside Experience wins over Experience itself, and no region (the hero, the footer, a gap) gives `/`; the current history entry is replaced with a plain state object, never a new one pushed, and any hash is dropped; Back to top and the brand link's scroll return the URL to `/`; decision 126 still applies |
+| 175 | Section links            | The nav links and the hero's "Scroll" cue link to the section paths; on the home page a plain click pushes the path (or replaces it when it is already the URL) and scrolls to the region, smoothly or, under reduced motion, instantly (decision 96's CSS rule); from another page (the 404) the link navigates and the home page lands on the region |
+| 176 | Opening a section path   | A fresh load of a section path is already at its region before the first paint, through a small inline script in the route's HTML; on a reload or a Back or Forward that reloads the document, the script leaves the browser to restore the exact position; without JavaScript the page opens at the top |
+| 177 | Hash links               | No code handles hashes; an old link such as `/#contact` still works because the browser scrolls to the section's id, after which the path follows the scroll (decision 174) |
+| 178 | Section path SEO         | Each section path's canonical URL is `/`; the sitemap does not list them (decision 168) |
+| 179 | Section path title       | The tab keeps the home title on every section path, on load and while scrolling |
+| 180 | Section path analytics   | `/` and the section paths count as one page: moving between them is never a page view; arriving on one by a page load or from another page (the 404) counts once, under its own path and route; arriving from a sheet follows decision 172, with any of them standing for `/` |
+| 181 | Nav highlight            | On `/education` and `/community` the nav marks Experience as current |
+| 182 | Dev-only console error   | In `next dev`, reaching a section path from another page logs React's "Encountered a script tag" error, because the inline script is rendered on the client and never runs; it is accepted, since the home page scrolls there itself and production builds log nothing |
+| 183 | Home paths               | `/` and the five section paths are all the home page: the section tracking, Back to top and the brand link's scroll (decisions 94–98, 170) run on any of them, and a sheet path stays off |
 
 ## 3. Scope
 
@@ -531,3 +542,28 @@ After decisions 161–170, a sheet opened in the loaded page was reported to Ver
   - Unit: the routes `lib/sheets.ts` gives each sheet path; the component's page views for a click, a close, a reopen, a load by URL and its close, and the settings it passes to the script.
   - E2E: the page views queued in `window.vaq`, which the package fills while its script is not loaded, as it is outside Vercel.
 - **Known limits:** the settings copied from the Next.js component and the `window.vaq` queue the end-to-end tests read are internals of the package, so an upgrade can change them; the unit and end-to-end tests then fail.
+
+## 26. Section routes (2026-10-10)
+
+The user asked for the URL to name the section in view with a real path instead of a hash. The user approved decisions 173–183 on 2026-10-10, for a pull request of their own after the sheet routes.
+
+- **Probe:** a throwaway Next.js 16.3.8 app (production build, Playwright, Chromium and Firefox) with the home page in a shared layout, sheets and smooth scrolling:
+  - `history.replaceState` to a section path with a plain state object updates `usePathname`, fetches nothing and keeps the page mounted; with Next.js's own state object `usePathname` stays `/` while the URL changes, so that variant is ruled out.
+  - A pushed section path and Back return to the exact earlier position; `history.scrollRestoration` stays `auto`.
+  - An inline script after the home page's markup scrolls a fresh load to its region before the first frame, also with Chromium's network and CPU throttled; on a reload Chromium then restores the exact position, while Firefox kept the script's jump (decision 176).
+  - Reaching a section path from the 404 page through a `<Link>` renders the inline script without running it; a scroll on the home page's mount covers it (decision 182).
+  - Opening a sheet from `/experience` and going Back returns to `/experience` with the position kept; without JavaScript `/contact` opens at the top.
+- **Paths:** `lib/nav.ts` lists the five regions with their element ids and the nav item each belongs to (Education and Community belong to Experience), and says whether a pathname is a home path. The Education and Community groups in `components/Experience.tsx` take the ids `education` and `community`.
+- **Routes:** `app/(home)/experience/page.tsx`, `education/page.tsx`, `community/page.tsx`, `writing/page.tsx` and `contact/page.tsx`, beside the existing `[slug]` folders; each renders the inline script for its region and sets the canonical `/`.
+- **Inline script:** marks the document as placed, then, only when the navigation type is `navigate`, scrolls the region into view instantly. The home page's mount scrolls to the region when the path is a section path and no script has placed it, which happens only after a client navigation.
+- **Tracking:** the observer in `components/NavLinks.tsx` also watches the two groups; the deepest region in the band is current; the nav marks the region's nav item; the path is replaced with `{}` as the state object.
+- **Links:** a shared client link for the nav and the hero cue handles a plain click on a home path (push, or replace on the same path, then scroll) and otherwise navigates.
+- **Home paths:** `NavLinks`, `BrandLink`, `BackToTop` and `PageAnalytics` use the home-path test instead of `=== "/"`; `scrollToTop` replaces the URL with `/`.
+- **Analytics:** `PageAnalytics` treats all home paths as one page (decision 180): a move between them sends nothing; a home path counts when the previous path was neither a home path nor a sheet, or when it is reached from a sheet before any home path has counted.
+- **Tests:**
+  - Unit: the region list and home-path test, the tracker's deepest-region rule and path writes, the section link's click handling, the inline script's navigation-type check, `scrollToTop`, and `PageAnalytics` moves between home paths.
+  - E2E: scrolling writes each path and `/` at the top; a nav click pushes a path and Back restores the position; each section path loads at its region with the home title and canonical `/`; a reload keeps the position; the 404's links land on their regions; Back from a sheet returns to the section path; `/#contact` lands on Contact; `/contact` returns 200 while the other retired routes stay 404; the sitemap is unchanged. The existing hash tests move to paths.
+- **Known limits:**
+  - Without JavaScript a section path opens at the top of the page.
+  - The pre-paint jump was measured on a small page in Chromium and Firefox only; a very slow connection could paint the hero before the script arrives.
+  - The `next dev` console error of decision 182.
