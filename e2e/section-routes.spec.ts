@@ -1,5 +1,5 @@
 import { expect, type Page, test } from "@playwright/test";
-import { HOME_TITLE, REGION_PAGES } from "./helpers";
+import { HOME_TITLE, REGION_PAGES, pageviews } from "./helpers";
 
 const scrollY = (page: Page) => page.evaluate(() => Math.round(window.scrollY));
 
@@ -47,4 +47,14 @@ test("a reload inside a region keeps the exact position (decision 176)", async (
   const y = await scrollY(page);
   await page.reload();
   await expect.poll(() => scrollY(page)).toBe(y);
+});
+
+test("a section path load counts once, under its own path (decision 180)", async ({
+  page,
+}) => {
+  await page.goto("/writing");
+  await expect(page.locator("#writing")).toBeInViewport();
+  await expect
+    .poll(() => pageviews(page))
+    .toEqual([{ route: "/writing", path: "/writing" }]);
 });

@@ -1,19 +1,11 @@
-import { expect, type Locator, type Page, test } from "@playwright/test";
+import { expect, type Locator, test } from "@playwright/test";
 import {
   HOME_TITLE,
   PAPER_BG,
   SHEET_PAGES,
   expectNoHorizontalOverflow,
+  pageviews,
 } from "./helpers";
-
-/** The page views the analytics package queued; its script only loads on Vercel. */
-function pageviews(page: Page): Promise<unknown[]> {
-  return page.evaluate(() =>
-    ((window as { vaq?: [string, unknown][] }).vaq ?? [])
-      .filter(([event]) => event === "pageview")
-      .map(([, view]) => view),
-  );
-}
 
 /** Waits for the sheet's own animations (not the scroll-driven ones) to finish. */
 async function settled(sheet: Locator): Promise<void> {

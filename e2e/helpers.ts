@@ -47,3 +47,12 @@ export const REGION_PAGES = [
   { path: "/writing", id: "writing" },
   { path: "/contact", id: "contact" },
 ];
+
+/** The page views the analytics package queued; its script only loads on Vercel. */
+export function pageviews(page: Page): Promise<unknown[]> {
+  return page.evaluate(() =>
+    ((window as { vaq?: [string, unknown][] }).vaq ?? [])
+      .filter(([event]) => event === "pageview")
+      .map(([, view]) => view),
+  );
+}
