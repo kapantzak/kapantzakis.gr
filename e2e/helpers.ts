@@ -18,3 +18,23 @@ export async function expectBodyBackground(
 ): Promise<void> {
   await expect(page.locator("body")).toHaveCSS("background-color", colour);
 }
+
+export const HOME_TITLE = "John Kapantzakis — Senior frontend engineer";
+
+/** Every sheet path and its dialog's accessible name (decision 162). */
+export const SHEET_PAGES = [
+  { path: "/experience/netdata", name: "Netdata" },
+  { path: "/experience/adzuna", name: "Adzuna" },
+  { path: "/experience/skroutz", name: "Skroutz" },
+  { path: "/experience/epsilonnet", name: "EpsilonNet" },
+  {
+    path: "/education/msc-applied-informatics",
+    name: "MSc in Applied Informatics",
+  },
+  {
+    path: "/education/msc-informatics-and-management",
+    name: "MSc in Informatics and Management",
+  },
+  { path: "/education/bsc-economic-science", name: "BSc in Economic Science" },
+  { path: "/community/skgjs", name: "Thessaloniki JavaScript Meetup" },
+];

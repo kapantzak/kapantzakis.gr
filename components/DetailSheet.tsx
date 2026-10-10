@@ -9,7 +9,6 @@ import {
   useRef,
 } from "react";
 import Image from "next/image";
-import { createPortal } from "react-dom";
 import type { Brand } from "@/content/profile";
 import styles from "./DetailSheet.module.css";
 
@@ -53,8 +52,8 @@ function outsideOf(sheet: HTMLElement): Element[] {
   return outside;
 }
 
-// Full-page modal sheet (decisions 41–47), with an optional brand band (48–53). Portalled to <body>: rows carry
-// scroll-driven transforms, which would trap a fixed-position sheet inside them.
+// Full-page modal sheet (decisions 41–47), with an optional brand band (48–53). SheetHost renders it as a direct
+// child of <body> (decision 163): rows carry scroll-driven transforms, which would trap a fixed-position sheet.
 export function DetailSheet({
   period,
   title,
@@ -151,7 +150,7 @@ export function DetailSheet({
     </header>
   );
 
-  return createPortal(
+  return (
     <div
       ref={sheetRef}
       role="dialog"
@@ -193,7 +192,6 @@ export function DetailSheet({
         {brand ? null : header}
         {children}
       </div>
-    </div>,
-    document.body,
+    </div>
   );
 }
