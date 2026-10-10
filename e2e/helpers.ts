@@ -38,3 +38,12 @@ export const SHEET_PAGES = [
   { path: "/education/bsc-economic-science", name: "BSc in Economic Science" },
   { path: "/community/skgjs", name: "Thessaloniki JavaScript Meetup" },
 ];
+
+/** Every section path and the element it lands on (decision 173). */
+export const REGION_PAGES = [
+  { path: "/experience", id: "experience" },
+  { path: "/education", id: "education" },
+  { path: "/community", id: "community" },
+  { path: "/writing", id: "writing" },
+  { path: "/contact", id: "contact" },
+];
