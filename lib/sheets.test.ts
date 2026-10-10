@@ -7,6 +7,7 @@ import {
   sheetMetadata,
   sheetParams,
   sheetPath,
+  sheetRoutes,
   sheetsOf,
 } from "./sheets";
 
@@ -85,5 +86,17 @@ describe("sheet routes", () => {
   it("treats an unknown slug, or a slug from another group, as not found", () => {
     expect(() => sheetMetadata("experience", "nope")).toThrow();
     expect(() => sheetMetadata("education", "netdata")).toThrow();
+  });
+});
+
+describe("sheetRoutes", () => {
+  it("maps every sheet path to its group's dynamic route (decision 171)", () => {
+    const routes = sheetRoutes(profile);
+    expect(Object.keys(routes)).toEqual(
+      sheetsOf(profile).map((sheet) => sheet.path),
+    );
+    expect(routes["/experience/netdata"]).toBe("/experience/[slug]");
+    expect(routes["/education/bsc-economic-science"]).toBe("/education/[slug]");
+    expect(routes["/community/skgjs"]).toBe("/community/[slug]");
   });
 });

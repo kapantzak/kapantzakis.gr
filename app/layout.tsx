@@ -1,9 +1,10 @@
-import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
+import { PageAnalytics } from "@/components/PageAnalytics";
 import { profile } from "@/content/profile";
+import { sheetRoutes } from "@/lib/sheets";
 import { SITE_URL } from "@/lib/site";
 import { HOME_TITLE, TITLE_TEMPLATE } from "@/lib/titles";
 import { bodyFont, displayFont } from "@/styles/fonts";
@@ -29,7 +30,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Nav />
         {children}
         <Footer />
-        <Analytics />
+        <PageAnalytics sheetRoutes={sheetRoutes(profile)} />
       </body>
     </html>
   );

@@ -196,6 +196,8 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 168 | Sheet metadata           | Each sheet path has a title (the sheet's title, through the site's title template), a description built from its data (work and community: "{subtitle} at {title}, {period}."; education: "{title}, {subtitle}, {period}.") and a canonical URL of its own path; the sitemap lists `/` and every sheet path; unknown slugs return 404 |
 | 169 | Tab title                | Opening a sheet in a loaded page sets the tab title to that sheet's title, and closing restores the home title, since a sheet only opens over `/`, so the tab and history entries match the URL |
 | 170 | Home-only behaviour      | The section tracking and hash (decisions 124–125), Back to top and the brand link's scroll (decisions 94–98) stay keyed to `usePathname() === "/"`; on a sheet path they are off, so the hash is never written onto a sheet path |
+| 171 | Analytics routes         | Vercel Web Analytics reports a sheet's page view under its route, `/experience/[slug]`, `/education/[slug]` or `/community/[slug]`, whether a row, Back, Forward or the page load opened it; a site component wraps `@vercel/analytics/react`'s `Analytics` and replaces `@vercel/analytics/next`'s, passing the same settings (`framework: "next"`, and the base path and client config from the `NEXT_PUBLIC_VERCEL_OBSERVABILITY_*` build variables); other paths keep the route the Next.js component reported |
+| 172 | Home page views          | Every sheet opening counts as a page view of that sheet; `/` counts when the page loads on it, and the first time a page load that opened a sheet shows it; a return to `/` from a sheet after `/` has counted in that page load is not a new view |
 
 ## 3. Scope
 
@@ -518,3 +520,14 @@ The user asked for every Work, Education and Community sheet to have its own rou
   - On a load by URL, the page behind is neither `inert` nor scroll-locked until hydration, though the sheet covers it and scrolls on its own.
   - Reloading on a sheet opened in the page and then closing it leaves two `/` entries, so one Back does nothing visible.
   - A `<Link>` to a sheet path would scroll the page to the top, as Next.js does on navigation; the site uses none.
+
+## 25. Sheet analytics (2026-10-10)
+
+After decisions 161–170, a sheet opened in the loaded page was reported to Vercel Web Analytics under its literal path, because `pushState` leaves `useParams()` empty, while one opened by URL was reported as `/experience/[slug]`; and closing a sheet sent a fresh page view of `/`. The user approved decisions 171–172 on 2026-10-10, for the same pull request as the sheet routes.
+
+- **Package (`@vercel/analytics` 2.0.1):** the Next.js `Analytics` takes its route from `useParams()` and `usePathname()` and sends a page view whenever the route or path changes; it accepts no `route` or `path`, and `beforeSend` sees only the URL. The React `Analytics` takes `route` and `path` and sends a page view when either changes and both are set.
+- **Component:** `components/PageAnalytics.tsx`, rendered by the root layout in place of the Next.js `Analytics`. The root layout passes it each sheet path's route from `lib/sheets.ts`; any other path takes its route from `computeRoute(pathname, useParams())`, as before. It remembers the previous path and whether `/` has counted, and hands `route` and `path` to the React `Analytics`, or `null` for a return to `/` that does not count (decision 172), so reopening the same sheet still counts.
+- **Tests:**
+  - Unit: the routes `lib/sheets.ts` gives each sheet path; the component's page views for a click, a close, a reopen, a load by URL and its close, and the settings it passes to the script.
+  - E2E: the page views queued in `window.vaq`, which the package fills while its script is not loaded, as it is outside Vercel.
+- **Known limits:** the settings copied from the Next.js component and the `window.vaq` queue the end-to-end tests read are internals of the package, so an upgrade can change them; the unit and end-to-end tests then fail.

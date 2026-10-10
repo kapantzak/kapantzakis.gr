@@ -1,10 +1,19 @@
-import { expect, type Locator, test } from "@playwright/test";
+import { expect, type Locator, type Page, test } from "@playwright/test";
 import {
   HOME_TITLE,
   PAPER_BG,
   SHEET_PAGES,
   expectNoHorizontalOverflow,
 } from "./helpers";
+
+/** The page views the analytics package queued; its script only loads on Vercel. */
+function pageviews(page: Page): Promise<unknown[]> {
+  return page.evaluate(() =>
+    ((window as { vaq?: [string, unknown][] }).vaq ?? [])
+      .filter(([event]) => event === "pageview")
+      .map(([, view]) => view),
+  );
+}
 
 /** Waits for the sheet's own animations (not the scroll-driven ones) to finish. */
 async function settled(sheet: Locator): Promise<void> {
@@ -242,4 +251,54 @@ test("reduced motion opens a sheet by URL with the short fade", async ({
     "animation-name",
     /fade-in/,
   );
+});
+
+test.describe("analytics", () => {
+  const home = { route: "/", path: "/" };
+  const netdata = {
+    route: "/experience/[slug]",
+    path: "/experience/netdata",
+  };
+
+  test("a sheet opened in the page is reported under its route, and closing it is no home view (decisions 171–172)", async ({
+    page,
+  }) => {
+    const adzuna = { route: "/experience/[slug]", path: "/experience/adzuna" };
+    await page.goto("/");
+    await page.getByRole("button", { name: /Netdata/ }).click();
+    const sheet = page.getByRole("dialog", { name: "Netdata" });
+    await expect(sheet).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(sheet).toHaveCount(0);
+    await page.getByRole("button", { name: /Adzuna/ }).click();
+    await expect(page.getByRole("dialog", { name: "Adzuna" })).toBeVisible();
+    await page.goBack();
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    await page.goForward();
+    await expect(page.getByRole("dialog", { name: "Adzuna" })).toBeVisible();
+    await expect
+      .poll(() => pageviews(page))
+      .toEqual([home, netdata, adzuna, adzuna]);
+  });
+
+  test("a sheet loaded by URL is reported under its route, and closing it counts / once (decision 172)", async ({
+    page,
+  }) => {
+    const msc = {
+      route: "/education/[slug]",
+      path: "/education/msc-applied-informatics",
+    };
+    await page.goto(msc.path);
+    const sheet = page.getByRole("dialog", {
+      name: "MSc in Applied Informatics",
+    });
+    await expect(sheet.getByRole("button", { name: "Close" })).toBeFocused();
+    await page.keyboard.press("Escape");
+    await expect(sheet).toHaveCount(0);
+    await page.getByRole("button", { name: /Netdata/ }).click();
+    await expect(page.getByRole("dialog", { name: "Netdata" })).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    await expect.poll(() => pageviews(page)).toEqual([msc, home, netdata]);
+  });
 });
