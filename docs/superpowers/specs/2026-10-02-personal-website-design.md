@@ -200,7 +200,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 172 | Home page views          | Every sheet opening counts as a page view of that sheet; `/` counts when the page loads on it, and the first time a page load that opened a sheet shows it; a return to `/` from a sheet after `/` has counted in that page load is not a new view |
 | 173 | Section paths            | Five paths name places on the home page: `/experience`, `/writing` and `/contact` for the sections, and `/education` and `/community` for the Education and Community groups inside Experience; each is a real route that renders the home page; `/contact` is live again (decision 31) |
 | 174 | Path follows scroll      | On the home page the URL path names the region in the reading band (decision 40's band): a group inside Experience wins over Experience itself, and no region (the hero, the footer, a gap) gives `/`; the current history entry is replaced with a plain state object, never a new one pushed, and any hash is dropped; Back to top and the brand link's scroll return the URL to `/`; decision 126 still applies |
-| 175 | Section links            | The nav links and the hero's "Scroll" cue link to the section paths; on the home page a plain click pushes the path (or replaces it when it is already the URL) and scrolls to the region, smoothly or, under reduced motion, instantly (decision 96's CSS rule); from another page (the 404) the link navigates and the home page lands on the region |
+| 175 | Section links            | *Query string amended by 185.* The nav links and the hero's "Scroll" cue link to the section paths; on the home page a plain click pushes the path (or replaces it when it is already the URL) and scrolls to the region, smoothly or, under reduced motion, instantly (decision 96's CSS rule); from another page (the 404) the link navigates and the home page lands on the region |
 | 176 | Opening a section path   | A fresh load of a section path is already at its region before the first paint, through a small inline script in the route's HTML; on a reload or a Back or Forward that reloads the document, the script leaves the browser to restore the exact position; without JavaScript the page opens at the top |
 | 177 | Hash links               | No code handles hashes; an old link such as `/#contact` still works because the browser scrolls to the section's id, after which the path follows the scroll (decision 174) |
 | 178 | Section path SEO         | Each section path's canonical URL is `/`; the sitemap does not list them (decision 168) |
@@ -210,6 +210,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 182 | Dev-only console error   | In `next dev`, reaching a section path from another page logs React's "Encountered a script tag" error, because the inline script is rendered on the client and never runs; it is accepted, since the home page scrolls there itself and production builds log nothing |
 | 183 | Home paths               | `/` and the five section paths are all the home page: the section tracking, Back to top and the brand link's scroll (decisions 94–98, 170) run on any of them, and a sheet path stays off |
 | 184 | Arriving on a section path | When the home page is reached on a section path (a page load, or a link from the 404 page), the path stays as it is and the nav marks the item it belongs to until the visitor first scrolls; from then the band decides (decision 174); on phones the single-row Community group ends above the band, so without this a `/community` link would read `/writing` at once |
+| 185 | Section link query string | A section link click keeps the URL's query string, as the path tracking and Back to top do (amends decision 175) |
 
 ## 3. Scope
 
@@ -546,7 +547,7 @@ After decisions 161–170, a sheet opened in the loaded page was reported to Ver
 
 ## 26. Section routes (2026-10-10)
 
-The user asked for the URL to name the section in view with a real path instead of a hash. The user approved decisions 173–184 on 2026-10-10, for a pull request of their own after the sheet routes.
+The user asked for the URL to name the section in view with a real path instead of a hash. The user approved decisions 173–184 on 2026-10-10, for a pull request of their own after the sheet routes, and after the final review decision 185, the Firefox runs and the `/contact` limit below.
 
 - **Probe:** a throwaway Next.js 16.3.8 app (production build, Playwright, Chromium and Firefox) with the home page in a shared layout, sheets and smooth scrolling:
   - `history.replaceState` to a section path with a plain state object updates `usePathname`, fetches nothing and keeps the page mounted; with Next.js's own state object `usePathname` stays `/` while the URL changes, so that variant is ruled out.
@@ -564,8 +565,9 @@ The user asked for the URL to name the section in view with a real path instead 
 - **Analytics:** `PageAnalytics` treats all home paths as one page (decision 180): a move between them sends nothing; a home path counts when the previous path was neither a home path nor a sheet, or when it is reached from a sheet before any home path has counted.
 - **Tests:**
   - Unit: the region list and home-path test, the tracker's deepest-region rule and path writes, the section link's click handling, the inline script's navigation-type check, `scrollToTop`, and `PageAnalytics` moves between home paths.
-  - E2E: scrolling writes each path and `/` at the top; a nav click pushes a path and Back restores the position; each section path loads at its region with the home title and canonical `/`; a reload keeps the position; the 404's links land on their regions; Back from a sheet returns to the section path; `/#contact` lands on Contact; `/contact` returns 200 while the other retired routes stay 404; the sitemap is unchanged. The existing hash tests move to paths.
+  - E2E: scrolling writes each path and `/` at the top; a nav click pushes a path and Back restores the position; each section path loads at its region with the home title and canonical `/`; a reload keeps the position; the 404's links land on their regions; Back from a sheet returns to the section path; `/#contact` lands on Contact; `/contact` returns 200 while the other retired routes stay 404; the sitemap is unchanged. The existing hash tests move to paths. The section-route and navigation specs also run in the Firefox project, the browser decision 176's navigation-type check exists for.
 - **Known limits:**
   - Without JavaScript a section path opens at the top of the page.
   - The pre-paint jump was measured on a small page in Chromium and Firefox only; a very slow connection could paint the hero before the script arrives.
   - The `next dev` console error of decision 182.
+  - A fresh load of `/contact` runs its script before the footer is parsed, so the page cannot yet scroll as far as a nav tap does: on a Pixel 7 the Contact heading lands 380px down the view instead of 252px, still in view; accepted by the user.

@@ -19,7 +19,7 @@
 - Section paths: canonical `/`, the home title, not in the sitemap (decisions 178–179).
 - The inline script jumps only when the navigation type is `navigate` (decision 176).
 - `components/SheetHost.tsx` and `components/DetailSheet.tsx` are **not** modified.
-- No non-null assertions (`!`) in source files; the codebase has none.
+- No non-null assertions (`!`) in new source code (`components/DetailSheet.tsx:75` has the codebase's only one).
 - Code comments: short, professional, explain "why", and cite decisions as `(decision N)` like the surrounding code.
 - Git: stage files by explicit path, never `git add -A` or `git add .`. Commit messages are an imperative sentence describing the change (as in `git log`) and carry no tool or AI attribution and no co-author trailer.
 - Before every commit: `npm run lint`, `npm run typecheck`, `npm run test`, `npm run format:check` and `npm run e2e` pass.
