@@ -19,24 +19,31 @@ for (const { path, id } of REGION_PAGES) {
   });
 }
 
-test("a fresh load is at its region from the first frame (decision 176)", async ({
-  page,
-}) => {
-  await page.addInitScript(() => {
-    requestAnimationFrame(() => {
-      (window as { firstFrameY?: number }).firstFrameY = Math.round(
-        window.scrollY,
-      );
+for (const path of ["/writing", "/contact"]) {
+  test(`a fresh load of ${path} shows nothing before its region (decisions 176, 186)`, async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      const frames: string[] = [];
+      (window as { frames_?: string[] }).frames_ = frames;
+      const record = () => {
+        const shown =
+          !!document.body &&
+          getComputedStyle(document.body).visibility === "visible";
+        frames.push(shown ? String(Math.round(window.scrollY)) : "hidden");
+        if (frames.length < 6) requestAnimationFrame(record);
+      };
+      requestAnimationFrame(record);
     });
+    await page.goto(path);
+    await expect(page.locator(path.replace("/", "#"))).toBeInViewport();
+    const frames = await page.evaluate(
+      () => (window as { frames_?: string[] }).frames_ ?? [],
+    );
+    const firstShown = frames.find((frame) => frame !== "hidden");
+    expect(Number(firstShown), frames.join(" ")).toBeGreaterThan(0);
   });
-  await page.goto("/writing");
-  await expect(page.locator("#writing")).toBeInViewport();
-  const firstFrameY = await page.evaluate(
-    () => (window as { firstFrameY?: number }).firstFrameY,
-  );
-  expect(firstFrameY).toBeGreaterThan(0);
-  expect(firstFrameY).toBe(await scrollY(page));
-});
+}
 
 test("a reload inside a region keeps the exact position (decision 176)", async ({
   page,
