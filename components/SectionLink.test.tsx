@@ -45,6 +45,21 @@ describe("SectionLink", () => {
     expect(region.scrollIntoView).toHaveBeenCalledOnce();
   });
 
+  it("keeps the query string, pushed or replaced, and drops the hash (decision 185)", () => {
+    pathname.current = "/";
+    history.replaceState(null, "", "/?ref=x#top");
+    const { link } = renderLink();
+    fireEvent.click(link);
+    expect(window.location.pathname + window.location.search).toBe(
+      "/writing?ref=x",
+    );
+    expect(window.location.hash).toBe("");
+    fireEvent.click(link);
+    expect(window.location.pathname + window.location.search).toBe(
+      "/writing?ref=x",
+    );
+  });
+
   it.each(["metaKey", "ctrlKey", "shiftKey", "altKey"])(
     "leaves a %s click to the browser",
     (key) => {

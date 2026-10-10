@@ -32,8 +32,10 @@ export function SectionLink({
     if (!onHome || modified) return;
     event.preventDefault();
     // Plain state objects, so Next.js syncs usePathname (section 26); clicking the current path adds no Back step.
-    if (window.location.pathname === path) history.replaceState({}, "", path);
-    else history.pushState(null, "", path);
+    // The query string stays, as it does when scrolling (decision 185).
+    const url = path + window.location.search;
+    if (window.location.pathname === path) history.replaceState({}, "", url);
+    else history.pushState(null, "", url);
     // No `behavior`: the CSS `scroll-behavior` on <html> decides, so reduced motion jumps (decision 96).
     document.getElementById(id)?.scrollIntoView();
   }
