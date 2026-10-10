@@ -194,7 +194,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 166 | Server rendering         | A sheet path's HTML contains its open sheet with its full content, readable without JavaScript |
 | 167 | Closing a sheet opened by URL | A sheet opened by the page load closes by replacing its URL with `/` (Back then leaves the site); one opened in the loaded page closes through `history.back()`, as before |
 | 168 | Sheet metadata           | Each sheet path has a title (the sheet's title, through the site's title template), a description built from its data (work and community: "{subtitle} at {title}, {period}."; education: "{title}, {subtitle}, {period}.") and a canonical URL of its own path; the sitemap lists `/` and every sheet path; unknown slugs return 404 |
-| 169 | Tab title                | Opening a sheet in a loaded page sets the tab title to that sheet's title, and closing restores the title it replaced, so the tab and history entries match the URL |
+| 169 | Tab title                | Opening a sheet in a loaded page sets the tab title to that sheet's title, and closing restores the home title, since a sheet only opens over `/`, so the tab and history entries match the URL |
 | 170 | Home-only behaviour      | The section tracking and hash (decisions 124–125), Back to top and the brand link's scroll (decisions 94–98) stay keyed to `usePathname() === "/"`; on a sheet path they are off, so the hash is never written onto a sheet path |
 
 ## 3. Scope
@@ -503,7 +503,7 @@ The user asked for every Work, Education and Community sheet to have its own rou
   - `replaceState` with Next.js's own state object leaves `usePathname` stale; closing a sheet opened by URL therefore replaces the entry with a plain state object, which Next.js syncs (decision 167).
   - `pushState` leaves `document.title` unchanged (decision 169); an unknown slug with `dynamicParams = false` returns the root 404 without the home layout.
 - **Routes:** `app/(home)/layout.tsx` renders the home page (hero, sections, rows) and the sheet host; `app/(home)/page.tsx` keeps the home metadata; `app/(home)/experience/[slug]/page.tsx`, `education/[slug]` and `community/[slug]` each export `generateStaticParams`, `dynamicParams = false` and `generateMetadata`, and render nothing. A comment in each empty page says why.
-- **Slugs and paths:** `lib/sheets.ts` maps between a group and slug and its path, parses a pathname back to a sheet and lists every sheet's path and metadata for the pages and the sitemap.
+- **Slugs and paths:** `lib/sheets.ts` maps a group and slug to its path and lists every sheet's path and metadata for the pages and the sitemap. Nothing parses a pathname: the sheet host matches the exact paths it was given, and Next.js has already normalised trailing slashes.
 - **Rows:** each row stays the button of decision 41; a click only pushes the sheet's path. Rows register their buttons by path with a small client context, so the host can measure a row and return focus to it. A row keeps its brand wipe while its sheet is open (decision 53).
 - **Sheet host:** a client component in the layout reads `usePathname()` and owns the open, closing and closed phases. A change to a sheet path opens that sheet, growing from its row (decision 164); a change away from it plays the closing animation, then unmounts the sheet and focuses the row. On the first render it opens with the "by URL" entry (decision 165). It also handles the tab title (decision 169).
 - **Sheet:** `DetailSheet` keeps its markup, modality and animations, but renders in place instead of through `createPortal`, so the server can render it (decision 166). It takes an entry mode: "grow" uses the existing `grow` keyframes, and "by URL" starts at `inset(0)` with the content rise only. Reduced motion keeps its short fade in both modes.
@@ -512,7 +512,7 @@ The user asked for every Work, Education and Community sheet to have its own rou
 - **Content:** `content/profile.ts` gains a required `slug` on `Role`, `Degree` and `CommunityRole`, with a test that slugs are unique within a group and URL-safe (`^[a-z0-9-]+$`).
 - **Sitemap:** `app/sitemap.ts` lists `/` and every sheet path from `lib/sheets.ts` (decision 168).
 - **Tests:**
-  - Unit: `lib/sheets.ts` (paths, parsing, unknown paths), the slug test and the host's open, close and focus behaviour, replacing the `ExpandableItem` sheet tests.
+  - Unit: `lib/sheets.ts` (paths, descriptions, static params, unknown slugs), the slug test and the host's open, close and focus behaviour, replacing the `ExpandableItem` sheet tests.
   - E2E: a click changes the URL and keeps the grow animation; Back and Forward close and reopen it; a sheet path loads with the sheet open, its title and canonical URL, and its content without JavaScript; closing it lands on `/` with focus on the row; a nav link after that does not remount the page; unknown slugs return 404; the sitemap lists every path; the hash is never written onto a sheet path. Existing sheet tests keep passing; the Back test's URL check stays.
 - **Known limits:**
   - On a load by URL, the page behind is neither `inert` nor scroll-locked until hydration, though the sheet covers it and scrolls on its own.
