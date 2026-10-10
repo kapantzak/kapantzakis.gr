@@ -28,7 +28,8 @@ type Props = {
   brand?: Brand;
   /** Short facts in the header, so a brand band carries them too (decision 54). */
   facts?: ReactNode;
-  origin: Origin;
+  /** The row it grows from; null when the page load opened it (decision 165). */
+  origin: Origin | null;
   closing: boolean;
   /** The visitor asked to close. */
   onClose: () => void;
@@ -36,6 +37,21 @@ type Props = {
   onClosed: () => void;
   children: ReactNode;
 };
+
+/** Everything beside the sheet and beside each of its ancestors, up to <body>. */
+function outsideOf(sheet: HTMLElement): Element[] {
+  const outside: Element[] = [];
+  for (
+    let node: Element = sheet;
+    node.parentElement && node !== document.body;
+    node = node.parentElement
+  ) {
+    for (const sibling of Array.from(node.parentElement.children)) {
+      if (sibling !== node) outside.push(sibling);
+    }
+  }
+  return outside;
+}
 
 // Full-page modal sheet (decisions 41–47), with an optional brand band (48–53). Portalled to <body>: rows carry
 // scroll-driven transforms, which would trap a fixed-position sheet inside them.
@@ -59,9 +75,8 @@ export function DetailSheet({
   useEffect(() => {
     const sheet = sheetRef.current!;
     const root = document.documentElement;
-    const others = Array.from(document.body.children).filter(
-      (el) => el !== sheet && !el.hasAttribute("inert"),
-    );
+    // Not only <body>'s children: the sheet need not sit directly in <body> (tests, decision 163).
+    const others = outsideOf(sheet).filter((el) => !el.hasAttribute("inert"));
     for (const el of others) el.setAttribute("inert", "");
     // Measured before the lock hides the scrollbar. A reserved gutter would paint over the sheet's own scrollbar.
     const gap = window.innerWidth - root.clientWidth;
@@ -99,10 +114,12 @@ export function DetailSheet({
   }
 
   const vars = {
-    "--from-top": `${origin.top}px`,
-    "--from-right": `${origin.right}px`,
-    "--from-bottom": `${origin.bottom}px`,
-    "--from-left": `${origin.left}px`,
+    ...(origin && {
+      "--from-top": `${origin.top}px`,
+      "--from-right": `${origin.right}px`,
+      "--from-bottom": `${origin.bottom}px`,
+      "--from-left": `${origin.left}px`,
+    }),
     ...(brand && {
       "--accent": brand.accent,
       "--brand-bg": brand.background,
@@ -142,6 +159,7 @@ export function DetailSheet({
       aria-labelledby={titleId}
       className={styles.sheet}
       data-closing={closing || undefined}
+      data-entry={origin ? undefined : "url"}
       style={vars}
       onKeyDown={onKeyDown}
     >

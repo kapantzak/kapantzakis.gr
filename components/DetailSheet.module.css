@@ -254,6 +254,11 @@
     animation: shrink 550ms cubic-bezier(0.7, 0, 0.3, 1) both;
   }
 
+  /* Opened by URL: already full screen, so only the content rises in (decision 165). */
+  .sheet[data-entry="url"]:not([data-closing]) {
+    animation: none;
+  }
+
   .bar,
   .band,
   .content > * {
