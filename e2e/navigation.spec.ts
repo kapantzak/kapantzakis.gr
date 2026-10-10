@@ -20,21 +20,6 @@ async function scrollIntoBand(page: Page, id: string): Promise<void> {
   );
 }
 
-/** Waits for a smooth scroll to come to rest, so the history entry holds where it ended. */
-async function scrollSettled(page: Page): Promise<void> {
-  await expect
-    .poll(() =>
-      page.evaluate(
-        () =>
-          new Promise<boolean>((resolve) => {
-            const y = window.scrollY;
-            setTimeout(() => resolve(window.scrollY === y), 150);
-          }),
-      ),
-    )
-    .toBe(true);
-}
-
 test("every main-nav link scrolls to its section, marks it current and adds one Back step (decision 175)", async ({
   page,
 }) => {
@@ -57,24 +42,26 @@ test("every main-nav link scrolls to its section, marks it current and adds one 
 test("Back after a nav click returns to where the reader was, and Forward to the section", async ({
   page,
 }) => {
+  // Instant scrolling, so Back and Forward restore at once; the smooth glide's timing is the browser's (decision 126).
+  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
   const heading = page.getByRole("heading", { level: 2, name: "Say hello" });
-  await page
+  const contact = page
     .getByRole("navigation", { name: "Main" })
-    .getByRole("link", { name: "Contact" })
-    .click();
-  await scrollSettled(page);
+    .getByRole("link", { name: "Contact" });
+  await contact.click();
   await expect(page).toHaveURL(/\/contact$/);
   await expect(heading).toBeInViewport();
+  await expect(contact).toHaveAttribute("aria-current", "true");
   await page.goBack();
   await expect(page).toHaveURL(/\/$/);
   await expect
     .poll(() => page.evaluate(() => Math.round(window.scrollY)))
     .toBe(0);
   await page.goForward();
-  await scrollSettled(page);
   await expect(page).toHaveURL(/\/contact$/);
   await expect(heading).toBeInViewport();
+  await expect(contact).toHaveAttribute("aria-current", "true");
 });
 
 test("scrolling through the regions writes each path without adding history (decision 174)", async ({
