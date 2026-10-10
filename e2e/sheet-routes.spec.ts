@@ -30,6 +30,30 @@ test("a row opens its sheet at the sheet's path, growing out of the row", async 
   await expect(page).toHaveTitle("Netdata — John Kapantzakis");
 });
 
+test("the sheet is a direct child of <body>, after <main>, however it opened (decision 163)", async ({
+  page,
+}) => {
+  const placement = (sheet: Locator) =>
+    sheet.evaluate((el) => ({
+      parent: el.parentElement?.tagName,
+      before: el.previousElementSibling?.tagName,
+    }));
+  const expected = { parent: "BODY", before: "MAIN" };
+
+  await page.goto("/");
+  await page.getByRole("button", { name: /Netdata/ }).click();
+  expect(
+    await placement(page.getByRole("dialog", { name: "Netdata" })),
+  ).toEqual(expected);
+
+  await page.goto("/community/skgjs");
+  expect(
+    await placement(
+      page.getByRole("dialog", { name: "Thessaloniki JavaScript Meetup" }),
+    ),
+  ).toEqual(expected);
+});
+
 test("Back closes the sheet and Forward opens it again, without remounting the page", async ({
   page,
 }) => {
@@ -62,6 +86,8 @@ test("Forward during the closing animation leaves the sheet open", async ({
   const sheet = page.getByRole("dialog", { name: "Netdata" });
   await settled(sheet);
   await page.goBack();
+  // Forward must land while the sheet is still shrinking, or the test proves nothing.
+  await expect(sheet).toHaveAttribute("data-closing");
   await page.goForward();
   await expect(page).toHaveURL(/\/experience\/netdata$/);
   await settled(sheet);
