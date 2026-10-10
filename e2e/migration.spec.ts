@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
+import { SHEET_PAGES } from "./helpers";
 
-// The site is one page now (decisions 30–31, 35).
+// The site is one page, with a path per sheet (decisions 30–31, 35, 161).
 test("retired routes return 404", async ({ request }) => {
   for (const path of [
     "/about",
@@ -20,10 +21,15 @@ test("the service-worker kill switch is served", async ({ request }) => {
   expect(await response.text()).toContain("registration.unregister()");
 });
 
-test("sitemap lists the home page only", async ({ request }) => {
+test("sitemap lists the home page and every sheet path (decision 168)", async ({
+  request,
+}) => {
   const body = await (await request.get("/sitemap.xml")).text();
-  expect(body.match(/<loc>/g)).toHaveLength(1);
+  expect(body.match(/<loc>/g)).toHaveLength(1 + SHEET_PAGES.length);
   expect(body).toContain("<loc>https://kapantzakis.gr</loc>");
+  for (const { path } of SHEET_PAGES) {
+    expect(body).toContain(`<loc>https://kapantzakis.gr${path}</loc>`);
+  }
 });
 
 test("robots.txt allows crawling and points to the sitemap", async ({

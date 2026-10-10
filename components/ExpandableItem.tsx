@@ -1,101 +1,32 @@
 "use client";
 
-import {
-  type CSSProperties,
-  type ReactNode,
-  useCallback,
-  useEffect,
-  useId,
-  useRef,
-  useState,
-} from "react";
+import type { CSSProperties } from "react";
 import type { Brand } from "@/content/profile";
-import { DetailSheet, type Origin } from "./DetailSheet";
 import styles from "./ExpandableItem.module.css";
+import { useSheets } from "./SheetHost";
 
 type Props = {
+  /** Its sheet's own path (decision 161). */
+  path: string;
   period: string;
   title: string;
   subtitle: string;
   brand?: Brand;
-  /** Short facts shown in the sheet header (decision 54). */
-  facts?: ReactNode;
-  children: ReactNode;
 };
 
-type Phase = "closed" | "open" | "closing";
-
-function insetsOf(el: HTMLElement): Origin {
-  const rect = el.getBoundingClientRect();
-  const { clientWidth, clientHeight } = document.documentElement;
-  return {
-    top: rect.top,
-    right: clientWidth - rect.right,
-    bottom: clientHeight - rect.bottom,
-    left: rect.left,
-  };
-}
-
-// Row that opens its details in a full-page sheet (decisions 41–47).
+// Row that opens its sheet at the sheet's path; the home layout's SheetHost renders the sheet (decisions 41, 163).
 export function ExpandableItem({
+  path,
   period,
   title,
   subtitle,
   brand,
-  facts,
-  children,
 }: Props) {
-  const [phase, setPhase] = useState<Phase>("closed");
-  const [origin, setOrigin] = useState<Origin | null>(null);
-  const rowRef = useRef<HTMLButtonElement>(null);
-  const closeRequested = useRef(false);
-  const returnFocus = useRef(false);
-  const key = useId();
-
-  function open() {
-    closeRequested.current = false;
-    setOrigin(insetsOf(rowRef.current!));
-    // No URL change: the entry only gives Back something to close (decision 46).
-    window.history.pushState({ detailSheet: key }, "");
-    setPhase("open");
-  }
-
-  const startClosing = useCallback(() => {
-    if (rowRef.current) setOrigin(insetsOf(rowRef.current));
-    setPhase("closing");
-  }, []);
-
-  // Escape and the close button leave through the history entry, so Back stays balanced.
-  const requestClose = useCallback(() => {
-    if (closeRequested.current) return;
-    closeRequested.current = true;
-    if (window.history.state?.detailSheet === key) window.history.back();
-    else startClosing();
-  }, [key, startClosing]);
-
-  const finishClosing = useCallback(() => {
-    returnFocus.current = true;
-    setPhase("closed");
-  }, []);
-
-  useEffect(() => {
-    if (phase !== "open") return;
-    window.addEventListener("popstate", startClosing);
-    return () => window.removeEventListener("popstate", startClosing);
-  }, [phase, startClosing]);
-
-  // Runs after the sheet's cleanup has lifted `inert`, so the row can take focus again.
-  useEffect(() => {
-    if (phase === "closed" && returnFocus.current) {
-      returnFocus.current = false;
-      rowRef.current?.focus();
-    }
-  }, [phase]);
-
+  const { shownPath, open, registerRow } = useSheets();
   return (
     <li
       className={styles.item}
-      data-open={phase !== "closed" || undefined}
+      data-open={shownPath === path || undefined}
       // The row wipes in the brand colour the sheet grows out of (decision 53).
       style={
         brand ? ({ "--accent": brand.accent } as CSSProperties) : undefined
@@ -103,11 +34,11 @@ export function ExpandableItem({
     >
       <h4 className={styles.heading}>
         <button
-          ref={rowRef}
+          ref={(row) => registerRow(path, row)}
           type="button"
           className={styles.trigger}
           aria-haspopup="dialog"
-          onClick={open}
+          onClick={() => open(path)}
         >
           <span className={styles.period}>{period}</span>
           <span className={styles.title}>{title}</span>
@@ -115,21 +46,6 @@ export function ExpandableItem({
           <span className={styles.icon} aria-hidden="true" />
         </button>
       </h4>
-      {phase !== "closed" && origin ? (
-        <DetailSheet
-          period={period}
-          title={title}
-          subtitle={subtitle}
-          brand={brand}
-          facts={facts}
-          origin={origin}
-          closing={phase === "closing"}
-          onClose={requestClose}
-          onClosed={finishClosing}
-        >
-          {children}
-        </DetailSheet>
-      ) : null}
     </li>
   );
 }
