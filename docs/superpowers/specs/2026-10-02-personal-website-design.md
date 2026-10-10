@@ -56,7 +56,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 28 | Site icon               | The same logo replaces the generated monogram: `favicon.ico`, a 512px icon and a 192px Apple touch icon    |
 | 29 | Logo link               | Logo sits inside the existing name link before the name; the image is decorative (`alt=""`)              |
 | 30 | One-page site           | `/` holds everything, read by scrolling: hero, experience, writing, contact                               |
-| 31 | Old routes              | `/about`, `/posts`, `/contact` removed (404); the `/projects` redirect removed; the sitemap lists `/` only |
+| 31 | Old routes              | *Sitemap superseded by 168.* `/about`, `/posts`, `/contact` removed (404); the `/projects` redirect removed; the sitemap lists `/` only |
 | 32 | Education and community | Expandable rows inside the Experience section, under their own subheadings                               |
 | 33 | Experience details      | *Superseded by 41.* Big rows that expand with an animation; the panel shows existing facts plus a placeholder for rich content to be designed later |
 | 34 | Posts                   | Every post as a tile with a hover animation; every tile opens the article in a new tab                    |
@@ -67,11 +67,11 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 39 | Motion                  | *Amended by 86 (section headings).* Scroll-driven CSS animations (`animation-timeline`) as progressive enhancement; browsers without support show static content; all motion off under `prefers-reduced-motion` |
 | 40 | Navigation              | In-page links (Experience, Writing, Contact); the section in view is marked with `aria-current="true"`; a scroll-progress bar sits on the top edge |
 | 41 | Detail sheet scope      | Every Experience row (work, education, community) opens a full-page detail sheet instead of expanding in place |
-| 42 | Detail sheet technique  | Custom modal overlay (`role="dialog"`, `aria-modal`), portalled to `<body>`; the rest of the page is `inert` and does not scroll while it is open |
+| 42 | Detail sheet technique  | *Portal superseded by 163.* Custom modal overlay (`role="dialog"`, `aria-modal`), portalled to `<body>`; the rest of the page is `inert` and does not scroll while it is open |
 | 43 | Detail sheet motion     | The sheet grows out of the clicked row to fill the screen, then its content rises in; closing shrinks it back into the row; a short fade under `prefers-reduced-motion` |
 | 44 | Detail sheet colour     | Warm off-white `#f7f6f2` with near-black text and a darker muted grey; lime and magenta are used only as fills behind dark text, never as text on the sheet; a branded entry adds a dark band at the top (decision 49) |
 | 45 | Detail sheet content    | Real period, title and subtitle, the existing facts (stack, links, summary), then placeholder blocks long enough to scroll |
-| 46 | Back button             | Opening the sheet adds a history entry, so Back closes it; there is no shareable deep link |
+| 46 | Back button             | *Superseded by 161.* Opening the sheet adds a history entry, so Back closes it; there is no shareable deep link |
 | 47 | Closing                 | A close button that stays in view while scrolling, plus Escape and Back; focus returns to the row that opened the sheet |
 | 48 | Brand header scope      | Optional per-entry `brand` (logo, background, accent) in `content/profile.ts`; only Netdata has one for now |
 | 49 | Brand band              | A full-width band in the brand background at the top of the sheet, reaching behind the close bar; Netdata uses `#020503` and its official logo, copied unchanged from netdata.cloud; the content below stays on paper; a light band uses the paper tokens instead (decision 64) |
@@ -186,6 +186,16 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 158 | MSc screenshots          | The user's own screenshots of the mobile app (1077×736) and the web app (1439×759), padded with white to 16:9 (1308×736 and 1439×809), neither cropped nor upscaled, as quality-90 WebP under `assets/stories/msc/`; smaller than the other panels' 1714×964, so slightly soft on large high-density screens |
 | 159 | MSc API illustration     | The Web API panel shows a generated, generic illustration marked "Illustrative", with made-up data: a `POST /api/AttendanceLog` request and the API's real "too far from the classroom" reply, beside its three registration rules; its title, mark and reply sit in a middle column, a little below the top, because the left-hand panel runs the image's left side off the panel, fades its right side and, on wide screens, crops its top |
 | 160 | MSc tints                | From the University of Macedonia palette, in panel order: `#fdf0cc`, `#dce8f3`, `#fbe6cf`; the paper text tokens keep 4.5:1 on each (decision 104) |
+| 161 | Sheet URLs               | Every sheet has its own path: `/experience/<slug>` for work, `/education/<slug>` for degrees and `/community/<slug>` for community roles; opening a sheet from its row pushes that path with `history.pushState`, without a router navigation, so Back, Forward, Escape and the close button behave as in decision 47 and the page behind keeps its scroll position |
+| 162 | Slugs                    | An explicit `slug` on every role, degree and community entry in `content/profile.ts`, never derived from a name; unique within its group: `netdata`, `adzuna`, `skroutz`, `epsilonnet`; `msc-applied-informatics`, `msc-informatics-and-management`, `bsc-economic-science`; `skgjs` |
+| 163 | Shared home layout       | The home page lives in `app/(home)/layout.tsx`, so it stays mounted across `/` and every sheet path; `app/(home)/page.tsx` and the three `[slug]/page.tsx` files render nothing and only carry metadata, static params and the 404; the URL alone says which sheet is open; the sheet renders as a direct child of `<body>`, after `<main>`, with no portal |
+| 164 | Opening motion           | Unchanged from decision 43 whenever the sheet opens in a loaded page (a row click, or Forward): it grows out of its row, measured at that moment |
+| 165 | Opening by URL           | When a page loads on a sheet path, the sheet is already full screen and only its content rises in (no grow); the page behind is scrolled instantly to the sheet's row, unseen, so closing shrinks into the row and focus returns to it as after a click |
+| 166 | Server rendering         | A sheet path's HTML contains its open sheet with its full content, readable without JavaScript |
+| 167 | Closing a sheet opened by URL | A sheet opened by the page load closes by replacing its URL with `/` (Back then leaves the site); one opened in the loaded page closes through `history.back()`, as before |
+| 168 | Sheet metadata           | Each sheet path has a title (the sheet's title, through the site's title template), a description built from its data (work and community: "{subtitle} at {title}, {period}."; education: "{title}, {subtitle}, {period}.") and a canonical URL of its own path; the sitemap lists `/` and every sheet path; unknown slugs return 404 |
+| 169 | Tab title                | Opening a sheet in a loaded page sets the tab title to that sheet's title, and closing restores the title it replaced, so the tab and history entries match the URL |
+| 170 | Home-only behaviour      | The section tracking and hash (decisions 124–125), Back to top and the brand link's scroll (decisions 94–98) stay keyed to `usePathname() === "/"`; on a sheet path they are off, so the hash is never written onto a sheet path |
 
 ## 3. Scope
 
@@ -482,3 +492,29 @@ The user gave the MSc in Applied Informatics sheet a program link, a brand witho
 - **Facts checked:** the program page (`https://www.uom.gr/en/mai`, read 2026-10-10) says the program started in 2003–2004 as the department's first master's degree; its three specialisations date from 2022–2023, after the user's studies (2015–2018), so the copy does not name them. The thesis repository (`dspace.lib.uom.gr`) blocks automated readers, so the thesis text comes from the abstract the user supplied.
 - **Repositories:** `kapantzak/AttendanceMobileApp` (Ionic and Angular, QR scanning with the phone's location), `kapantzak/AttendanceWeb` (React and TypeScript, QR codes and attendance charts) and `kapantzak/AttendanceWebAPI` (ASP.NET Core 2.0, Entity Framework Core on SQL Server, JWT, QRCoder); the API accepts a scan only within the classroom's range in metres, within a configured number of minutes from the lecture's start and for an enrolled student (`API/Helpers/LogHelper.cs`).
 - **Images:** the screenshots are padded with `sharp`; the API illustration is an HTML page written for this purpose, captured with Playwright at 1714×964 and converted with `sharp` to quality-90 WebP, as in section 22.
+
+## 24. Sheet routes (2026-10-10)
+
+The user asked for every Work, Education and Community sheet to have its own route, keeping the opening animation. The user approved decisions 161–170 on 2026-10-10.
+
+- **Probe:** a throwaway Next.js 16.3.8 app (production build, Playwright) checked the history behaviour before the design was settled:
+  - `history.pushState` to a sheet path updates `usePathname`, fetches nothing and keeps the page mounted and scrolled; Back and Forward fire `popstate` and do the same.
+  - With a separate `page.tsx` per route, closing a sheet opened by URL and then following a nav link remounted the whole page, as did reloading on a sheet and closing through Back; with the home page in a shared layout, nothing remounted in any of these flows (decision 163).
+  - `replaceState` with Next.js's own state object leaves `usePathname` stale; closing a sheet opened by URL therefore replaces the entry with a plain state object, which Next.js syncs (decision 167).
+  - `pushState` leaves `document.title` unchanged (decision 169); an unknown slug with `dynamicParams = false` returns the root 404 without the home layout.
+- **Routes:** `app/(home)/layout.tsx` renders the home page (hero, sections, rows) and the sheet host; `app/(home)/page.tsx` keeps the home metadata; `app/(home)/experience/[slug]/page.tsx`, `education/[slug]` and `community/[slug]` each export `generateStaticParams`, `dynamicParams = false` and `generateMetadata`, and render nothing. A comment in each empty page says why.
+- **Slugs and paths:** `lib/sheets.ts` maps between a group and slug and its path, parses a pathname back to a sheet and lists every sheet's path and metadata for the pages and the sitemap.
+- **Rows:** each row stays the button of decision 41; a click only pushes the sheet's path. Rows register their buttons by path with a small client context, so the host can measure a row and return focus to it. A row keeps its brand wipe while its sheet is open (decision 53).
+- **Sheet host:** a client component in the layout reads `usePathname()` and owns the open, closing and closed phases. A change to a sheet path opens that sheet, growing from its row (decision 164); a change away from it plays the closing animation, then unmounts the sheet and focuses the row. On the first render it opens with the "by URL" entry (decision 165). It also handles the tab title (decision 169).
+- **Sheet:** `DetailSheet` keeps its markup, modality and animations, but renders in place instead of through `createPortal`, so the server can render it (decision 166). It takes an entry mode: "grow" uses the existing `grow` keyframes, and "by URL" starts at `inset(0)` with the content rise only. Reduced motion keeps its short fade in both modes.
+- **Scrolling to the row by URL:** done once after hydration with `behavior: "instant"`, because `<html>` has `scroll-behavior: smooth`, and before the scroll lock is applied.
+- **Closing:** Escape and the close button go through `history.back()` when the sheet was opened in the loaded page, and through `history.replaceState({}, "", "/")` when the page load opened it (decision 167). Back always closes it, because the pathname changes.
+- **Content:** `content/profile.ts` gains a required `slug` on `Role`, `Degree` and `CommunityRole`, with a test that slugs are unique within a group and URL-safe (`^[a-z0-9-]+$`).
+- **Sitemap:** `app/sitemap.ts` lists `/` and every sheet path from `lib/sheets.ts` (decision 168).
+- **Tests:**
+  - Unit: `lib/sheets.ts` (paths, parsing, unknown paths), the slug test and the host's open, close and focus behaviour, replacing the `ExpandableItem` sheet tests.
+  - E2E: a click changes the URL and keeps the grow animation; Back and Forward close and reopen it; a sheet path loads with the sheet open, its title and canonical URL, and its content without JavaScript; closing it lands on `/` with focus on the row; a nav link after that does not remount the page; unknown slugs return 404; the sitemap lists every path; the hash is never written onto a sheet path. Existing sheet tests keep passing; the Back test's URL check stays.
+- **Known limits:**
+  - On a load by URL, the page behind is neither `inert` nor scroll-locked until hydration, though the sheet covers it and scrolls on its own.
+  - Reloading on a sheet opened in the page and then closing it leaves two `/` entries, so one Back does nothing visible.
+  - A `<Link>` to a sheet path would scroll the page to the top, as Next.js does on navigation; the site uses none.
