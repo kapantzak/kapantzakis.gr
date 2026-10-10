@@ -209,6 +209,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 181 | Nav highlight            | On `/education` and `/community` the nav marks Experience as current |
 | 182 | Dev-only console error   | In `next dev`, reaching a section path from another page logs React's "Encountered a script tag" error, because the inline script is rendered on the client and never runs; it is accepted, since the home page scrolls there itself and production builds log nothing |
 | 183 | Home paths               | `/` and the five section paths are all the home page: the section tracking, Back to top and the brand link's scroll (decisions 94–98, 170) run on any of them, and a sheet path stays off |
+| 184 | Arriving on a section path | When the home page is reached on a section path (a page load, or a link from the 404 page), the path stays as it is and the nav marks the item it belongs to until the visitor first scrolls; from then the band decides (decision 174); on phones the single-row Community group ends above the band, so without this a `/community` link would read `/writing` at once |
 
 ## 3. Scope
 
@@ -545,7 +546,7 @@ After decisions 161–170, a sheet opened in the loaded page was reported to Ver
 
 ## 26. Section routes (2026-10-10)
 
-The user asked for the URL to name the section in view with a real path instead of a hash. The user approved decisions 173–183 on 2026-10-10, for a pull request of their own after the sheet routes.
+The user asked for the URL to name the section in view with a real path instead of a hash. The user approved decisions 173–184 on 2026-10-10, for a pull request of their own after the sheet routes.
 
 - **Probe:** a throwaway Next.js 16.3.8 app (production build, Playwright, Chromium and Firefox) with the home page in a shared layout, sheets and smooth scrolling:
   - `history.replaceState` to a section path with a plain state object updates `usePathname`, fetches nothing and keeps the page mounted; with Next.js's own state object `usePathname` stays `/` while the URL changes, so that variant is ruled out.
@@ -553,10 +554,11 @@ The user asked for the URL to name the section in view with a real path instead 
   - An inline script after the home page's markup scrolls a fresh load to its region before the first frame, also with Chromium's network and CPU throttled; on a reload Chromium then restores the exact position, while Firefox kept the script's jump (decision 176).
   - Reaching a section path from the 404 page through a `<Link>` renders the inline script without running it; a scroll on the home page's mount covers it (decision 182).
   - Opening a sheet from `/experience` and going Back returns to `/experience` with the position kept; without JavaScript `/contact` opens at the top.
+- **Measured on the site:** with a region's top at the top of the view, the Community group (one row) ends at 291–295px on a Pixel 7 and an iPhone 13, above the band's 299–378px, while on desktop it reaches the band; Education and the three sections reach it everywhere (decision 184).
 - **Paths:** `lib/nav.ts` lists the five regions with their element ids and the nav item each belongs to (Education and Community belong to Experience), and says whether a pathname is a home path. The Education and Community groups in `components/Experience.tsx` take the ids `education` and `community`.
 - **Routes:** `app/(home)/experience/page.tsx`, `education/page.tsx`, `community/page.tsx`, `writing/page.tsx` and `contact/page.tsx`, beside the existing `[slug]` folders; each renders the inline script for its region and sets the canonical `/`.
 - **Inline script:** marks the document as placed, then, only when the navigation type is `navigate`, scrolls the region into view instantly. The home page's mount scrolls to the region when the path is a section path and no script has placed it, which happens only after a client navigation.
-- **Tracking:** the observer in `components/NavLinks.tsx` also watches the two groups; the deepest region in the band is current; the nav marks the region's nav item; the path is replaced with `{}` as the state object.
+- **Tracking:** the observer in `components/NavLinks.tsx` also watches the two groups; the deepest region in the band is current; the nav marks the region's nav item; the path is replaced with `{}` as the state object. When tracking starts on a section path, the observer's reports are held, and the nav marks that path's item, until the first `scroll` event after the next animation frame, so the jump that placed the region does not count as the visitor's scroll (decision 184).
 - **Links:** a shared client link for the nav and the hero cue handles a plain click on a home path (push, or replace on the same path, then scroll) and otherwise navigates.
 - **Home paths:** `NavLinks`, `BrandLink`, `BackToTop` and `PageAnalytics` use the home-path test instead of `=== "/"`; `scrollToTop` replaces the URL with `/`.
 - **Analytics:** `PageAnalytics` treats all home paths as one page (decision 180): a move between them sends nothing; a home path counts when the previous path was neither a home path nor a sheet, or when it is reached from a sheet before any home path has counted.
