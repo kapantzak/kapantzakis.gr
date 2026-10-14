@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import { HeroAurora } from "./HeroAurora";
 import styles from "./Hero.module.css";
+import { SectionLink } from "./SectionLink";
 
 type Props = { eyebrow: string; headline: string; intro: string[] };
 
@@ -45,9 +46,9 @@ export function Hero({ eyebrow, headline, intro }: Props) {
             <p key={paragraph}>{paragraph}</p>
           ))}
         </div>
-        <a href="#experience" className={styles.cue}>
+        <SectionLink id="experience" className={styles.cue}>
           Scroll <span aria-hidden="true">↓</span>
-        </a>
+        </SectionLink>
       </div>
     </HeroAurora>
   );

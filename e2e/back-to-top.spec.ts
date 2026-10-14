@@ -34,7 +34,7 @@ test.describe("the logo link", () => {
     await expect(page).toHaveURL(/\/$/);
   });
 
-  test("scrolls back to the top and drops the section hash", async ({
+  test("scrolls back to the top and returns a section path to /", async ({
     page,
   }) => {
     await page.goto("/");
@@ -42,7 +42,7 @@ test.describe("the logo link", () => {
       .getByRole("navigation", { name: "Main" })
       .getByRole("link", { name: "Writing" })
       .click();
-    await expect(page).toHaveURL(/\/#writing$/);
+    await expect(page).toHaveURL(/\/writing$/);
     await brandLink(page).click();
     await expect.poll(() => scrollY(page)).toBe(0);
     await expect(page).toHaveURL(/\/$/);

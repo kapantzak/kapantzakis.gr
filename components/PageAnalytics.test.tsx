@@ -72,6 +72,40 @@ describe("PageAnalytics", () => {
     ]);
   });
 
+  it("sends nothing for moves between / and the section paths (decision 180)", () => {
+    visit(
+      "/",
+      {},
+      "/experience",
+      "/education",
+      "/",
+      NETDATA.path,
+      "/experience",
+      "/writing",
+    );
+    expect(pageviews()).toEqual([HOME, NETDATA]);
+  });
+
+  it("counts a section path a page load or the 404 page arrives on, under its own path (decision 180)", () => {
+    visit("/nope", {}, "/writing", "/contact");
+    expect(pageviews()).toEqual([
+      { route: "/nope", path: "/nope" },
+      { route: "/writing", path: "/writing" },
+    ]);
+  });
+
+  it("counts the home page once after closing a sheet the page load opened, whichever path it shows (decision 180)", () => {
+    visit(
+      MSC.path,
+      { slug: "msc-applied-informatics" },
+      "/",
+      "/education",
+      MSC.path,
+      "/education",
+    );
+    expect(pageviews()).toEqual([MSC, HOME, MSC]);
+  });
+
   it("passes the script the settings the Next.js component did", () => {
     vi.stubEnv("NEXT_PUBLIC_VERCEL_OBSERVABILITY_BASEPATH", "/_custom");
     vi.stubEnv(

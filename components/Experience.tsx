@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { Brand, Profile, Story } from "@/content/profile";
+import type { RegionId } from "@/lib/nav";
 import {
   communitySheet,
   degreeSheet,
@@ -20,7 +21,12 @@ type Entry = {
   story?: Story;
 };
 
-type GroupData = { title: string; entries: Entry[] };
+type GroupData = {
+  title: string;
+  /** The group's own path, for a group that has one (decision 173). */
+  id?: RegionId;
+  entries: Entry[];
+};
 
 // Enough blocks for the sheet to scroll, so long content is exercised.
 const PLACEHOLDERS = ["Highlights", "Projects", "Stories"];
@@ -57,6 +63,7 @@ function groupsOf(profile: Profile): GroupData[] {
     },
     {
       title: "Education",
+      id: "education",
       entries: profile.education.map((degree) => ({
         sheet: degreeSheet(degree),
         brand: degree.brand,
@@ -79,6 +86,7 @@ function groupsOf(profile: Profile): GroupData[] {
     },
     {
       title: "Community",
+      id: "community",
       entries: profile.community.map((entry) => ({
         sheet: communitySheet(entry),
         brand: entry.brand,
@@ -95,9 +103,9 @@ function groupsOf(profile: Profile): GroupData[] {
   ];
 }
 
-function Group({ title, entries }: GroupData) {
+function Group({ title, id, entries }: GroupData) {
   return (
-    <div className={styles.group}>
+    <div className={styles.group} id={id}>
       <h3 className={styles.groupTitle}>{title}</h3>
       <ol className={styles.list} aria-label={title}>
         {entries.map(({ sheet, brand }) => (

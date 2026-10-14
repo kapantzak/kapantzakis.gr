@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { isHomePath } from "@/lib/nav";
 import type { MouseEvent, ReactNode } from "react";
 import { BRAND_LINK_ID, scrollToTop } from "@/lib/scroll-top";
 
@@ -13,7 +14,7 @@ export function BrandLink({
   className?: string;
   children: ReactNode;
 }) {
-  const onHome = usePathname() === "/";
+  const onHome = isHomePath(usePathname());
   function handleClick(event: MouseEvent<HTMLAnchorElement>) {
     const modified =
       event.button !== 0 ||

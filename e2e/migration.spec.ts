@@ -1,12 +1,11 @@
 import { expect, test } from "@playwright/test";
 import { SHEET_PAGES } from "./helpers";
 
-// The site is one page, with a path per sheet (decisions 30–31, 35, 161).
+// The site is one page, with a path per sheet and per section (decisions 30–31, 35, 161, 173).
 test("retired routes return 404", async ({ request }) => {
   for (const path of [
     "/about",
     "/posts",
-    "/contact",
     "/projects",
     "/posts/draft-fixture",
   ]) {

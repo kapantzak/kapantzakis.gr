@@ -25,9 +25,18 @@ describe("BackToTop", () => {
     expect(scrollToTop).toHaveBeenCalledOnce();
   });
 
-  it("is absent away from the home page", () => {
-    pathname.current = "/no-such-page";
+  it("is shown on a section path too (decision 183)", () => {
+    pathname.current = "/community";
     render(<BackToTop />);
-    expect(screen.queryByRole("button")).toBeNull();
+    expect(screen.getByRole("button", { name: "Back to top" })).toBeVisible();
   });
+
+  it.each(["/no-such-page", "/experience/netdata"])(
+    "is absent away from the home page (%s)",
+    (path) => {
+      pathname.current = path;
+      render(<BackToTop />);
+      expect(screen.queryByRole("button")).toBeNull();
+    },
+  );
 });

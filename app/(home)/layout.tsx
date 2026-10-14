@@ -3,6 +3,7 @@ import { Experience, experienceSheets } from "@/components/Experience";
 import { Hero } from "@/components/Hero";
 import { PageMain } from "@/components/PageMain";
 import { PostList } from "@/components/PostList";
+import { RegionScroll } from "@/components/RegionScroll";
 import { Section } from "@/components/Section";
 import { SheetHost } from "@/components/SheetHost";
 import { profile } from "@/content/profile";
@@ -58,6 +59,7 @@ export default function HomeLayout({ children }: { children: ReactNode }) {
         </PageMain>
       </SheetHost>
       {children}
+      <RegionScroll />
     </>
   );
 }

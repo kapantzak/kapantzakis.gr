@@ -14,12 +14,19 @@ describe("scrollToTop", () => {
     expect(scrollTo).toHaveBeenCalledWith({ top: 0 });
   });
 
-  it("drops the section hash but keeps the history state", () => {
+  it("returns a section path or hash to /, with a plain state object (decision 174)", () => {
     vi.spyOn(window, "scrollTo").mockImplementation(() => {});
-    history.replaceState({ key: "router" }, "", "/?q=1#writing");
+    history.replaceState({ key: "router" }, "", "/writing?q=1#top");
     scrollToTop();
     expect(window.location.pathname + window.location.search).toBe("/?q=1");
     expect(window.location.hash).toBe("");
+    expect(history.state).toEqual({});
+  });
+
+  it("leaves the history entry alone when the URL is already /", () => {
+    vi.spyOn(window, "scrollTo").mockImplementation(() => {});
+    history.replaceState({ key: "router" }, "", "/");
+    scrollToTop();
     expect(history.state).toEqual({ key: "router" });
   });
 
