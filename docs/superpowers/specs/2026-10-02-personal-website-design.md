@@ -615,4 +615,4 @@ The user asked for a generated image on the MSc in Applied Informatics sheet, re
 - **Facts:** the parts and their links come from the repositories listed in section 23: the Ionic and Angular mobile app, the React and TypeScript web client, and the ASP.NET Core Web API with Entity Framework Core on SQL Server and JWT authentication, which generates each lecture's QR code and logs a scan through `POST /api/AttendanceLog`.
 - **Image:** an HTML page written for this purpose, captured with Playwright at 1714×964 and converted with `sharp` to quality-90 WebP, as in section 28; its QR code is a made-up pattern that encodes nothing.
 - **Placement measured:** with its two-line title, the band at 1440×900 is 504px tall; the phone strip on a Pixel 7 ends about 71% down the image, so a first draft lost its QR code, mobile app box and "scanned" label there; the final draft sits higher. Checked at 1440×900, 1920×1080 and on a Pixel 7.
-- **Campus photo:** `assets/brand/uom-campus.webp` is no longer imported.
+- **Campus photo:** `assets/brand/uom-campus.webp` is removed, with the user's approval on 2026-10-18; git history keeps it.
