@@ -1,5 +1,6 @@
 import type { StaticImageData } from "next/image";
 import adzunaHome from "@/assets/brand/adzuna-home.png";
+import authEconomics from "@/assets/brand/auth-economics.webp";
 import authOntology from "@/assets/brand/auth-ontology.webp";
 import adzunaLogo from "@/assets/brand/adzuna-logo.svg";
 import epsilonnetHome from "@/assets/brand/epsilonnet-home.webp";
@@ -580,6 +581,30 @@ export const profile: Profile = {
       institution: "Aristotle University of Thessaloniki",
       degree: "BSc in Economic Science",
       period: { start: "2001", end: "2006" },
+      program: {
+        label: "School of Economics (AUTh)",
+        url: "https://www.econ-auth.gr/en/",
+      },
+      // The same brand as the AUTh MSc; the visual is an illustration of economic theory (decisions 203, 204).
+      brand: {
+        background: "#ffffff",
+        accent: "#e0675c",
+        link: "#e0675c",
+        tone: "light",
+        visual: authEconomics,
+      },
+      story: {
+        intro: [
+          {
+            label: "The school",
+            text: "The School of Economics of Aristotle University of Thessaloniki is the university's largest school, founded in 1928 as the School of Economics and Political Sciences.",
+          },
+          {
+            label: "My division",
+            text: "I chose the Economic Theory and Policy division, which covers the core of economics: mathematics and statistics, micro- and macroeconomics, economic analysis and policy, monetary economics and industrial organisation.",
+          },
+        ],
+      },
     },
   ],
   community: [

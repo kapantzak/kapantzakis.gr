@@ -77,9 +77,7 @@ test("an experience row opens a full-page light sheet that scrolls and closes on
   await expectNoHorizontalOverflow(page);
 });
 
-test("the Netdata sheet tells its story, and sheets without one keep their placeholders", async ({
-  page,
-}) => {
+test("the Netdata sheet tells its story", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: /Netdata/ }).click();
   const sheet = page.getByRole("dialog", { name: "Netdata" });
@@ -116,15 +114,6 @@ test("the Netdata sheet tells its story, and sheets without one keep their place
   expect(
     await sheet.evaluate((el) => el.scrollWidth - el.clientWidth),
   ).toBeLessThanOrEqual(0);
-
-  await page.keyboard.press("Escape");
-  await expect(sheet).toHaveCount(0);
-  await page.getByRole("button", { name: /BSc in Economic Science/ }).click();
-  await expect(
-    page
-      .getByRole("dialog", { name: "BSc in Economic Science" })
-      .locator("[data-placeholder]"),
-  ).toHaveCount(3);
 });
 
 test("the Adzuna sheet tells its story, with a link to the product", async ({
@@ -267,7 +256,8 @@ test("the close button and the browser Back button both close the sheet", async 
   await expect(row).toBeFocused();
 });
 
-test("the Netdata sheet opens on a brand band with its logo, and other sheets do not", async ({
+// Every entry has a brand, so the SheetHost unit test covers a plain sheet (decision 205).
+test("the Netdata sheet opens on a brand band with its logo", async ({
   page,
 }) => {
   await page.goto("/");
@@ -324,17 +314,6 @@ test("the Netdata sheet opens on a brand band with its logo, and other sheets do
   expect(
     await sheet.evaluate((el) => el.scrollWidth - el.clientWidth),
   ).toBeLessThanOrEqual(0);
-  await page.keyboard.press("Escape");
-  await expect(sheet).toHaveCount(0);
-
-  // Every work role and both MSc degrees have a brand, so the BSc stands in for a plain sheet.
-  await page.getByRole("button", { name: /BSc in Economic Science/ }).click();
-  const plain = page.getByRole("dialog", {
-    name: "BSc in Economic Science",
-  });
-  await expect(plain).toBeVisible();
-  await expect(plain.locator("[data-brand]")).toHaveCount(0);
-  await expect(plain.getByRole("img")).toHaveCount(0);
 });
 
 // Light-toned bands: dark text on the brand background, the link filled in the brand's link colour.
@@ -402,6 +381,12 @@ for (const [degree, maxLines, links, link] of [
     "MSc in Informatics and Management",
     3,
     [/Successor program \(AUTh\)/, /Thesis \(Greek\)/],
+    "rgb(224, 103, 92)",
+  ],
+  [
+    "BSc in Economic Science",
+    2,
+    [/School of Economics \(AUTh\)/],
     "rgb(224, 103, 92)",
   ],
 ] as const) {
@@ -495,36 +480,45 @@ test("the MSc in Applied Informatics sheet tells the thesis story, with a panel 
   }
 });
 
-// An intro-only story, with links to the successor program and the Greek thesis (decisions 187–189).
-test("the MSc in Informatics and Management sheet tells its story, with program and thesis links", async ({
-  page,
-}) => {
-  await page.goto("/");
-  await page
-    .getByRole("button", { name: /MSc in Informatics and Management/ })
-    .click();
-  const sheet = page.getByRole("dialog", {
-    name: "MSc in Informatics and Management",
-  });
-  for (const label of ["The program", "My thesis"]) {
-    await expect(
-      sheet.getByRole("heading", { level: 3, name: label }),
-    ).toBeVisible();
-  }
-  await expect(sheet.locator("[data-placeholder]")).toHaveCount(0);
-  for (const [name, href] of [
-    [/Successor program \(AUTh\)/, "https://deps.csd.auth.gr/en/"],
+// Intro-only stories, with links to the school or program and the thesis (decisions 187–189, 201, 202).
+for (const [degree, labels, links] of [
+  [
+    "MSc in Informatics and Management",
+    ["The program", "My thesis"],
     [
-      /Thesis \(Greek\)/,
-      "https://ikee.lib.auth.gr/record/115789/files/kapantzakes.pdf",
+      [/Successor program \(AUTh\)/, "https://deps.csd.auth.gr/en/"],
+      [
+        /Thesis \(Greek\)/,
+        "https://ikee.lib.auth.gr/record/115789/files/kapantzakes.pdf",
+      ],
     ],
-  ] as const) {
-    await expect(sheet.getByRole("link", { name })).toHaveAttribute(
-      "href",
-      href,
-    );
-  }
-});
+  ],
+  [
+    "BSc in Economic Science",
+    ["The school", "My division"],
+    [[/School of Economics \(AUTh\)/, "https://www.econ-auth.gr/en/"]],
+  ],
+] as const) {
+  test(`the ${degree} sheet tells its story, with its links`, async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await page.getByRole("button", { name: new RegExp(degree) }).click();
+    const sheet = page.getByRole("dialog", { name: degree });
+    for (const label of labels) {
+      await expect(
+        sheet.getByRole("heading", { level: 3, name: label }),
+      ).toBeVisible();
+    }
+    await expect(sheet.locator("[data-placeholder]")).toHaveCount(0);
+    for (const [name, href] of links) {
+      await expect(sheet.getByRole("link", { name })).toHaveAttribute(
+        "href",
+        href,
+      );
+    }
+  });
+}
 
 // A community entry takes a brand like a work role (decisions 87–93).
 test("the Thessaloniki JavaScript Meetup sheet opens on its dark band with its lockup, summary and site link", async ({
