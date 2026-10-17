@@ -634,7 +634,7 @@ export const profile: Profile = {
         intro: [
           {
             label: "The community",
-            text: "SKG JS, the Thessaloniki JavaScript Meetup, is a community for JavaScript developers of all levels: a friendly, inclusive space to socialise, learn and grow, with talks on JavaScript and software engineering.",
+            text: "SKG JS, the Thessaloniki JavaScript Meetup, is a community for developers of all levels: a friendly, inclusive space to socialise, learn and grow, with talks on JavaScript and software engineering.",
           },
           {
             label: "My role",

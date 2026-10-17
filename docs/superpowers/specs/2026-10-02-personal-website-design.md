@@ -237,7 +237,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 209 | Talk panel image          | A generated poster of Meetup #3 marked "Illustrative", built only from the event page: its title, date, time, venue and agenda with both talks; no Meetup or React logos; SKG JS black `#1a1a1a` and yellow `#f7dd3e` |
 | 210 | Join panel image          | A generated graphic marked "Illustrative" of two cards, "Meetup" for events and RSVPs and "Discord" for the conversation between meetups, in SKG JS black and yellow, with no Meetup or Discord logos |
 | 211 | SKG JS images             | 1714×964, quality-90 WebP under `assets/stories/skgjs/`; decorative, as in decision 108; their content sits where both the tilted wide panel and the phone strip show it unfaded |
-| 212 | SKG JS copy               | The user approved the intro and panel copy as drafted on 2026-10-18; no recording or slides are linked |
+| 212 | SKG JS copy               | The user approved the intro and panel copy as drafted on 2026-10-18, then changed "a community for JavaScript developers" to "a community for developers"; no recording or slides are linked |
 | 213 | SKG JS in the same PR     | The SKG JS changes ship in the pull request of decisions 187–206 |
 | 214 | SKG JS panels heading     | The SKG JS panels sit under "Highlights" instead of the default "Selected contributions" (decision 156) |
 | 215 | SKG JS tints              | `#fdf6c9`, a pale SKG JS yellow, for the talk panel and `#f1efe6`, a warm grey, for the join panel, approved by the user on 2026-10-18; the paper text tokens keep 4.5:1 on both (decision 104) |
