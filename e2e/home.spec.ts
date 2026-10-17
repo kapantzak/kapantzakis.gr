@@ -594,6 +594,39 @@ test("the Thessaloniki JavaScript Meetup sheet opens on its dark band with its l
   ).toBeLessThanOrEqual(0);
 });
 
+// A community entry takes a story like a work role (decisions 207, 208).
+test("the Thessaloniki JavaScript Meetup sheet tells its story, with the talk and the community's links", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page
+    .getByRole("button", { name: /Thessaloniki JavaScript Meetup/ })
+    .click();
+  const sheet = page.getByRole("dialog", {
+    name: "Thessaloniki JavaScript Meetup",
+  });
+  for (const label of ["The community", "My role"]) {
+    await expect(
+      sheet.getByRole("heading", { level: 3, name: label }),
+    ).toBeVisible();
+  }
+  await expect(sheet.locator("[data-placeholder]")).toHaveCount(0);
+  const region = sheet.getByRole("region", { name: "Highlights" });
+  await expect(region.getByRole("heading", { level: 4 })).toHaveText([
+    "What's new in React 19",
+    "Between meetups",
+  ]);
+  for (const [name, href] of [
+    [/Meetup #3/, "https://www.meetup.com/skg-js/events/307229886/"],
+    [/SKG JS on Meetup/, "https://www.meetup.com/skg-js/"],
+    [/SKG JS on Discord/, "https://discord.gg/dQY7TPUTBb"],
+  ] as const) {
+    const link = region.getByRole("link", { name });
+    await expect(link).toHaveAttribute("href", href);
+    await expect(link).toHaveAttribute("target", "_blank");
+  }
+});
+
 test("education and community sheets reveal their links", async ({ page }) => {
   await page.goto("/");
   await page

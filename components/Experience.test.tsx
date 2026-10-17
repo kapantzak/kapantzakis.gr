@@ -4,7 +4,7 @@ import { profile } from "@/content/profile";
 import { experienceSheets } from "./Experience";
 
 describe("experienceSheets", () => {
-  // Every real entry has a story, so a made-up degree stands in (decisions 100, 205).
+  // Every real entry has a story, so a made-up degree stands in (decisions 100, 205, 207).
   it("gives an entry without a story the three placeholders", () => {
     const sheets = experienceSheets({
       ...profile,

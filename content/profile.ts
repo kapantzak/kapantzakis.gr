@@ -9,6 +9,8 @@ import netdataDashboard from "@/assets/brand/netdata-dashboard.png";
 import netdataLogo from "@/assets/brand/netdata-logo.svg";
 import skgjsHome from "@/assets/brand/skgjs-home.webp";
 import skgjsLogo from "@/assets/brand/skgjs-logo.svg";
+import skgjsJoin from "@/assets/stories/skgjs/join.webp";
+import skgjsTalk from "@/assets/stories/skgjs/talk.webp";
 import skroutzHome from "@/assets/brand/skroutz-home.webp";
 import skroutzLogo from "@/assets/brand/skroutz-logo.svg";
 import uomAttendance from "@/assets/brand/uom-attendance.webp";
@@ -113,6 +115,7 @@ export type CommunityRole = {
   period: Period;
   summary: string;
   brand?: Brand;
+  story?: Story;
 };
 export type SocialLink = { label: string; url: string };
 
@@ -625,6 +628,50 @@ export const profile: Profile = {
         tone: "dark",
         visual: skgjsHome,
         lockup: ["Thessaloniki", "JavaScript Meetup"],
+      },
+      // Both panels show illustrations built from the Meetup pages (decisions 208–211).
+      story: {
+        intro: [
+          {
+            label: "The community",
+            text: "SKG JS, the Thessaloniki JavaScript Meetup, is a community for JavaScript developers of all levels: a friendly, inclusive space to socialise, learn and grow, with talks on JavaScript and software engineering.",
+          },
+          {
+            label: "My role",
+            text: "I co-organise the meetups, bringing developers together to learn, share and connect.",
+          },
+        ],
+        contributionsHeading: "Highlights",
+        contributions: [
+          {
+            title: "What's new in React 19",
+            body: "At Meetup #3, on 25 April 2025 at OKThess, I gave a high-level tour of the most important updates in React 19 and how they change modern frontend development, with practical examples of how they make developers' lives easier.",
+            image: skgjsTalk,
+            tint: "#fdf6c9",
+            links: [
+              {
+                label: "Meetup #3",
+                url: "https://www.meetup.com/skg-js/events/307229886/",
+              },
+            ],
+          },
+          {
+            title: "Between meetups",
+            body: "Events are announced on Meetup, where you can RSVP; between meetups, the conversation continues on the community's Discord server.",
+            image: skgjsJoin,
+            tint: "#f1efe6",
+            links: [
+              {
+                label: "SKG JS on Meetup",
+                url: "https://www.meetup.com/skg-js/",
+              },
+              {
+                label: "SKG JS on Discord",
+                url: "https://discord.gg/dQY7TPUTBb",
+              },
+            ],
+          },
+        ],
       },
     },
   ],

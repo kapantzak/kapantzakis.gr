@@ -230,8 +230,17 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 202 | BSc program link          | `https://www.econ-auth.gr/en/`, the English pages of the School of Economics, labelled "School of Economics (AUTh)" |
 | 203 | BSc brand                 | The same as the MSc in Informatics and Management (decision 192): white band, `tone: "light"`, accent and link `#e0675c`, no logo, so "BSc in Economic Science" stays the title; it takes two lines ("BSc in Economic" measures 8.26em of the 8.33em column) |
 | 204 | BSc visual                | A generated, generic illustration marked "Illustrative", in the window style of decision 193: a supply and demand diagram with its equilibrium beside an aggregate demand and supply diagram, with no data or figures, in AUTh-red tints; 1714×964, quality-90 WebP under `assets/brand/`; its diagrams and mark sit where both the wide band and the phone strip show them unfaded |
-| 205 | Placeholder and plain-sheet tests | With every entry branded and told, a unit test renders the "Coming soon" placeholders from a profile whose degree has no story, and the two end-to-end checks on the BSc are removed; the plain sheet stays covered by the `SheetHost` unit test |
+| 205 | Placeholder and plain-sheet tests | With every entry branded and every entry but the community one told (corrected 2026-10-18; decision 207 tells it too), a unit test renders the "Coming soon" placeholders from a profile whose degree has no story, and the two end-to-end checks on the BSc are removed; the plain sheet stays covered by the `SheetHost` unit test |
 | 206 | BSc in the same PR        | The BSc changes ship in the pull request of decisions 187–200 |
+| 207 | Community stories         | Community entries take the same optional `story` as work roles and degrees, rendered by the same intro and panels; the SKG JS sheet takes one, so it drops its "Coming soon" placeholders |
+| 208 | SKG JS story              | A "The community" / "My role" intro, then two panels: "What's new in React 19", the user's talk at Meetup #3 (25 April 2025, OKThess), linked to its event page as "Meetup #3", and "Between meetups", linked to the Meetup group as "SKG JS on Meetup" and the Discord server as "SKG JS on Discord"; the talk takes the user's own title, while the event page lists it as "How React 19 new features can improve our apps" |
+| 209 | Talk panel image          | A generated poster of Meetup #3 marked "Illustrative", built only from the event page: its title, date, time, venue and agenda with both talks; no Meetup or React logos; SKG JS black `#1a1a1a` and yellow `#f7dd3e` |
+| 210 | Join panel image          | A generated graphic marked "Illustrative" of two cards, "Meetup" for events and RSVPs and "Discord" for the conversation between meetups, in SKG JS black and yellow, with no Meetup or Discord logos |
+| 211 | SKG JS images             | 1714×964, quality-90 WebP under `assets/stories/skgjs/`; decorative, as in decision 108; their content sits where both the tilted wide panel and the phone strip show it unfaded |
+| 212 | SKG JS copy               | The user approved the intro and panel copy as drafted on 2026-10-18; no recording or slides are linked |
+| 213 | SKG JS in the same PR     | The SKG JS changes ship in the pull request of decisions 187–206 |
+| 214 | SKG JS panels heading     | The SKG JS panels sit under "Highlights" instead of the default "Selected contributions" (decision 156) |
+| 215 | SKG JS tints              | `#fdf6c9`, a pale SKG JS yellow, for the talk panel and `#f1efe6`, a warm grey, for the join panel, approved by the user on 2026-10-18; the paper text tokens keep 4.5:1 on both (decision 104) |
 
 ## 3. Scope
 
@@ -631,3 +640,13 @@ The user asked for an image on the BSc in Economic Science sheet, a link to the 
 - **Image:** an HTML page written for this purpose, captured with Playwright at 1714×964 and converted with `sharp` to quality-90 WebP, as in sections 28 and 29.
 - **Placement measured:** with its two-line title, the band is 504px tall at 1440×900, as for the MSc in Applied Informatics; a first draft lost the right card's edge and title behind the close button there, so the final draft sits 50px further left. Checked at 1440×900, 1920×1080 and on a Pixel 7.
 - **Tests:** `components/Experience.test.tsx` renders the placeholders from a profile whose only degree has no story; the end-to-end story and band tests cover the BSc alongside the MSc degrees.
+
+## 31. SKG JS story (2026-10-18)
+
+The user asked for content on the SKG JS sheet: the Meetup group, the Discord server and their talk on React 19, with freedom to add graphics, and approved decisions 207–215 on 2026-10-18.
+
+- **Facts checked:** the Meetup group (`https://www.meetup.com/skg-js/`, read 2026-10-18) describes "a community in Thessaloniki, Greece, for JavaScript enthusiasts of all levels" and "a friendly and inclusive space where developers can socialize, learn, and grow". The event page (`https://www.meetup.com/skg-js/events/307229886/`) lists "Thessaloniki JS Meetup #3: Beyond Core Web Vitals & New Features in React 19" on Friday 25 April 2025, 19:00–21:00, at OKThess, with networking, a welcome, "Thinking Beyond core Web Vitals" by Katerina Patticha and "How React 19 new features can improve our apps" by the user. The Discord invite (`https://discord.gg/dQY7TPUTBb`) does not expire and leads to the "skgjs.gr" server.
+- **Images:** HTML pages written for this purpose, captured with Playwright at 1714×964 and converted with `sharp` to quality-90 WebP, as in section 28.
+- **Correction:** decision 205 and the placeholder unit test first said every entry had a story, while the SKG JS sheet still showed placeholders; decision 207 makes that true.
+- **Placement measured:** on a Pixel 7 the panel strip shows the image's top 70% or so, so the poster lists only the two talks of the agenda, keeping the user's talk in view; on wide screens the right-hand panel runs its image off the right edge, so the join cards sit 130px further left than the poster. Checked at 1440×900, 1920×1080 and on a Pixel 7.
+- **Tints:** `#fdf6c9`, a pale SKG JS yellow, and `#f1efe6`, a warm grey; the paper text tokens keep 4.5:1 on both (decision 104).
