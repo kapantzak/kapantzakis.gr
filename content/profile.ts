@@ -543,6 +543,27 @@ export const profile: Profile = {
       institution: "Aristotle University of Thessaloniki",
       degree: "MSc in Informatics and Management",
       period: { start: "2008", end: "2010" },
+      // The program was renamed in 2018, so the link goes to its successor (decision 187).
+      program: {
+        label: "Successor program (AUTh)",
+        url: "https://deps.csd.auth.gr/en/",
+      },
+      thesis: {
+        label: "Thesis (Greek)",
+        url: "https://ikee.lib.auth.gr/record/115789/files/kapantzakes.pdf",
+      },
+      story: {
+        intro: [
+          {
+            label: "The program",
+            text: "Informatics and Management was an interdepartmental master's program at Aristotle University of Thessaloniki, run by the Departments of Informatics and Economic Sciences since 2003. It trained professionals in information systems and their use in managing businesses and organisations. In 2018 it evolved into the MSc in Management and Information Systems.",
+          },
+          {
+            label: "My thesis",
+            text: "My thesis, “Applying Semantic Web technologies to knowledge management in e-commerce”, explored how ontologies can organise the knowledge an online shop depends on. I developed E-Shop, an OWL ontology built in Protégé on an existing e-commerce ontology and modelled around the online payment process, describing buyers, shops and the parties a payment involves.",
+          },
+        ],
+      },
     },
     {
       slug: "bsc-economic-science",

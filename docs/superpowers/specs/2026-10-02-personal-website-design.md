@@ -212,6 +212,11 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 184 | Arriving on a section path | When the home page is reached on a section path (a page load, or a link from the 404 page), the path stays as it is and the nav marks the item it belongs to until the visitor first scrolls; from then the band decides (decision 174); on phones the single-row Community group ends above the band, so without this a `/community` link would read `/writing` at once |
 | 185 | Section link query string | A section link click keeps the URL's query string, as the path tracking and Back to top do (amends decision 175) |
 | 186 | Hidden until placed       | On a fresh load (`navigate`) of a section path with JavaScript, the page stays hidden, showing only the page background, until the jump has placed it, so no browser shows the top of the page first: a script in the root layout's `<head>` marks the document as pending, CSS hides `<body>` while it is marked, the region's script clears the mark right after its jump, and `DOMContentLoaded` clears it in any case; `/`, reloads, Back and Forward and pages without JavaScript are never hidden (amends decision 176) |
+| 187 | AUTh MSc program link     | The MSc in Informatics and Management links to its successor's site, `https://deps.csd.auth.gr/en/`, labelled "Successor program (AUTh)", because the program the user attended no longer exists under its name and its original site (`http://dpms.csd.auth.gr`) has no https; the University of Macedonia page the user first gave belongs to the other MSc |
+| 188 | AUTh MSc thesis link      | The thesis PDF on `ikee.lib.auth.gr` returns 200 again, so the sheet links to it, labelled "Thesis (Greek)" after the thesis's language, as the other MSc's "Thesis (English)" |
+| 189 | AUTh MSc story            | A "The program" / "My thesis" intro only, as in decision 157 but with no panels, so the sheet drops its "Coming soon" placeholders (decision 155); the thesis title is the user-approved English translation of the Greek title; the supervisor is not named |
+| 190 | AUTh MSc brand            | None for now; the sheet stays a plain sheet |
+| 191 | Placeholder test          | The end-to-end check that an entry without a story shows the three placeholders moves to the BSc in Economic Science |
 
 ## 3. Scope
 
@@ -575,3 +580,12 @@ The user asked for the URL to name the section in view with a real path instead 
   - In Firefox the first frame lands a little short of the region (about 160px on `/writing`) and settles a moment later, as the rest of the page lays out.
   - The `next dev` console error of decision 182.
   - A fresh load of `/contact` runs its script before the footer is parsed, so the page cannot yet scroll as far as a nav tap does: on a Pixel 7 the Contact heading lands 380px down the view instead of 252px, still in view; accepted by the user.
+
+## 27. MSc in Informatics and Management (2026-10-17)
+
+The user asked for details on the MSc in Informatics and Management sheet, giving a program link and the thesis link, and approved decisions 187–191 on 2026-10-17.
+
+- **Facts checked:**
+  - The program link the user gave, `https://www.uom.gr/en/mai`, is the University of Macedonia's MSc in Applied Informatics (decision 150), not this degree.
+  - The thesis record (`https://ikee.lib.auth.gr/record/115789`, read 2026-10-17) names the interdepartmental program «Πληροφορική και Διοίκηση» of Aristotle University, the language as Greek and the year as 2010; the PDF is dated March 2010 and its abstract describes the E-Shop ontology, written in OWL with Protégé, built on an existing E-Commerce ontology and modelled on the online payment process.
+  - The program's 2013–2014 announcement says it was run by the Departments of Informatics and Economic Sciences and had trained professionals in information systems and their use in managing businesses and organisations since 2003; the 2018–2019 announcement says «Διοίκηση Επιχειρήσεων και Πληροφοριακά Συστήματα» evolved from it.

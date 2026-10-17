@@ -119,12 +119,10 @@ test("the Netdata sheet tells its story, and sheets without one keep their place
 
   await page.keyboard.press("Escape");
   await expect(sheet).toHaveCount(0);
-  await page
-    .getByRole("button", { name: /MSc in Informatics and Management/ })
-    .click();
+  await page.getByRole("button", { name: /BSc in Economic Science/ }).click();
   await expect(
     page
-      .getByRole("dialog", { name: "MSc in Informatics and Management" })
+      .getByRole("dialog", { name: "BSc in Economic Science" })
       .locator("[data-placeholder]"),
   ).toHaveCount(3);
 });
@@ -483,6 +481,37 @@ test("the MSc in Applied Informatics sheet tells the thesis story, with a panel 
       `https://github.com/kapantzak/${repo}`,
     );
     await expect(link).toHaveAttribute("target", "_blank");
+  }
+});
+
+// An intro-only story, with links to the successor program and the Greek thesis (decisions 187–189).
+test("the MSc in Informatics and Management sheet tells its story, with program and thesis links", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page
+    .getByRole("button", { name: /MSc in Informatics and Management/ })
+    .click();
+  const sheet = page.getByRole("dialog", {
+    name: "MSc in Informatics and Management",
+  });
+  for (const label of ["The program", "My thesis"]) {
+    await expect(
+      sheet.getByRole("heading", { level: 3, name: label }),
+    ).toBeVisible();
+  }
+  await expect(sheet.locator("[data-placeholder]")).toHaveCount(0);
+  for (const [name, href] of [
+    [/Successor program \(AUTh\)/, "https://deps.csd.auth.gr/en/"],
+    [
+      /Thesis \(Greek\)/,
+      "https://ikee.lib.auth.gr/record/115789/files/kapantzakes.pdf",
+    ],
+  ] as const) {
+    await expect(sheet.getByRole("link", { name })).toHaveAttribute(
+      "href",
+      href,
+    );
   }
 });
 
