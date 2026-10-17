@@ -1,5 +1,6 @@
 import type { StaticImageData } from "next/image";
 import adzunaHome from "@/assets/brand/adzuna-home.png";
+import authOntology from "@/assets/brand/auth-ontology.webp";
 import adzunaLogo from "@/assets/brand/adzuna-logo.svg";
 import epsilonnetHome from "@/assets/brand/epsilonnet-home.webp";
 import epsilonnetLogo from "@/assets/brand/epsilonnet-logo.svg";
@@ -551,6 +552,15 @@ export const profile: Profile = {
       thesis: {
         label: "Thesis (Greek)",
         url: "https://ikee.lib.auth.gr/record/115789/files/kapantzakes.pdf",
+      },
+      // A tint of the logo's red, which fails 4.5:1 as an accent; the visual is an
+      // illustration of the thesis's ontology (decisions 192, 193).
+      brand: {
+        background: "#ffffff",
+        accent: "#e0675c",
+        link: "#e0675c",
+        tone: "light",
+        visual: authOntology,
       },
       story: {
         intro: [

@@ -215,8 +215,13 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 187 | AUTh MSc program link     | The MSc in Informatics and Management links to its successor's site, `https://deps.csd.auth.gr/en/`, labelled "Successor program (AUTh)", because the program the user attended no longer exists under its name and its original site (`http://dpms.csd.auth.gr`) has no https; the University of Macedonia page the user first gave belongs to the other MSc |
 | 188 | AUTh MSc thesis link      | The thesis PDF on `ikee.lib.auth.gr` returns 200 again, so the sheet links to it, labelled "Thesis (Greek)" after the thesis's language, as the other MSc's "Thesis (English)" |
 | 189 | AUTh MSc story            | A "The program" / "My thesis" intro only, as in decision 157 but with no panels, so the sheet drops its "Coming soon" placeholders (decision 155); the thesis title is the user-approved English translation of the Greek title; the supervisor is not named |
-| 190 | AUTh MSc brand            | None for now; the sheet stays a plain sheet |
+| 190 | AUTh MSc brand            | *Superseded by 192.* None for now; the sheet stays a plain sheet |
 | 191 | Placeholder test          | The end-to-end check that an entry without a story shows the three placeholders moves to the BSc in Economic Science |
+| 192 | AUTh MSc brand (revised)  | White band, `tone: "light"`, accent and link `#e0675c`, a lighter tint of the Aristotle University logo's red `#952927`; the logo red itself is ruled out because `--color-on-accent` on it is 2.61:1 and, as a dark band, the muted text on it is 3.08:1; no logo, so "MSc in Informatics and Management" stays the title |
+| 193 | AUTh MSc visual           | A generated, generic illustration marked "Illustrative": the thesis's E-Shop ontology as a graph in a light window titled `e-shop.owl`, its boxes named after the thesis's classes and its arrows after its object properties, with AUTh-red highlights and no company names or logos; 1714×964, quality-90 WebP under `assets/brand/`; it takes the shared tilt, fade and phone strip (decisions 57, 60–62), so the ordering chain, the highlighted `EShop` box and the mark sit 33–72% across and 40–70% down, where both the wide band and the phone strip show them unfaded |
+| 194 | Text title size           | A text title beside a visual is capped at `12cqi` instead of `12.5cqi`, so its column is 8.33em: "MSc in Informatics and Management" takes three lines ("Informatics and" measures 8.00em) and "MSc in Applied Informatics" keeps two (amends decision 154) |
+| 195 | Plain-sheet test          | The end-to-end check that a sheet without a brand has no band and no image moves to the BSc in Economic Science |
+| 196 | Brand in the same PR      | The brand ships in the pull request that added the story (decisions 187–191) |
 
 ## 3. Scope
 
@@ -589,3 +594,12 @@ The user asked for details on the MSc in Informatics and Management sheet, givin
   - The program link the user gave, `https://www.uom.gr/en/mai`, is the University of Macedonia's MSc in Applied Informatics (decision 150), not this degree.
   - The thesis record (`https://ikee.lib.auth.gr/record/115789`, read 2026-10-17) names the interdepartmental program «Πληροφορική και Διοίκηση» of Aristotle University, the language as Greek and the year as 2010; the PDF is dated March 2010 and its abstract describes the E-Shop ontology, written in OWL with Protégé, built on an existing E-Commerce ontology and modelled on the online payment process.
   - The program's 2013–2014 announcement says it was run by the Departments of Informatics and Economic Sciences and had trained professionals in information systems and their use in managing businesses and organisations since 2003; the 2018–2019 announcement says «Διοίκηση Επιχειρήσεων και Πληροφοριακά Συστήματα» evolved from it.
+
+## 28. AUTh MSc brand (2026-10-18)
+
+The user asked for a brand on the MSc in Informatics and Management sheet, with a generated image since none exists, and approved decisions 192–196 on 2026-10-18.
+
+- **Facts checked:** the logo red `#952927` is the dominant colour of the Aristotle University banner logo on `auth.gr` (read 2026-10-18). The thesis PDF has no figure 600px wide or more, so no figure of it is reused. The graph's classes and properties come from chapter 6 of the thesis: `Individual makesOrder Order`, `Individual buysProduct Product`, `Order orderToSeller EShop`, `EShop sells Product`, `EShop hasAcquiringBank Bank`, `Product hasFee Charge`, `Charge hasPaymentMethod PaymentMethod`, `Document recordsCharge Charge`; the side list shows the thesis's twelve top-level classes; the thesis's instances name real companies, so the image shows none.
+- **Placement measured:** with the three-line title, the band at 1440×900 is 576px tall, so the image scales up and the band shows only about 33–72% of its width; the phone strip fades the image's top 40%. A first draft with the graph across the image's right half lost `EShop` and the mark on desktop, so the final draft keeps them in the middle; checked at 1440×900, 1920×1080 and on a Pixel 7.
+- **Measured:** in the display font, "MSc in Applied" is 7.54em, "Informatics and" 8.00em, "Management" 6.76em and "MSc in Informatics" 9.43em.
+- **Image:** an HTML page written for this purpose, captured with Playwright at 1714×964 and converted with `sharp` to quality-90 WebP, as in sections 21 and 23.
