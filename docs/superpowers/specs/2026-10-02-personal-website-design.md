@@ -178,7 +178,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 150 | MSc program link         | The University of Macedonia MSc links to `https://www.uom.gr/en/mai`, labelled "MSc in Applied Informatics" rather than a hostname |
 | 151 | Brand without a logo     | `brand.logo` is optional; a brand without one keeps the text title on its band, with the band, accent, link colour and visual unchanged; a lockup needs a logo; degrees take the same optional `brand` as work roles |
 | 152 | MSc brand                | White band, `tone: "light"`, accent and link `#f6a800`, the orange-gold of the University of Macedonia logo; its blue `#004f92` was ruled out because `--color-on-accent` on it is 2.34:1; no logo, so "MSc in Applied Informatics" stays the title |
-| 153 | MSc visual               | A photo of the University of Macedonia main building, its sign and its campus map, from `entreped2026.uom.gr` (`uom1.jpg`, 1600×1067), unchanged apart from conversion to quality-90 WebP; it takes the shared tilt, fade and phone strip (decisions 57, 60–62); it replaces an earlier logo-on-a-card visual |
+| 153 | MSc visual               | *Superseded by 197.* A photo of the University of Macedonia main building, its sign and its campus map, from `entreped2026.uom.gr` (`uom1.jpg`, 1600×1067), unchanged apart from conversion to quality-90 WebP; it takes the shared tilt, fade and phone strip (decisions 57, 60–62); it replaces an earlier logo-on-a-card visual |
 | 154 | Text title beside a visual | At every width, a brand without a logo but with a visual sizes its text title to its column (the left half from 48rem up), so "MSc in Applied Informatics" takes at most two lines and no word breaks; tuned to that title, so a longer one could take more lines |
 | 155 | Degree stories           | Degrees take the same optional `story` as work roles, rendered by the same intro, panels and timeline; a degree with a story drops the "Coming soon" placeholders |
 | 156 | Contributions heading    | Optional `story.contributionsHeading`, defaulting to "Selected contributions"; the MSc in Applied Informatics uses "The application" |
@@ -222,6 +222,10 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 194 | Text title size           | A text title beside a visual is capped at `12cqi` instead of `12.5cqi`, so its column is 8.33em: "MSc in Informatics and Management" takes three lines ("Informatics and" measures 8.00em) and "MSc in Applied Informatics" keeps two (amends decision 154) |
 | 195 | Plain-sheet test          | The end-to-end check that a sheet without a brand has no band and no image moves to the BSc in Economic Science |
 | 196 | Brand in the same PR      | The brand ships in the pull request that added the story (decisions 187–191) |
+| 197 | MSc visual (revised)      | The MSc in Applied Informatics band shows a generated illustration of the thesis application instead of the campus photo, so both MSc sheets show their thesis; the story panels are unchanged |
+| 198 | MSc architecture visual   | A generic illustration marked "Illustrative", in the same window style as decision 193: the mobile app (Ionic, Angular) and the web app (React, TypeScript) talk to the ASP.NET Core Web API, which stores its data in SQL Server through Entity Framework Core; a made-up QR code links the lecture shown in the web app to the phone's scan; 1714×964, quality-90 WebP under `assets/brand/`; the API box and the mark sit where both the wide band and the phone strip show them unfaded |
+| 199 | MSc visual colours        | University of Macedonia blue `#004f92` and gold `#f6a800` as graphics only; no text is set on the gold, so the contrast rule of decision 152 does not apply |
+| 200 | MSc visual in the same PR | The new visual ships in the pull request of decisions 187–196 |
 
 ## 3. Scope
 
@@ -603,3 +607,12 @@ The user asked for a brand on the MSc in Informatics and Management sheet, with 
 - **Placement measured:** with the three-line title, the band at 1440×900 is 576px tall, so the image scales up and the band shows only about 33–72% of its width; the phone strip fades the image's top 40%. A first draft with the graph across the image's right half lost `EShop` and the mark on desktop, so the final draft keeps them in the middle; checked at 1440×900, 1920×1080 and on a Pixel 7.
 - **Measured:** in the display font, "MSc in Applied" is 7.54em, "Informatics and" 8.00em, "Management" 6.76em and "MSc in Informatics" 9.43em.
 - **Image:** an HTML page written for this purpose, captured with Playwright at 1714×964 and converted with `sharp` to quality-90 WebP, as in sections 21 and 23.
+
+## 29. MSc in Applied Informatics visual (2026-10-18)
+
+The user asked for a generated image on the MSc in Applied Informatics sheet, replacing the campus photo, and approved decisions 197–200 on 2026-10-18.
+
+- **Facts:** the parts and their links come from the repositories listed in section 23: the Ionic and Angular mobile app, the React and TypeScript web client, and the ASP.NET Core Web API with Entity Framework Core on SQL Server and JWT authentication, which generates each lecture's QR code and logs a scan through `POST /api/AttendanceLog`.
+- **Image:** an HTML page written for this purpose, captured with Playwright at 1714×964 and converted with `sharp` to quality-90 WebP, as in section 28; its QR code is a made-up pattern that encodes nothing.
+- **Placement measured:** with its two-line title, the band at 1440×900 is 504px tall; the phone strip on a Pixel 7 ends about 71% down the image, so a first draft lost its QR code, mobile app box and "scanned" label there; the final draft sits higher. Checked at 1440×900, 1920×1080 and on a Pixel 7.
+- **Campus photo:** `assets/brand/uom-campus.webp` is no longer imported.

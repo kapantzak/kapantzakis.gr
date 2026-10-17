@@ -10,7 +10,7 @@ import skgjsHome from "@/assets/brand/skgjs-home.webp";
 import skgjsLogo from "@/assets/brand/skgjs-logo.svg";
 import skroutzHome from "@/assets/brand/skroutz-home.webp";
 import skroutzLogo from "@/assets/brand/skroutz-logo.svg";
-import uomCampus from "@/assets/brand/uom-campus.webp";
+import uomAttendance from "@/assets/brand/uom-attendance.webp";
 import aiChat from "@/assets/stories/netdata/ai-chat.webp";
 import aiInsights from "@/assets/stories/netdata/ai-insights.webp";
 import dyncfg from "@/assets/stories/netdata/dyncfg.webp";
@@ -478,13 +478,13 @@ export const profile: Profile = {
         label: "Thesis (English)",
         url: "https://dspace.lib.uom.gr/bitstream/2159/22942/4/KapantzakisIoannisMsc2018.pdf",
       },
-      // The logo's orange-gold; the visual is a photo of the main building (decisions 152, 153).
+      // The logo's orange-gold; the visual is an illustration of the thesis application (decisions 152, 198).
       brand: {
         background: "#ffffff",
         accent: "#f6a800",
         link: "#f6a800",
         tone: "light",
-        visual: uomCampus,
+        visual: uomAttendance,
       },
       // The app screenshots are the user's own; the API image is an illustration (decisions 157–159).
       story: {
