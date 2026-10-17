@@ -155,6 +155,7 @@ describe.each(brands.filter(([, brand]) => brand.lockup))(
 const stories = [
   ...profile.experience.map((role) => [role.org, role.story] as const),
   ...profile.education.map((degree) => [degree.degree, degree.story] as const),
+  ...profile.community.map((entry) => [entry.org, entry.story] as const),
 ].flatMap(([name, story]) => (story ? [[name, story] as const] : []));
 
 describe.each(stories)("the %s story", (_org, story) => {

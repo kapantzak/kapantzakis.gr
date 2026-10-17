@@ -77,9 +77,7 @@ test("an experience row opens a full-page light sheet that scrolls and closes on
   await expectNoHorizontalOverflow(page);
 });
 
-test("the Netdata sheet tells its story, and sheets without one keep their placeholders", async ({
-  page,
-}) => {
+test("the Netdata sheet tells its story", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: /Netdata/ }).click();
   const sheet = page.getByRole("dialog", { name: "Netdata" });
@@ -116,17 +114,6 @@ test("the Netdata sheet tells its story, and sheets without one keep their place
   expect(
     await sheet.evaluate((el) => el.scrollWidth - el.clientWidth),
   ).toBeLessThanOrEqual(0);
-
-  await page.keyboard.press("Escape");
-  await expect(sheet).toHaveCount(0);
-  await page
-    .getByRole("button", { name: /MSc in Informatics and Management/ })
-    .click();
-  await expect(
-    page
-      .getByRole("dialog", { name: "MSc in Informatics and Management" })
-      .locator("[data-placeholder]"),
-  ).toHaveCount(3);
 });
 
 test("the Adzuna sheet tells its story, with a link to the product", async ({
@@ -269,7 +256,8 @@ test("the close button and the browser Back button both close the sheet", async 
   await expect(row).toBeFocused();
 });
 
-test("the Netdata sheet opens on a brand band with its logo, and other sheets do not", async ({
+// Every entry has a brand, so the SheetHost unit test covers a plain sheet (decision 205).
+test("the Netdata sheet opens on a brand band with its logo", async ({
   page,
 }) => {
   await page.goto("/");
@@ -326,19 +314,6 @@ test("the Netdata sheet opens on a brand band with its logo, and other sheets do
   expect(
     await sheet.evaluate((el) => el.scrollWidth - el.clientWidth),
   ).toBeLessThanOrEqual(0);
-  await page.keyboard.press("Escape");
-  await expect(sheet).toHaveCount(0);
-
-  // Every work role has a brand, so an unbranded education entry stands in for a plain sheet.
-  await page
-    .getByRole("button", { name: /MSc in Informatics and Management/ })
-    .click();
-  const plain = page.getByRole("dialog", {
-    name: "MSc in Informatics and Management",
-  });
-  await expect(plain).toBeVisible();
-  await expect(plain.locator("[data-brand]")).toHaveCount(0);
-  await expect(plain.getByRole("img")).toHaveCount(0);
 });
 
 // Light-toned bands: dark text on the brand background, the link filled in the brand's link colour.
@@ -394,58 +369,77 @@ for (const [org, role, background, link] of [
   });
 }
 
-// A degree takes a brand without a logo, so its title stays text (decisions 151–154).
-test("the MSc in Applied Informatics sheet opens on a light band with a text title, gold links and the campus photo", async ({
-  page,
-}) => {
-  await page.goto("/");
-  await page
-    .getByRole("button", { name: /MSc in Applied Informatics/ })
-    .click();
-  const band = page
-    .getByRole("dialog", { name: "MSc in Applied Informatics" })
-    .locator("[data-brand]");
-  await expect(band).toHaveCSS("background-color", "rgb(255, 255, 255)");
-  await expect(band).toHaveCSS("border-bottom-width", "1px");
-  const title = band.getByRole("heading", { level: 2 });
-  await expect(title).toHaveText("MSc in Applied Informatics");
-  await expect(title.getByRole("img")).toHaveCount(0);
-  // A word split across lines draws more than one box (decision 154).
-  expect(
-    await title.evaluate((el) => {
-      const text = el.firstChild!;
-      return [...text.textContent!.matchAll(/\S+/g)].flatMap((word) => {
+// A degree takes a brand without a logo, so its title stays text (decisions 151–154, 192–194).
+for (const [degree, maxLines, links, link] of [
+  [
+    "MSc in Applied Informatics",
+    2,
+    [/MSc in Applied Informatics/, /Thesis \(English\)/],
+    "rgb(246, 168, 0)",
+  ],
+  [
+    "MSc in Informatics and Management",
+    3,
+    [/Successor program \(AUTh\)/, /Thesis \(Greek\)/],
+    "rgb(224, 103, 92)",
+  ],
+  [
+    "BSc in Economic Science",
+    2,
+    [/School of Economics \(AUTh\)/],
+    "rgb(224, 103, 92)",
+  ],
+] as const) {
+  test(`the ${degree} sheet opens on a light band with a text title, its link colour and its visual`, async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await page.getByRole("button", { name: new RegExp(degree) }).click();
+    const band = page
+      .getByRole("dialog", { name: degree })
+      .locator("[data-brand]");
+    await expect(band).toHaveCSS("background-color", "rgb(255, 255, 255)");
+    await expect(band).toHaveCSS("border-bottom-width", "1px");
+    const title = band.getByRole("heading", { level: 2 });
+    await expect(title).toHaveText(degree);
+    await expect(title.getByRole("img")).toHaveCount(0);
+    // A word split across lines draws more than one box (decision 154).
+    expect(
+      await title.evaluate((el) => {
+        const text = el.firstChild!;
+        return [...text.textContent!.matchAll(/\S+/g)].flatMap((word) => {
+          const range = document.createRange();
+          range.setStart(text, word.index);
+          range.setEnd(text, word.index + word[0].length);
+          return range.getClientRects().length > 1 ? [word[0]] : [];
+        });
+      }),
+    ).toEqual([]);
+    // At most two lines, or three for the longer title (decisions 154, 194).
+    expect(
+      await title.evaluate((el) => {
         const range = document.createRange();
-        range.setStart(text, word.index);
-        range.setEnd(text, word.index + word[0].length);
-        return range.getClientRects().length > 1 ? [word[0]] : [];
-      });
-    }),
-  ).toEqual([]);
-  // At most two lines (decision 154).
-  expect(
-    await title.evaluate((el) => {
-      const range = document.createRange();
-      range.selectNodeContents(el);
-      return new Set(
-        [...range.getClientRects()].map((rect) => Math.round(rect.top)),
-      ).size;
-    }),
-  ).toBeLessThanOrEqual(2);
-  for (const name of [/MSc in Applied Informatics/, /Thesis \(English\)/]) {
-    await expect(band.getByRole("link", { name })).toHaveCSS(
-      "background-color",
-      "rgb(246, 168, 0)",
-    );
-  }
-  await expect
-    .poll(() =>
-      band
-        .locator('[aria-hidden="true"] img')
-        .evaluate((img: HTMLImageElement) => img.naturalWidth),
-    )
-    .toBeGreaterThan(0);
-});
+        range.selectNodeContents(el);
+        return new Set(
+          [...range.getClientRects()].map((rect) => Math.round(rect.top)),
+        ).size;
+      }),
+    ).toBeLessThanOrEqual(maxLines);
+    for (const name of links) {
+      await expect(band.getByRole("link", { name })).toHaveCSS(
+        "background-color",
+        link,
+      );
+    }
+    await expect
+      .poll(() =>
+        band
+          .locator('[aria-hidden="true"] img')
+          .evaluate((img: HTMLImageElement) => img.naturalWidth),
+      )
+      .toBeGreaterThan(0);
+  });
+}
 
 // A degree takes a story like a work role, with its own panels heading (decisions 155–157).
 test("the MSc in Applied Informatics sheet tells the thesis story, with a panel per repository", async ({
@@ -485,6 +479,46 @@ test("the MSc in Applied Informatics sheet tells the thesis story, with a panel 
     await expect(link).toHaveAttribute("target", "_blank");
   }
 });
+
+// Intro-only stories, with links to the school or program and the thesis (decisions 187–189, 201, 202).
+for (const [degree, labels, links] of [
+  [
+    "MSc in Informatics and Management",
+    ["The program", "My thesis"],
+    [
+      [/Successor program \(AUTh\)/, "https://deps.csd.auth.gr/en/"],
+      [
+        /Thesis \(Greek\)/,
+        "https://ikee.lib.auth.gr/record/115789/files/kapantzakes.pdf",
+      ],
+    ],
+  ],
+  [
+    "BSc in Economic Science",
+    ["The school", "My division"],
+    [[/School of Economics \(AUTh\)/, "https://www.econ-auth.gr/en/"]],
+  ],
+] as const) {
+  test(`the ${degree} sheet tells its story, with its links`, async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await page.getByRole("button", { name: new RegExp(degree) }).click();
+    const sheet = page.getByRole("dialog", { name: degree });
+    for (const label of labels) {
+      await expect(
+        sheet.getByRole("heading", { level: 3, name: label }),
+      ).toBeVisible();
+    }
+    await expect(sheet.locator("[data-placeholder]")).toHaveCount(0);
+    for (const [name, href] of links) {
+      await expect(sheet.getByRole("link", { name })).toHaveAttribute(
+        "href",
+        href,
+      );
+    }
+  });
+}
 
 // A community entry takes a brand like a work role (decisions 87–93).
 test("the Thessaloniki JavaScript Meetup sheet opens on its dark band with its lockup, summary and site link", async ({
@@ -558,6 +592,39 @@ test("the Thessaloniki JavaScript Meetup sheet opens on its dark band with its l
   expect(
     await sheet.evaluate((el) => el.scrollWidth - el.clientWidth),
   ).toBeLessThanOrEqual(0);
+});
+
+// A community entry takes a story like a work role (decisions 207, 208).
+test("the Thessaloniki JavaScript Meetup sheet tells its story, with the talk and the community's links", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page
+    .getByRole("button", { name: /Thessaloniki JavaScript Meetup/ })
+    .click();
+  const sheet = page.getByRole("dialog", {
+    name: "Thessaloniki JavaScript Meetup",
+  });
+  for (const label of ["The community", "My role"]) {
+    await expect(
+      sheet.getByRole("heading", { level: 3, name: label }),
+    ).toBeVisible();
+  }
+  await expect(sheet.locator("[data-placeholder]")).toHaveCount(0);
+  const region = sheet.getByRole("region", { name: "Highlights" });
+  await expect(region.getByRole("heading", { level: 4 })).toHaveText([
+    "What's new in React 19",
+    "Between meetups",
+  ]);
+  for (const [name, href] of [
+    [/Meetup #3/, "https://www.meetup.com/skg-js/events/307229886/"],
+    [/SKG JS on Meetup/, "https://www.meetup.com/skg-js/"],
+    [/SKG JS on Discord/, "https://discord.gg/dQY7TPUTBb"],
+  ] as const) {
+    const link = region.getByRole("link", { name });
+    await expect(link).toHaveAttribute("href", href);
+    await expect(link).toHaveAttribute("target", "_blank");
+  }
 });
 
 test("education and community sheets reveal their links", async ({ page }) => {

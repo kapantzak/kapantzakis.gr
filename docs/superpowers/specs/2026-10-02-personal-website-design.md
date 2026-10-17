@@ -178,7 +178,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 150 | MSc program link         | The University of Macedonia MSc links to `https://www.uom.gr/en/mai`, labelled "MSc in Applied Informatics" rather than a hostname |
 | 151 | Brand without a logo     | `brand.logo` is optional; a brand without one keeps the text title on its band, with the band, accent, link colour and visual unchanged; a lockup needs a logo; degrees take the same optional `brand` as work roles |
 | 152 | MSc brand                | White band, `tone: "light"`, accent and link `#f6a800`, the orange-gold of the University of Macedonia logo; its blue `#004f92` was ruled out because `--color-on-accent` on it is 2.34:1; no logo, so "MSc in Applied Informatics" stays the title |
-| 153 | MSc visual               | A photo of the University of Macedonia main building, its sign and its campus map, from `entreped2026.uom.gr` (`uom1.jpg`, 1600×1067), unchanged apart from conversion to quality-90 WebP; it takes the shared tilt, fade and phone strip (decisions 57, 60–62); it replaces an earlier logo-on-a-card visual |
+| 153 | MSc visual               | *Superseded by 197.* A photo of the University of Macedonia main building, its sign and its campus map, from `entreped2026.uom.gr` (`uom1.jpg`, 1600×1067), unchanged apart from conversion to quality-90 WebP; it takes the shared tilt, fade and phone strip (decisions 57, 60–62); it replaces an earlier logo-on-a-card visual |
 | 154 | Text title beside a visual | At every width, a brand without a logo but with a visual sizes its text title to its column (the left half from 48rem up), so "MSc in Applied Informatics" takes at most two lines and no word breaks; tuned to that title, so a longer one could take more lines |
 | 155 | Degree stories           | Degrees take the same optional `story` as work roles, rendered by the same intro, panels and timeline; a degree with a story drops the "Coming soon" placeholders |
 | 156 | Contributions heading    | Optional `story.contributionsHeading`, defaulting to "Selected contributions"; the MSc in Applied Informatics uses "The application" |
@@ -212,6 +212,35 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 184 | Arriving on a section path | When the home page is reached on a section path (a page load, or a link from the 404 page), the path stays as it is and the nav marks the item it belongs to until the visitor first scrolls; from then the band decides (decision 174); on phones the single-row Community group ends above the band, so without this a `/community` link would read `/writing` at once |
 | 185 | Section link query string | A section link click keeps the URL's query string, as the path tracking and Back to top do (amends decision 175) |
 | 186 | Hidden until placed       | On a fresh load (`navigate`) of a section path with JavaScript, the page stays hidden, showing only the page background, until the jump has placed it, so no browser shows the top of the page first: a script in the root layout's `<head>` marks the document as pending, CSS hides `<body>` while it is marked, the region's script clears the mark right after its jump, and `DOMContentLoaded` clears it in any case; `/`, reloads, Back and Forward and pages without JavaScript are never hidden (amends decision 176) |
+| 187 | AUTh MSc program link     | The MSc in Informatics and Management links to its successor's site, `https://deps.csd.auth.gr/en/`, labelled "Successor program (AUTh)", because the program the user attended no longer exists under its name and its original site (`http://dpms.csd.auth.gr`) has no https; the University of Macedonia page the user first gave belongs to the other MSc |
+| 188 | AUTh MSc thesis link      | The thesis PDF on `ikee.lib.auth.gr` returns 200 again, so the sheet links to it, labelled "Thesis (Greek)" after the thesis's language, as the other MSc's "Thesis (English)" |
+| 189 | AUTh MSc story            | A "The program" / "My thesis" intro only, as in decision 157 but with no panels, so the sheet drops its "Coming soon" placeholders (decision 155); the thesis title is the user-approved English translation of the Greek title; the supervisor is not named |
+| 190 | AUTh MSc brand            | *Superseded by 192.* None for now; the sheet stays a plain sheet |
+| 191 | Placeholder test          | *Superseded by 205.* The end-to-end check that an entry without a story shows the three placeholders moves to the BSc in Economic Science |
+| 192 | AUTh MSc brand (revised)  | White band, `tone: "light"`, accent and link `#e0675c`, a lighter tint of the Aristotle University logo's red `#952927`; the logo red itself is ruled out because `--color-on-accent` on it is 2.61:1 and, as a dark band, the muted text on it is 3.08:1; no logo, so "MSc in Informatics and Management" stays the title |
+| 193 | AUTh MSc visual           | A generated, generic illustration marked "Illustrative": the thesis's E-Shop ontology as a graph in a light window titled `e-shop.owl`, its boxes named after the thesis's classes and its arrows after its object properties, with AUTh-red highlights and no company names or logos; 1714×964, quality-90 WebP under `assets/brand/`; it takes the shared tilt, fade and phone strip (decisions 57, 60–62), so the ordering chain, the highlighted `EShop` box and the mark sit 33–72% across and 40–70% down, where both the wide band and the phone strip show them unfaded |
+| 194 | Text title size           | A text title beside a visual is capped at `12cqi` instead of `12.5cqi`, so its column is 8.33em: "MSc in Informatics and Management" takes three lines ("Informatics and" measures 8.00em) and "MSc in Applied Informatics" keeps two (amends decision 154) |
+| 195 | Plain-sheet test          | *Superseded by 205.* The end-to-end check that a sheet without a brand has no band and no image moves to the BSc in Economic Science |
+| 196 | Brand in the same PR      | The brand ships in the pull request that added the story (decisions 187–191) |
+| 197 | MSc visual (revised)      | The MSc in Applied Informatics band shows a generated illustration of the thesis application instead of the campus photo, so both MSc sheets show their thesis; the story panels are unchanged |
+| 198 | MSc architecture visual   | A generic illustration marked "Illustrative", in the same window style as decision 193: the mobile app (Ionic, Angular) and the web app (React, TypeScript) talk to the ASP.NET Core Web API, which stores its data in SQL Server through Entity Framework Core; a made-up QR code links the lecture shown in the web app to the phone's scan; 1714×964, quality-90 WebP under `assets/brand/`; the API box and the mark sit where both the wide band and the phone strip show them unfaded |
+| 199 | MSc visual colours        | University of Macedonia blue `#004f92` and gold `#f6a800` as graphics only; no text is set on the gold, so the contrast rule of decision 152 does not apply |
+| 200 | MSc visual in the same PR | The new visual ships in the pull request of decisions 187–196 |
+| 201 | BSc story                 | The BSc in Economic Science takes a "The school" / "My division" intro and no panels, so it drops its "Coming soon" placeholders (decision 155); "My division" names the Economic Theory and Policy division, the School of Economics' own English name for «Τομέας Οικονομικής Θεωρίας και Πολιτικής»; the Greek name is left out, at the user's request on 2026-10-18 |
+| 202 | BSc program link          | `https://www.econ-auth.gr/en/`, the English pages of the School of Economics, labelled "School of Economics (AUTh)" |
+| 203 | BSc brand                 | The same as the MSc in Informatics and Management (decision 192): white band, `tone: "light"`, accent and link `#e0675c`, no logo, so "BSc in Economic Science" stays the title; it takes two lines ("BSc in Economic" measures 8.26em of the 8.33em column) |
+| 204 | BSc visual                | A generated, generic illustration marked "Illustrative", in the window style of decision 193: a supply and demand diagram with its equilibrium beside an aggregate demand and supply diagram, with no data or figures, in AUTh-red tints; 1714×964, quality-90 WebP under `assets/brand/`; its diagrams and mark sit where both the wide band and the phone strip show them unfaded |
+| 205 | Placeholder and plain-sheet tests | With every entry branded and every entry but the community one told (corrected 2026-10-18; decision 207 tells it too), a unit test renders the "Coming soon" placeholders from a profile whose degree has no story, and the two end-to-end checks on the BSc are removed; the plain sheet stays covered by the `SheetHost` unit test |
+| 206 | BSc in the same PR        | The BSc changes ship in the pull request of decisions 187–200 |
+| 207 | Community stories         | Community entries take the same optional `story` as work roles and degrees, rendered by the same intro and panels; the SKG JS sheet takes one, so it drops its "Coming soon" placeholders |
+| 208 | SKG JS story              | A "The community" / "My role" intro, then two panels: "What's new in React 19", the user's talk at Meetup #3 (25 April 2025, OKThess), linked to its event page as "Meetup #3", and "Between meetups", linked to the Meetup group as "SKG JS on Meetup" and the Discord server as "SKG JS on Discord"; the talk takes the user's own title, while the event page lists it as "How React 19 new features can improve our apps" |
+| 209 | Talk panel image          | A generated poster of Meetup #3 marked "Illustrative", built only from the event page: its title, date, time, venue and agenda with both talks; no Meetup or React logos; SKG JS black `#1a1a1a` and yellow `#f7dd3e` |
+| 210 | Join panel image          | A generated graphic marked "Illustrative" of two cards, "Meetup" for events and RSVPs and "Discord" for the conversation between meetups, in SKG JS black and yellow, with no Meetup or Discord logos |
+| 211 | SKG JS images             | 1714×964, quality-90 WebP under `assets/stories/skgjs/`; decorative, as in decision 108; their content sits where both the tilted wide panel and the phone strip show it unfaded |
+| 212 | SKG JS copy               | The user approved the intro and panel copy as drafted on 2026-10-18, then changed "a community for JavaScript developers" to "a community for developers"; no recording or slides are linked |
+| 213 | SKG JS in the same PR     | The SKG JS changes ship in the pull request of decisions 187–206 |
+| 214 | SKG JS panels heading     | The SKG JS panels sit under "Highlights" instead of the default "Selected contributions" (decision 156) |
+| 215 | SKG JS tints              | `#fdf6c9`, a pale SKG JS yellow, for the talk panel and `#f1efe6`, a warm grey, for the join panel, approved by the user on 2026-10-18; the paper text tokens keep 4.5:1 on both (decision 104) |
 
 ## 3. Scope
 
@@ -575,3 +604,49 @@ The user asked for the URL to name the section in view with a real path instead 
   - In Firefox the first frame lands a little short of the region (about 160px on `/writing`) and settles a moment later, as the rest of the page lays out.
   - The `next dev` console error of decision 182.
   - A fresh load of `/contact` runs its script before the footer is parsed, so the page cannot yet scroll as far as a nav tap does: on a Pixel 7 the Contact heading lands 380px down the view instead of 252px, still in view; accepted by the user.
+
+## 27. MSc in Informatics and Management (2026-10-17)
+
+The user asked for details on the MSc in Informatics and Management sheet, giving a program link and the thesis link, and approved decisions 187–191 on 2026-10-17.
+
+- **Facts checked:**
+  - The program link the user gave, `https://www.uom.gr/en/mai`, is the University of Macedonia's MSc in Applied Informatics (decision 150), not this degree.
+  - The thesis record (`https://ikee.lib.auth.gr/record/115789`, read 2026-10-17) names the interdepartmental program «Πληροφορική και Διοίκηση» of Aristotle University, the language as Greek and the year as 2010; the PDF is dated March 2010 and its abstract describes the E-Shop ontology, written in OWL with Protégé, built on an existing E-Commerce ontology and modelled on the online payment process.
+  - The program's 2013–2014 announcement says it was run by the Departments of Informatics and Economic Sciences and had trained professionals in information systems and their use in managing businesses and organisations since 2003; the 2018–2019 announcement says «Διοίκηση Επιχειρήσεων και Πληροφοριακά Συστήματα» evolved from it.
+
+## 28. AUTh MSc brand (2026-10-18)
+
+The user asked for a brand on the MSc in Informatics and Management sheet, with a generated image since none exists, and approved decisions 192–196 on 2026-10-18.
+
+- **Facts checked:** the logo red `#952927` is the dominant colour of the Aristotle University banner logo on `auth.gr` (read 2026-10-18). The thesis PDF has no figure 600px wide or more, so no figure of it is reused. The graph's classes and properties come from chapter 6 of the thesis: `Individual makesOrder Order`, `Individual buysProduct Product`, `Order orderToSeller EShop`, `EShop sells Product`, `EShop hasAcquiringBank Bank`, `Product hasFee Charge`, `Charge hasPaymentMethod PaymentMethod`, `Document recordsCharge Charge`; the side list shows the thesis's twelve top-level classes; the thesis's instances name real companies, so the image shows none.
+- **Placement measured:** with the three-line title, the band at 1440×900 is 576px tall, so the image scales up and the band shows only about 33–72% of its width; the phone strip fades the image's top 40%. A first draft with the graph across the image's right half lost `EShop` and the mark on desktop, so the final draft keeps them in the middle; checked at 1440×900, 1920×1080 and on a Pixel 7.
+- **Measured:** in the display font, "MSc in Applied" is 7.54em, "Informatics and" 8.00em, "Management" 6.76em and "MSc in Informatics" 9.43em.
+- **Image:** an HTML page written for this purpose, captured with Playwright at 1714×964 and converted with `sharp` to quality-90 WebP, as in sections 21 and 23.
+
+## 29. MSc in Applied Informatics visual (2026-10-18)
+
+The user asked for a generated image on the MSc in Applied Informatics sheet, replacing the campus photo, and approved decisions 197–200 on 2026-10-18.
+
+- **Facts:** the parts and their links come from the repositories listed in section 23: the Ionic and Angular mobile app, the React and TypeScript web client, and the ASP.NET Core Web API with Entity Framework Core on SQL Server and JWT authentication, which generates each lecture's QR code and logs a scan through `POST /api/AttendanceLog`.
+- **Image:** an HTML page written for this purpose, captured with Playwright at 1714×964 and converted with `sharp` to quality-90 WebP, as in section 28; its QR code is a made-up pattern that encodes nothing.
+- **Placement measured:** with its two-line title, the band at 1440×900 is 504px tall; the phone strip on a Pixel 7 ends about 71% down the image, so a first draft lost its QR code, mobile app box and "scanned" label there; the final draft sits higher. Checked at 1440×900, 1920×1080 and on a Pixel 7.
+- **Campus photo:** `assets/brand/uom-campus.webp` is removed, with the user's approval on 2026-10-18; git history keeps it.
+
+## 30. BSc in Economic Science (2026-10-18)
+
+The user asked for an image on the BSc in Economic Science sheet, a link to the School of Economics and a mention of the division they chose, and approved decisions 201–206 on 2026-10-18.
+
+- **Facts checked:** the School of Economics site (`https://www.econ-auth.gr/en/`, read 2026-10-18) says the school was established in 1928 as the School of Economics and Political Sciences and is the largest school of Aristotle University; its divisions page lists "Economic Theory and Policy" (Greek page: «Τομέας Οικονομικής Θεωρίας και Πολιτικής») as teaching mathematics and statistics, economic analysis and policies, micro- and macroeconomics, and monetary and industrial organisation. The description is today's; the site does not say whether the division taught the same subjects in 2001–2006.
+- **Image:** an HTML page written for this purpose, captured with Playwright at 1714×964 and converted with `sharp` to quality-90 WebP, as in sections 28 and 29.
+- **Placement measured:** with its two-line title, the band is 504px tall at 1440×900, as for the MSc in Applied Informatics; a first draft lost the right card's edge and title behind the close button there, so the final draft sits 50px further left. Checked at 1440×900, 1920×1080 and on a Pixel 7.
+- **Tests:** `components/Experience.test.tsx` renders the placeholders from a profile whose only degree has no story; the end-to-end story and band tests cover the BSc alongside the MSc degrees.
+
+## 31. SKG JS story (2026-10-18)
+
+The user asked for content on the SKG JS sheet: the Meetup group, the Discord server and their talk on React 19, with freedom to add graphics, and approved decisions 207–215 on 2026-10-18.
+
+- **Facts checked:** the Meetup group (`https://www.meetup.com/skg-js/`, read 2026-10-18) describes "a community in Thessaloniki, Greece, for JavaScript enthusiasts of all levels" and "a friendly and inclusive space where developers can socialize, learn, and grow". The event page (`https://www.meetup.com/skg-js/events/307229886/`) lists "Thessaloniki JS Meetup #3: Beyond Core Web Vitals & New Features in React 19" on Friday 25 April 2025, 19:00–21:00, at OKThess, with networking, a welcome, "Thinking Beyond core Web Vitals" by Katerina Patticha and "How React 19 new features can improve our apps" by the user. The Discord invite (`https://discord.gg/dQY7TPUTBb`) does not expire and leads to the "skgjs.gr" server.
+- **Images:** HTML pages written for this purpose, captured with Playwright at 1714×964 and converted with `sharp` to quality-90 WebP, as in section 28.
+- **Correction:** decision 205 and the placeholder unit test first said every entry had a story, while the SKG JS sheet still showed placeholders; decision 207 makes that true.
+- **Placement measured:** on a Pixel 7 the panel strip shows the image's top 70% or so, so the poster lists only the two talks of the agenda, keeping the user's talk in view; on wide screens the right-hand panel runs its image off the right edge, so the join cards sit 130px further left than the poster. Checked at 1440×900, 1920×1080 and on a Pixel 7.
+- **Tints:** `#fdf6c9`, a pale SKG JS yellow, and `#f1efe6`, a warm grey; the paper text tokens keep 4.5:1 on both (decision 104).

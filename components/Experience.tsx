@@ -90,6 +90,7 @@ function groupsOf(profile: Profile): GroupData[] {
       entries: profile.community.map((entry) => ({
         sheet: communitySheet(entry),
         brand: entry.brand,
+        story: entry.story,
         details: (
           <>
             <p>{entry.summary}</p>

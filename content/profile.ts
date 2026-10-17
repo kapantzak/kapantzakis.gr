@@ -1,5 +1,7 @@
 import type { StaticImageData } from "next/image";
 import adzunaHome from "@/assets/brand/adzuna-home.png";
+import authEconomics from "@/assets/brand/auth-economics.webp";
+import authOntology from "@/assets/brand/auth-ontology.webp";
 import adzunaLogo from "@/assets/brand/adzuna-logo.svg";
 import epsilonnetHome from "@/assets/brand/epsilonnet-home.webp";
 import epsilonnetLogo from "@/assets/brand/epsilonnet-logo.svg";
@@ -7,9 +9,11 @@ import netdataDashboard from "@/assets/brand/netdata-dashboard.png";
 import netdataLogo from "@/assets/brand/netdata-logo.svg";
 import skgjsHome from "@/assets/brand/skgjs-home.webp";
 import skgjsLogo from "@/assets/brand/skgjs-logo.svg";
+import skgjsJoin from "@/assets/stories/skgjs/join.webp";
+import skgjsTalk from "@/assets/stories/skgjs/talk.webp";
 import skroutzHome from "@/assets/brand/skroutz-home.webp";
 import skroutzLogo from "@/assets/brand/skroutz-logo.svg";
-import uomCampus from "@/assets/brand/uom-campus.webp";
+import uomAttendance from "@/assets/brand/uom-attendance.webp";
 import aiChat from "@/assets/stories/netdata/ai-chat.webp";
 import aiInsights from "@/assets/stories/netdata/ai-insights.webp";
 import dyncfg from "@/assets/stories/netdata/dyncfg.webp";
@@ -111,6 +115,7 @@ export type CommunityRole = {
   period: Period;
   summary: string;
   brand?: Brand;
+  story?: Story;
 };
 export type SocialLink = { label: string; url: string };
 
@@ -477,13 +482,13 @@ export const profile: Profile = {
         label: "Thesis (English)",
         url: "https://dspace.lib.uom.gr/bitstream/2159/22942/4/KapantzakisIoannisMsc2018.pdf",
       },
-      // The logo's orange-gold; the visual is a photo of the main building (decisions 152, 153).
+      // The logo's orange-gold; the visual is an illustration of the thesis application (decisions 152, 198).
       brand: {
         background: "#ffffff",
         accent: "#f6a800",
         link: "#f6a800",
         tone: "light",
-        visual: uomCampus,
+        visual: uomAttendance,
       },
       // The app screenshots are the user's own; the API image is an illustration (decisions 157–159).
       story: {
@@ -543,12 +548,66 @@ export const profile: Profile = {
       institution: "Aristotle University of Thessaloniki",
       degree: "MSc in Informatics and Management",
       period: { start: "2008", end: "2010" },
+      // The program was renamed in 2018, so the link goes to its successor (decision 187).
+      program: {
+        label: "Successor program (AUTh)",
+        url: "https://deps.csd.auth.gr/en/",
+      },
+      thesis: {
+        label: "Thesis (Greek)",
+        url: "https://ikee.lib.auth.gr/record/115789/files/kapantzakes.pdf",
+      },
+      // A tint of the logo's red, which fails 4.5:1 as an accent; the visual is an
+      // illustration of the thesis's ontology (decisions 192, 193).
+      brand: {
+        background: "#ffffff",
+        accent: "#e0675c",
+        link: "#e0675c",
+        tone: "light",
+        visual: authOntology,
+      },
+      story: {
+        intro: [
+          {
+            label: "The program",
+            text: "Informatics and Management was an interdepartmental master's program at Aristotle University of Thessaloniki, run by the Departments of Informatics and Economic Sciences since 2003. It trained professionals in information systems and their use in managing businesses and organisations. In 2018 it evolved into the MSc in Management and Information Systems.",
+          },
+          {
+            label: "My thesis",
+            text: "My thesis, “Applying Semantic Web technologies to knowledge management in e-commerce”, explored how ontologies can organise the knowledge an online shop depends on. I developed E-Shop, an OWL ontology built in Protégé on an existing e-commerce ontology and modelled around the online payment process, describing buyers, shops and the parties a payment involves.",
+          },
+        ],
+      },
     },
     {
       slug: "bsc-economic-science",
       institution: "Aristotle University of Thessaloniki",
       degree: "BSc in Economic Science",
       period: { start: "2001", end: "2006" },
+      program: {
+        label: "School of Economics (AUTh)",
+        url: "https://www.econ-auth.gr/en/",
+      },
+      // The same brand as the AUTh MSc; the visual is an illustration of economic theory (decisions 203, 204).
+      brand: {
+        background: "#ffffff",
+        accent: "#e0675c",
+        link: "#e0675c",
+        tone: "light",
+        visual: authEconomics,
+      },
+      story: {
+        intro: [
+          {
+            label: "The school",
+            text: "The School of Economics of Aristotle University of Thessaloniki is the university's largest school, founded in 1928 as the School of Economics and Political Sciences.",
+          },
+          {
+            label: "My division",
+            text: "I chose the Economic Theory and Policy division, which covers the core of economics: mathematics and statistics, micro- and macroeconomics, economic analysis and policy, monetary economics and industrial organisation.",
+          },
+        ],
+      },
     },
   ],
   community: [
@@ -569,6 +628,50 @@ export const profile: Profile = {
         tone: "dark",
         visual: skgjsHome,
         lockup: ["Thessaloniki", "JavaScript Meetup"],
+      },
+      // Both panels show illustrations built from the Meetup pages (decisions 208–211).
+      story: {
+        intro: [
+          {
+            label: "The community",
+            text: "SKG JS, the Thessaloniki JavaScript Meetup, is a community for developers of all levels: a friendly, inclusive space to socialise, learn and grow, with talks on JavaScript and software engineering.",
+          },
+          {
+            label: "My role",
+            text: "I co-organise the meetups, bringing developers together to learn, share and connect.",
+          },
+        ],
+        contributionsHeading: "Highlights",
+        contributions: [
+          {
+            title: "What's new in React 19",
+            body: "At Meetup #3, on 25 April 2025 at OKThess, I gave a high-level tour of the most important updates in React 19 and how they change modern frontend development, with practical examples of how they make developers' lives easier.",
+            image: skgjsTalk,
+            tint: "#fdf6c9",
+            links: [
+              {
+                label: "Meetup #3",
+                url: "https://www.meetup.com/skg-js/events/307229886/",
+              },
+            ],
+          },
+          {
+            title: "Between meetups",
+            body: "Events are announced on Meetup, where you can RSVP; between meetups, the conversation continues on the community's Discord server.",
+            image: skgjsJoin,
+            tint: "#f1efe6",
+            links: [
+              {
+                label: "SKG JS on Meetup",
+                url: "https://www.meetup.com/skg-js/",
+              },
+              {
+                label: "SKG JS on Discord",
+                url: "https://discord.gg/dQY7TPUTBb",
+              },
+            ],
+          },
+        ],
       },
     },
   ],
