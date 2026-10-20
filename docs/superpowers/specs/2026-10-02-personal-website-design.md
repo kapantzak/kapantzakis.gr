@@ -15,7 +15,7 @@ The site is done when:
 1. The routes `/`, `/about`, `/posts`, `/posts/[slug]` and `/contact` are statically generated and deployed on Vercel.
 2. The site follows the visual direction in section 4: dark base, big bold headings, vivid heading colours, light contrast pages, full-width layout.
 3. Page changes are plain route navigations with no scroll-driven section movement, no custom cursor and no page-transition animations.
-4. Every page ships no client-side JavaScript beyond what Next.js needs, plus the analytics script.
+4. Every page ships no client-side JavaScript beyond what Next.js needs, plus the analytics script. *Amended by 218:* the analytics script is the Google tag, loaded only after a visitor accepts the consent banner.
 5. Old URLs keep working: `/about`, `/posts` and `/contact` exist, and `/projects` redirects to `/about`.
 6. The old site's service worker is retired, so returning visitors get the new site.
 7. Lint, type-check, unit tests (Vitest) and smoke tests (Playwright) all pass.
@@ -39,7 +39,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 11 | Testing                 | Vitest with React Testing Library, plus Playwright smoke tests                                            |
 | 12 | Old "Projects" section  | *Superseded by 31.* Dropped; `/projects` permanently redirects to `/about` |
 | 13 | About content           | Drafted from the current site and LinkedIn, then reviewed and completed by the user                       |
-| 14 | Analytics               | Vercel Web Analytics (`@vercel/analytics`)                                                                |
+| 14 | Analytics               | *Superseded by 216.* Vercel Web Analytics (`@vercel/analytics`)                                           |
 | 15 | MDX pipeline            | *Superseded by 35.* `@next/mdx`; each post exports `metadata`; external entries live in a typed TS file |
 | 16 | Light pages             | *Superseded by 38.* `/posts` and `/posts/[slug]` use the light theme; all other routes stay dark |
 | 17 | Post-page test coverage | *Superseded by 35.* Optional `draft: true` post flag; a permanent draft fixture is built only when `INCLUDE_DRAFTS=1` (e2e) |
@@ -196,7 +196,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 168 | Sheet metadata           | Each sheet path has a title (the sheet's title, through the site's title template), a description built from its data (work and community: "{subtitle} at {title}, {period}."; education: "{title}, {subtitle}, {period}.") and a canonical URL of its own path; the sitemap lists `/` and every sheet path; unknown slugs return 404 |
 | 169 | Tab title                | Opening a sheet in a loaded page sets the tab title to that sheet's title, and closing restores the home title, since a sheet only opens over `/`, so the tab and history entries match the URL |
 | 170 | Home-only behaviour      | *Amended by 183.* The section tracking and hash (decisions 124–125), Back to top and the brand link's scroll (decisions 94–98) stay keyed to `usePathname() === "/"`; on a sheet path they are off, so the hash is never written onto a sheet path |
-| 171 | Analytics routes         | Vercel Web Analytics reports a sheet's page view under its route, `/experience/[slug]`, `/education/[slug]` or `/community/[slug]`, whether a row, Back, Forward or the page load opened it; a site component wraps `@vercel/analytics/react`'s `Analytics` and replaces `@vercel/analytics/next`'s, passing the same settings (`framework: "next"`, and the base path and client config from the `NEXT_PUBLIC_VERCEL_OBSERVABILITY_*` build variables); other paths keep the route the Next.js component reported |
+| 171 | Analytics routes         | *Superseded by 217.* Vercel Web Analytics reports a sheet's page view under its route, `/experience/[slug]`, `/education/[slug]` or `/community/[slug]`, whether a row, Back, Forward or the page load opened it; a site component wraps `@vercel/analytics/react`'s `Analytics` and replaces `@vercel/analytics/next`'s, passing the same settings (`framework: "next"`, and the base path and client config from the `NEXT_PUBLIC_VERCEL_OBSERVABILITY_*` build variables); other paths keep the route the Next.js component reported |
 | 172 | Home page views          | Every sheet opening counts as a page view of that sheet; `/` counts when the page loads on it, and the first time a page load that opened a sheet shows it; a return to `/` from a sheet after `/` has counted in that page load is not a new view |
 | 173 | Section paths            | Five paths name places on the home page: `/experience`, `/writing` and `/contact` for the sections, and `/education` and `/community` for the Education and Community groups inside Experience; each is a real route that renders the home page; `/contact` is live again (decision 31) |
 | 174 | Path follows scroll      | On the home page the URL path names the region in the reading band (decision 40's band): a group inside Experience wins over Experience itself, and no region (the hero, the footer, a gap) gives `/`; the current history entry is replaced with a plain state object, never a new one pushed, and any hash is dropped; Back to top and the brand link's scroll return the URL to `/`; decision 126 still applies |
@@ -205,7 +205,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 177 | Hash links               | No code handles hashes; an old link such as `/#contact` still works because the browser scrolls to the section's id, after which the path follows the scroll (decision 174) |
 | 178 | Section path SEO         | Each section path's canonical URL is `/`; the sitemap does not list them (decision 168) |
 | 179 | Section path title       | The tab keeps the home title on every section path, on load and while scrolling |
-| 180 | Section path analytics   | `/` and the section paths count as one page: moving between them is never a page view; arriving on one by a page load or from another page (the 404) counts once, under its own path and route; arriving from a sheet follows decision 172, with any of them standing for `/` |
+| 180 | Section path analytics   | *Amended by 217:* a view carries a path and no route. `/` and the section paths count as one page: moving between them is never a page view; arriving on one by a page load or from another page (the 404) counts once, under its own path and route; arriving from a sheet follows decision 172, with any of them standing for `/` |
 | 181 | Nav highlight            | On `/education` and `/community` the nav marks Experience as current |
 | 182 | Dev-only console error   | In `next dev`, reaching a section path from another page logs React's "Encountered a script tag" error, because the inline script is rendered on the client and never runs; it is accepted, since the home page scrolls there itself and production builds log nothing |
 | 183 | Home paths               | `/` and the five section paths are all the home page: the section tracking, Back to top and the brand link's scroll (decisions 94–98, 170) run on any of them, and a sheet path stays off |
@@ -241,6 +241,19 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 213 | SKG JS in the same PR     | The SKG JS changes ship in the pull request of decisions 187–206 |
 | 214 | SKG JS panels heading     | The SKG JS panels sit under "Highlights" instead of the default "Selected contributions" (decision 156) |
 | 215 | SKG JS tints              | `#fdf6c9`, a pale SKG JS yellow, for the talk panel and `#f1efe6`, a warm grey, for the join panel, approved by the user on 2026-10-18; the paper text tokens keep 4.5:1 on both (decision 104) |
+| 216 | Analytics                 | Google Analytics 4 (property `G-3L6VP0EV5V`) replaces Vercel Web Analytics; `@vercel/analytics` is removed; a visitor who rejects or makes no choice is not counted anywhere |
+| 217 | GA page views             | The site sends each page view itself, by the counting rules of decisions 172 and 180, with the page's URL and the tab title and no route; GA's own history-based page views are off in GA Admin, so section-path rewrites while scrolling (decision 174) are never page views |
+| 218 | Consent before loading    | Nothing is requested from Google until the visitor accepts; a rejection or no choice loads no Google script and sets no cookie; content is never blocked |
+| 219 | Consent banner            | A site-built bar fixed to the bottom of the view, full width, with one short sentence, a link to `/privacy`, and Accept and Reject buttons of equal size and emphasis; no pre-ticked options and no consent by scrolling or closing |
+| 220 | Cookie settings           | A "Cookie settings" button in the footer reopens the banner on any page |
+| 221 | Privacy page              | One `/privacy` page covers privacy and cookies; its text is drafted, then reviewed and approved by the user before merge; the footer links to it and the sitemap lists it |
+| 222 | Measurement ID            | Read from `NEXT_PUBLIC_GA_ID`, set only for Vercel's Production environment; without it there is no Google tag, no banner and no Cookie settings button, so local runs and previews send nothing |
+| 223 | Choice lifetime           | An Accept or Reject is remembered in the browser for 6 months, then the banner asks again |
+| 224 | Accepting mid-visit       | Accepting sends a page view of the page in view at once; later moves follow decision 217 |
+| 225 | Withdrawing consent       | Rejecting after an Accept deletes the GA cookies (`_ga`, `_ga_3L6VP0EV5V`) and reloads the page, so the Google tag is gone |
+| 226 | GA collection             | Page views and outbound clicks only: GA Admin keeps enhanced measurement's outbound clicks and turns off its scrolls, site search, form, video and file-download events, history-based page views, automatic collection of user-provided data and Google signals |
+| 227 | GA data retention         | 14 months, set in GA Admin and stated on the privacy page |
+| 228 | Banner over a sheet       | While a detail sheet is open the banner stays above it and usable: the sheet's modality leaves the banner out of what it makes inert, and the sheet's content keeps clear of the bar while it shows |
 
 ## 3. Scope
 
@@ -251,7 +264,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 - A posts content pipeline: local MDX posts, external entries, and a merged list sorted by date.
 - Page metadata (title and description), `sitemap.xml`, `robots.txt` and a canonical URL.
 - The `/projects` redirect and the service-worker kill switch.
-- Vercel Web Analytics.
+- Vercel Web Analytics; replaced by Google Analytics 4 behind a consent banner in section 32.
 - Tooling: TypeScript, ESLint, Prettier, Vitest, Playwright, and npm scripts for each.
 - Vercel project setup and a written checklist for the domain cutover. The user changes DNS.
 
@@ -650,3 +663,35 @@ The user asked for content on the SKG JS sheet: the Meetup group, the Discord se
 - **Correction:** decision 205 and the placeholder unit test first said every entry had a story, while the SKG JS sheet still showed placeholders; decision 207 makes that true.
 - **Placement measured:** on a Pixel 7 the panel strip shows the image's top 70% or so, so the poster lists only the two talks of the agenda, keeping the user's talk in view; on wide screens the right-hand panel runs its image off the right edge, so the join cards sit 130px further left than the poster. Checked at 1440×900, 1920×1080 and on a Pixel 7.
 - **Tints:** `#fdf6c9`, a pale SKG JS yellow, and `#f1efe6`, a warm grey; the paper text tokens keep 4.5:1 on both (decision 104).
+
+## 32. Google Analytics (2026-10-20)
+
+Issue #23 asks for Google Analytics, a cookie banner and legal pages. The user gave the GA4 measurement ID `G-3L6VP0EV5V`, said older GA accounts for the domain do not matter, chose to replace Vercel Web Analytics rather than run both, and approved decisions 216–228 on 2026-10-20.
+
+- **Why it is more than a tag:**
+  - The site rewrites its path with `history.replaceState` while the visitor scrolls (`components/NavLinks.tsx`, decision 174), and pushes or replaces history for sheets and section links (`SheetHost.tsx`, `SectionLink.tsx`, `lib/scroll-top.ts`). GA4's history-based page views listen for `pushState`, `popstate` and `replaceState` (Google Analytics Help, "Enhanced measurement events", read 2026-10-20), so with GA's defaults every section scrolled past would be a page view.
+  - In Greece, analytics cookies need prior consent, and rejecting must be as easy as accepting, on the first layer (HDPA guidance of February 2020, as summarised by IAPP; the HDPA's own text was not read).
+- **Facts checked:** on 2026-10-20 `https://www.googletagmanager.com/gtag/js?id=G-3L6VP0EV5V` served a tag configured for that property, with history events, enhanced measurement and automatic collection of user-provided data (`vtp_autoEmailEnabled`, `vtp_autoPhoneEnabled`, `vtp_autoAddressEnabled`) switched on; a made-up ID gets a generic tag with no destination. `@next/third-parties` `GoogleAnalytics` (16.3.8) sends the tag's own page view and relies on history events, and takes no config options, so it does not fit decision 217.
+- **Measurement ID:** `NEXT_PUBLIC_GA_ID`, read at build time (decision 222). Its value is public in every page's source; it is set as an environment variable only so that non-production builds have none.
+- **Consent store:** one `localStorage` entry holding the choice (`granted` or `denied`) and when it was made; older than 6 months counts as no choice (decision 223). If storage throws or is blocked, there is no choice: the banner shows on each page load, and an Accept still applies for that page's life.
+- **Loading the tag:** only once the choice is `granted`, the site's own client code defines `window.dataLayer` and `gtag`, sets the consent defaults (`analytics_storage` granted; `ad_storage`, `ad_user_data` and `ad_personalization` denied), calls `gtag("config", id, { send_page_view: false })` and appends the `gtag/js` script. No new dependency.
+- **Page views (decision 217):** `components/PageAnalytics.tsx` keeps its counting state machine (decisions 172, 180) and, for each view that counts while consent is granted, sends `gtag("event", "page_view", { page_location, page_title })`. With the route gone, the root layout passes the set of sheet paths instead of their routes, and `computeRoute` goes. On a sheet opened in the page the tab title changes in `SheetHost`'s effect (decision 169), so the page view must read the title after it.
+- **Accepting mid-visit (decision 224):** the counting state restarts as if the page had just loaded on the path in view, and that view is sent at once; so after Accept on a sheet opened in the page, closing it to `/` counts `/` (decision 172). Builder's call: views counted before consent were never sent, so restarting keeps GA's record of the visit consistent.
+- **Banner (decisions 219–220):** a client component rendered from the root layout, on every route including the 404 and `/privacy`. It renders nothing on the server and shows after hydration when there is no choice. Accept stores `granted`, loads the tag and hides the bar; Reject stores `denied` and hides it. The footer's "Cookie settings" button reopens it, styled like Back to top (decision 95). Without JavaScript there is no banner and no tag.
+- **Banner over a sheet (decision 228):** sheet links are entry points (the sitemap lists them, decision 168), so a visitor who lands on one and never closes it must still be able to answer. The banner's z-index is above the sheet's (30); `DetailSheet`'s modality skips the banner when it makes the rest of the page inert, whichever of the two appears first; while the banner shows, the sheet reserves room at its bottom so the bar does not hide its last lines. Mouse, touch and Tab reach the banner; a screen reader may treat the sheet (`aria-modal="true"`) as the whole page until it closes, which is accepted.
+- **Draft banner copy:** "This site uses Google Analytics cookies to see which pages are read, only if you accept. [Privacy]" with the buttons "Accept" and "Reject".
+- **Withdrawing (decision 225):** Reject after an Accept stores `denied`, deletes `_ga` and `_ga_3L6VP0EV5V` (both on the host and on `.kapantzakis.gr`, where gtag's automatic cookie domain puts them) and reloads.
+- **Privacy page (decision 221):** `app/privacy/page.tsx`, outside the `(home)` group, with `PageMain` like the 404; title "Privacy" through the title template; its own canonical URL; listed in the sitemap. It covers: who runs the site and how to reach them (`profile.email`); that the site uses Google Analytics only after consent, which cookies, what they record, and that outbound clicks are measured; the legal basis (consent) and how to withdraw it (Cookie settings); retention (14 months, decision 227); that Google processes the data and may transfer it to the US under the EU–US Data Privacy Framework; the visitor's rights and the right to complain to the Hellenic Data Protection Authority; the page's last-updated date. The text is not legal advice; the user approves it before merge.
+- **Removed:** `@vercel/analytics`, its `computeRoute` and React `Analytics` imports, the `NEXT_PUBLIC_VERCEL_OBSERVABILITY_*` settings test, and the `window.vaq` helper.
+- **Tests:**
+  - Unit: the consent store (fresh, expired, blocked storage); the tag loader's calls and its single script; `PageAnalytics`'s page views as `dataLayer` entries, for the existing scenarios, plus none before consent and one at once on Accept; the banner's buttons, its link and its return through Cookie settings; the sheet leaving the banner usable, whether the sheet or the banner appears first; withdrawal deleting the cookies and reloading; no banner or button without an ID.
+  - E2E: the specs that need the tag skip when the target has no ID (a preview deployment, decision 222), which the server-rendered Cookie settings button shows; builder's call, so `BASE_URL=<preview>` smoke runs keep passing. The build that the tests run sets a placeholder ID, and every test blocks requests to Google, so no test reaches Google even against production (`BASE_URL`). A shared helper stores a choice before each existing spec runs, so the bar does not cover what they click; the analytics specs store `granted` and read page views from `dataLayer`. New specs: the banner on a first visit, Accept on a sheet loaded by URL and on one opened in the page, the sheet's last lines clear of the bar, Reject loading nothing from Google, Accept requesting the tag, Cookie settings reopening it, and `/privacy` returning 200 with its heading and its sitemap entry.
+- **The user's actions:**
+  - GA Admin, property `G-3L6VP0EV5V`: data stream URL `https://kapantzakis.gr`; enhanced measurement as in decision 226; data retention 14 months; Google signals off; automatic collection of user-provided data off.
+  - Vercel: add `NEXT_PUBLIC_GA_ID=G-3L6VP0EV5V` for Production only before the merge deploys; after it, turn off Web Analytics for the project.
+  - Review the privacy page and banner copy.
+- **Checks after deploy:** the served tag for `G-3L6VP0EV5V` no longer has history events on; a first visit to production shows the banner; Accept sends one page view (GA DebugView or Realtime).
+- **Known limits:**
+  - GA counts only visitors who accept; with Vercel Web Analytics gone, there is no count of everyone.
+  - The banner appears after hydration, so it slides in a moment after the page.
+  - The `dataLayer` entries the tests read are gtag's public API, but GA's own handling of them (and the history-events switch) is tested only by the checks after deploy.
