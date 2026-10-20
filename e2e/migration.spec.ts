@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 import { SHEET_PAGES } from "./helpers";
 
 // The site is one page, with a path per sheet and per section (decisions 30–31, 35, 161, 173).

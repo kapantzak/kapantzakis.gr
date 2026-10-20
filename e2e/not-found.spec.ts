@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 test("an unknown route renders the 404 page", async ({ page }) => {
   const response = await page.goto("/no-such-page");

@@ -1,4 +1,5 @@
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, test } from "./fixtures";
 import { HOME_TITLE, REGION_PAGES, pageviews } from "./helpers";
 
 const scrollY = (page: Page) => page.evaluate(() => Math.round(window.scrollY));
@@ -56,14 +57,16 @@ test("a reload inside a region keeps the exact position (decision 176)", async (
   await expect.poll(() => scrollY(page)).toBe(y);
 });
 
-test("a section path load counts once, under its own path (decision 180)", async ({
-  page,
-}) => {
-  await page.goto("/writing");
-  await expect(page.locator("#writing")).toBeInViewport();
-  await expect
-    .poll(() => pageviews(page))
-    .toEqual([{ route: "/writing", path: "/writing" }]);
+test.describe("with consent", () => {
+  test.use({ consent: "granted" });
+
+  test("a section path load counts once, under its own path (decision 180)", async ({
+    page,
+  }) => {
+    await page.goto("/writing");
+    await expect(page.locator("#writing")).toBeInViewport();
+    await expect.poll(() => pageviews(page)).toEqual(["/writing"]);
+  });
 });
 
 /** Waits for hydration and two frames, so the observer has reported. */
@@ -119,21 +122,23 @@ test("closing a sheet opened by URL lands on its group's path", async ({
   await expect(page).toHaveURL(/\/education$/);
 });
 
-test("scrolling between the home page's paths sends no page view (decision 180)", async ({
-  page,
-}) => {
-  await page.goto("/writing");
-  await settled(page);
-  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
-  await expect(page).toHaveURL(/\/$/);
-  await page.evaluate(() =>
-    window.scrollTo({
-      top: document.documentElement.scrollHeight,
-      behavior: "instant",
-    }),
-  );
-  await expect(page).toHaveURL(/\/contact$/);
-  expect(await pageviews(page)).toEqual([
-    { route: "/writing", path: "/writing" },
-  ]);
+test.describe("with consent", () => {
+  test.use({ consent: "granted" });
+
+  test("scrolling between the home page's paths sends no page view (decision 180)", async ({
+    page,
+  }) => {
+    await page.goto("/writing");
+    await settled(page);
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+    await expect(page).toHaveURL(/\/$/);
+    await page.evaluate(() =>
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: "instant",
+      }),
+    );
+    await expect(page).toHaveURL(/\/contact$/);
+    expect(await pageviews(page)).toEqual(["/writing"]);
+  });
 });

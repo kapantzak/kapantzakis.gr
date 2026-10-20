@@ -4,8 +4,9 @@ import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
 import { PageAnalytics } from "@/components/PageAnalytics";
 import { profile } from "@/content/profile";
+import { gaId } from "@/lib/gtag";
 import { regionPendingScript } from "@/lib/region-entry";
-import { sheetRoutes } from "@/lib/sheets";
+import { sheetPaths } from "@/lib/sheets";
 import { SITE_URL } from "@/lib/site";
 import { HOME_TITLE, TITLE_TEMPLATE } from "@/lib/titles";
 import { bodyFont, displayFont } from "@/styles/fonts";
@@ -22,6 +23,8 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
+  // Without an ID (local runs, previews) there is no analytics at all (decision 222).
+  const id = gaId();
   return (
     <html lang="en" className={`${displayFont.variable} ${bodyFont.variable}`}>
       <head>
@@ -35,7 +38,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Nav />
         {children}
         <Footer />
-        <PageAnalytics sheetRoutes={sheetRoutes(profile)} />
+        {id && <PageAnalytics gaId={id} sheetPaths={sheetPaths(profile)} />}
       </body>
     </html>
   );

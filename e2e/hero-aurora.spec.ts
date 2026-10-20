@@ -1,4 +1,5 @@
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, test } from "./fixtures";
 import { expectNoHorizontalOverflow } from "./helpers";
 
 // The only hero text colours tested against the aurora (decision 82): --color-fg-strong, --color-fg, lime.

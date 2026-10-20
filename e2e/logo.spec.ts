@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 import { expectNoHorizontalOverflow } from "./helpers";
 
 // Matches the 40rem breakpoint in components/Nav.module.css (decision 27).

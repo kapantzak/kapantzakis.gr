@@ -48,11 +48,33 @@ export const REGION_PAGES = [
   { path: "/contact", id: "contact" },
 ];
 
-/** The page views the analytics package queued; its script only loads on Vercel. */
-export function pageviews(page: Page): Promise<unknown[]> {
+type PageView = { page_location: string; page_title: string };
+
+/** The page views queued for gtag; the fixture blocks its script, so they stay in `dataLayer`. */
+function queuedViews(page: Page): Promise<PageView[]> {
   return page.evaluate(() =>
-    ((window as { vaq?: [string, unknown][] }).vaq ?? [])
-      .filter(([event]) => event === "pageview")
-      .map(([, view]) => view),
+    ((window as { dataLayer?: ArrayLike<unknown>[] }).dataLayer ?? [])
+      .map((entry) => Array.from(entry))
+      .filter(([command, name]) => command === "event" && name === "page_view")
+      .map(([, , params]) => params as PageView),
+  );
+}
+
+/** The paths of the page views sent so far. */
+export async function pageviews(page: Page): Promise<string[]> {
+  return (await queuedViews(page)).map(
+    (view) => new URL(view.page_location).pathname,
+  );
+}
+
+/** The tab titles the page views carried. */
+export async function pageviewTitles(page: Page): Promise<string[]> {
+  return (await queuedViews(page)).map((view) => view.page_title);
+}
+
+/** The deployment has a GA ID: the server renders Cookie settings only then (decision 222). */
+export async function analyticsEnabled(page: Page): Promise<boolean> {
+  return (
+    (await page.getByRole("button", { name: "Cookie settings" }).count()) > 0
   );
 }

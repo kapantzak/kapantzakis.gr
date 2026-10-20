@@ -1,4 +1,5 @@
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 // Mirrors the slide keyframes in components/Section.module.css: 20vw at progress 0, -30vw at 1.
 function expectedX(progress: number, viewportWidth: number, reverse: boolean) {

@@ -1,124 +1,128 @@
-import { render } from "@testing-library/react";
+import { act, render } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { resetConsentStore, writeConsent } from "@/lib/consent";
 import { PageAnalytics } from "./PageAnalytics";
 
-const location = vi.hoisted(() => ({
-  pathname: "/",
-  params: {} as Record<string, string>,
-}));
+const location = vi.hoisted(() => ({ pathname: "/" }));
 vi.mock("next/navigation", () => ({
   usePathname: () => location.pathname,
-  useParams: () => location.params,
 }));
 
-const ROUTES = {
-  "/experience/netdata": "/experience/[slug]",
-  "/education/msc-applied-informatics": "/education/[slug]",
-};
+const SHEETS = ["/experience/netdata", "/education/msc-applied-informatics"];
+const NETDATA = "/experience/netdata";
+const MSC = "/education/msc-applied-informatics";
 
-const HOME = { route: "/", path: "/" };
-const NETDATA = { route: "/experience/[slug]", path: "/experience/netdata" };
-const MSC = {
-  route: "/education/[slug]",
-  path: "/education/msc-applied-informatics",
-};
-
-/** Renders at `pathname`, then moves through `then`, as the URL would change. */
-function visit(
-  pathname: string,
-  params: Record<string, string>,
-  ...then: string[]
-) {
-  location.pathname = pathname;
-  location.params = params;
-  const { rerender } = render(<PageAnalytics sheetRoutes={ROUTES} />);
-  for (const next of then) {
-    location.pathname = next;
-    // After pushState, Next.js still has the params of the page it loaded.
-    rerender(<PageAnalytics sheetRoutes={ROUTES} />);
-  }
+function analytics() {
+  return <PageAnalytics gaId="G-TEST" sheetPaths={SHEETS} />;
 }
 
-/** The page views the package queued; its script never loads under jsdom. */
+/** Renders at `pathname`, then moves through `then`, as the URL would change. */
+function visit(pathname: string, ...then: string[]) {
+  location.pathname = pathname;
+  const view = render(analytics());
+  for (const next of then) move(view.rerender, next);
+  return view;
+}
+
+function move(rerender: (ui: React.ReactNode) => void, pathname: string) {
+  location.pathname = pathname;
+  rerender(analytics());
+}
+
+/** The paths of the page views queued for gtag; its script never loads under jsdom. */
 function pageviews() {
-  return (window.vaq ?? [])
-    .filter(([event]) => event === "pageview")
-    .map(([, view]) => view);
+  return (window.dataLayer ?? [])
+    .map((entry) => Array.from(entry as ArrayLike<unknown>))
+    .filter(([command, name]) => command === "event" && name === "page_view")
+    .map(
+      ([, , params]) =>
+        new URL((params as { page_location: string }).page_location).pathname,
+    );
+}
+
+function tagScripts() {
+  return document.head.querySelectorAll('script[src*="googletagmanager"]');
 }
 
 afterEach(() => {
-  delete window.va;
-  delete window.vaq;
+  delete window.dataLayer;
+  delete window.gtag;
   document.head.querySelectorAll("script").forEach((script) => script.remove());
-  vi.unstubAllEnvs();
+  localStorage.clear();
+  resetConsentStore();
 });
 
-describe("PageAnalytics", () => {
-  it("reports a sheet opened in the page under its route, and not the return to / (decisions 171–172)", () => {
-    visit("/", {}, NETDATA.path, "/", NETDATA.path, "/");
-    expect(pageviews()).toEqual([HOME, NETDATA, NETDATA]);
+describe("PageAnalytics with consent granted", () => {
+  it("reports a sheet opened in the page, and not the return to / (decision 172)", () => {
+    writeConsent("granted");
+    visit("/", NETDATA, "/", NETDATA, "/");
+    expect(pageviews()).toEqual(["/", NETDATA, NETDATA]);
   });
 
   it("counts / once after closing a sheet the page load opened (decision 172)", () => {
-    visit(MSC.path, { slug: "msc-applied-informatics" }, "/", MSC.path, "/");
-    expect(pageviews()).toEqual([MSC, HOME, MSC]);
+    writeConsent("granted");
+    visit(MSC, "/", MSC, "/");
+    expect(pageviews()).toEqual([MSC, "/", MSC]);
   });
 
-  it("takes any other path's route from its params, and counts / after it", () => {
-    visit("/blog/hello", { slug: "hello" }, "/");
-    expect(pageviews()).toEqual([
-      { route: "/blog/[slug]", path: "/blog/hello" },
-      HOME,
-    ]);
+  it("counts any other path, and / after it", () => {
+    writeConsent("granted");
+    visit("/blog/hello", "/");
+    expect(pageviews()).toEqual(["/blog/hello", "/"]);
   });
 
   it("sends nothing for moves between / and the section paths (decision 180)", () => {
+    writeConsent("granted");
     visit(
       "/",
-      {},
       "/experience",
       "/education",
       "/",
-      NETDATA.path,
+      NETDATA,
       "/experience",
       "/writing",
     );
-    expect(pageviews()).toEqual([HOME, NETDATA]);
+    expect(pageviews()).toEqual(["/", NETDATA]);
   });
 
-  it("counts a section path a page load or the 404 page arrives on, under its own path (decision 180)", () => {
-    visit("/nope", {}, "/writing", "/contact");
-    expect(pageviews()).toEqual([
-      { route: "/nope", path: "/nope" },
-      { route: "/writing", path: "/writing" },
-    ]);
+  it("counts a section path a page load or the 404 page arrives on (decision 180)", () => {
+    writeConsent("granted");
+    visit("/nope", "/writing", "/contact");
+    expect(pageviews()).toEqual(["/nope", "/writing"]);
   });
 
   it("counts the home page once after closing a sheet the page load opened, whichever path it shows (decision 180)", () => {
-    visit(
-      MSC.path,
-      { slug: "msc-applied-informatics" },
-      "/",
-      "/education",
-      MSC.path,
-      "/education",
-    );
-    expect(pageviews()).toEqual([MSC, HOME, MSC]);
+    writeConsent("granted");
+    visit(MSC, "/", "/education", MSC, "/education");
+    expect(pageviews()).toEqual([MSC, "/", MSC]);
   });
 
-  it("passes the script the settings the Next.js component did", () => {
-    vi.stubEnv("NEXT_PUBLIC_VERCEL_OBSERVABILITY_BASEPATH", "/_custom");
-    vi.stubEnv(
-      "NEXT_PUBLIC_VERCEL_OBSERVABILITY_CLIENT_CONFIG",
-      JSON.stringify({ analytics: { viewEndpoint: "/views" } }),
-    );
-    visit("/", {});
-    const script = document.head.querySelector("script");
-    expect(script?.dataset).toMatchObject({
-      sdkn: "@vercel/analytics/next",
-      endpoint: "/_custom/insights",
-      viewEndpoint: "/views",
-      disableAutoTrack: "1",
-    });
+  it("sends one view on a load with consent granted", () => {
+    writeConsent("granted");
+    visit("/");
+    expect(pageviews()).toEqual(["/"]);
+    expect(tagScripts()).toHaveLength(1);
+  });
+});
+
+describe("PageAnalytics and the visitor's choice", () => {
+  it("loads and sends nothing before consent", () => {
+    visit("/", NETDATA);
+    expect(window.dataLayer).toBeUndefined();
+    expect(tagScripts()).toHaveLength(0);
+  });
+
+  it("sends nothing after Reject", () => {
+    writeConsent("denied");
+    visit("/", NETDATA);
+    expect(window.dataLayer).toBeUndefined();
+  });
+
+  it("counts the page in view on Accept and restarts the count (decision 224)", () => {
+    const { rerender } = visit("/", NETDATA);
+    act(() => writeConsent("granted"));
+    expect(pageviews()).toEqual([NETDATA]);
+    move(rerender, "/");
+    expect(pageviews()).toEqual([NETDATA, "/"]);
   });
 });

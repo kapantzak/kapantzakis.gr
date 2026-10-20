@@ -1,4 +1,5 @@
-import { expect, test, type Page } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 // Matches the 40rem breakpoint in components/Nav.module.css; below it the header scrolls away (decision 20).
 const STICKY_MIN_WIDTH = 640;

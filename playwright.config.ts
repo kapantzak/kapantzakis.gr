@@ -27,7 +27,8 @@ export default defineConfig({
   webServer: externalBaseURL
     ? undefined
     : {
-        command: `npm run build && npm run start -- --port ${PORT}`,
+        // A placeholder GA ID, so the consent and tag code runs; the fixtures block every request to Google.
+        command: `NEXT_PUBLIC_GA_ID=G-E2ETEST000 npm run build && npm run start -- --port ${PORT}`,
         url: `http://localhost:${PORT}`,
         reuseExistingServer: false,
         timeout: 240_000,

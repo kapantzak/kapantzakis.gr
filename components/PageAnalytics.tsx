@@ -1,27 +1,26 @@
 "use client";
 
-import { computeRoute } from "@vercel/analytics";
-import { Analytics } from "@vercel/analytics/react";
-import { useParams, usePathname } from "next/navigation";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { useConsent } from "@/lib/consent";
+import { loadGtag, sendPageView } from "@/lib/gtag";
 import { isHomePath } from "@/lib/nav";
-
-type View = { route: string; path: string };
 
 type Tracked = {
   path: string;
   onSheet: boolean;
   home: boolean;
   homeCounted: boolean;
-  /** The page view to report, or null for one that does not count. */
-  view: View | null;
+  /** The path of the page view to report, or null for one that does not count. */
+  view: string | null;
+  granted: boolean;
 };
 
 function track(
   previous: Tracked | null,
   path: string,
-  route: string,
   onSheet: boolean,
+  granted: boolean,
 ): Tracked {
   const home = isHomePath(path);
   // `/` and the section paths are one page, so moving between them is not a view (decision 180), nor is closing a
@@ -35,38 +34,44 @@ function track(
     onSheet,
     home,
     homeCounted: (previous?.homeCounted ?? false) || home,
-    view: counts ? { route, path } : null,
+    view: counts ? path : null,
+    granted,
   };
 }
 
-// Replaces @vercel/analytics/next's component, which reads the route from useParams(): after the sheet host's
-// pushState those are still the loaded page's, so a sheet opened in the page was reported by its literal path
-// (decision 171).
+// GA's own history-based page views are off, since the path follows the scroll (decision 174); this component
+// sends each page view by the site's counting rules instead (decisions 172, 180, 217), and only with consent.
 export function PageAnalytics({
-  sheetRoutes,
+  gaId,
+  sheetPaths,
 }: {
-  /** Each sheet path's route, from lib/sheets.ts. */
-  sheetRoutes: Record<string, string>;
+  gaId: string;
+  /** Every sheet path, from lib/sheets.ts. */
+  sheetPaths: string[];
 }) {
   const path = usePathname();
-  const params = useParams<Record<string, string | string[]>>();
-  const sheetRoute = sheetRoutes[path];
-  const route = sheetRoute ?? computeRoute(path, params) ?? path;
-  const onSheet = sheetRoute !== undefined;
+  const granted = useConsent()?.choice === "granted";
+  const onSheet = sheetPaths.includes(path);
   const [tracked, setTracked] = useState(() =>
-    track(null, path, route, onSheet),
+    track(null, path, onSheet, granted),
   );
-  // Adjusted while rendering, so each path change is seen once, with the path before it.
-  if (tracked.path !== path) setTracked(track(tracked, path, route, onSheet));
+  // Adjusted while rendering, so each change is seen once, with the state before it. Accepting restarts the count
+  // as a page load on the path in view, since nothing before it was sent (decision 224).
+  if (tracked.granted !== granted) {
+    setTracked(track(granted ? null : tracked, path, onSheet, granted));
+  } else if (tracked.path !== path) {
+    setTracked(track(tracked, path, onSheet, granted));
+  }
 
-  // The React component sends a page view when route or path changes and both are set; null skips one.
-  return (
-    <Analytics
-      route={tracked.view?.route ?? null}
-      path={tracked.view?.path ?? null}
-      framework="next"
-      basePath={process.env.NEXT_PUBLIC_VERCEL_OBSERVABILITY_BASEPATH}
-      configString={process.env.NEXT_PUBLIC_VERCEL_OBSERVABILITY_CLIENT_CONFIG}
-    />
-  );
+  // Remembers what was sent, so React's development re-run of effects never sends a view twice.
+  const sent = useRef<Tracked | null>(null);
+  // An effect, so a sheet's tab title, set in SheetHost's earlier effect (decision 169), is already in place.
+  useEffect(() => {
+    if (!tracked.granted || sent.current === tracked) return;
+    sent.current = tracked;
+    loadGtag(gaId);
+    if (tracked.view) sendPageView(tracked.view);
+  }, [tracked, gaId]);
+
+  return null;
 }

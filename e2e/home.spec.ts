@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 import { externalPosts } from "../content/external-posts";
 import {
   DARK_BG,
