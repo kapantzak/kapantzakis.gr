@@ -21,7 +21,7 @@
       "href": "https://github.com/kapantzak"
     }
   ],
-  "summary": "Senior frontend engineer with 12 years of experience building web products, currently on the React frontend of Netdata Cloud: AI-assisted observability, Model Context Protocol (MCP) integration and performance work on data-intensive UIs. Contributor to Hotwire Turbo, co-organiser of SKG JS, the Thessaloniki JavaScript community.",
+  "summary": "Senior frontend engineer with 12+ years of experience building web products, currently on the React frontend of Netdata Cloud: AI-assisted observability, Model Context Protocol (MCP) integration and performance work on data-intensive UIs. Contributor to Hotwire Turbo, co-organiser of SKG JS, the Thessaloniki JavaScript community.",
   "experience": [
     {
       "company": "Netdata",
@@ -31,11 +31,11 @@
       "location": "Thessaloniki, Greece",
       "context": "Open-source, real-time observability platform. Frontend of Netdata Cloud, a large, data-intensive React application.",
       "bullets": [
-        "Evolved Netdata's AI assistant from a conversational interface with streaming responses into persistent conversations, AI-assisted alert configuration and investigation workflows; implemented frontend support for the Model Context Protocol (MCP), connecting AI features to external tools and services.",
-        "Eliminated a documented 12–15 second main-thread freeze in large environments by replacing two quadratic-time hot paths in node processing and grouping with linear-time implementations.",
-        "Cut reported frontend CI runtime by about 60% through Jest test sharding, test-reliability fixes and additional lint rules; contribute to the ongoing release process.",
+        "Contributed to the evolution of Netdata's AI assistant, from a conversational interface with streaming responses to persistent conversations, AI-assisted alert configuration and investigation workflows; implemented frontend support for the Model Context Protocol (MCP), connecting AI features to external tools and services.",
+        "Addressed a documented 12–15 second main-thread freeze in large environments by replacing two quadratic-time hot paths in node processing and grouping with linear-time implementations.",
+        "Improved frontend CI through Jest test sharding, test-reliability fixes and additional lint rules, with reported runtime down by about 60%; contribute to the ongoing release process.",
         "Built the foundational Dynamic Configurations UI and grew it into a system for complex, dynamically generated forms with reusable widgets, autocomplete, nested interfaces and password masking.",
-        "Delivered end-to-end AI Insights investigation reports (generation, rendering, scheduling, email delivery, log integration) and enterprise identity features: SCIM, SSO, role and room mappings, and label-driven room membership."
+        "Helped build end-to-end AI Insights investigation reports (generation, rendering, scheduling, email delivery, log integration) and contributed to enterprise identity features: SCIM, SSO, role and room mappings, and label-driven room membership."
       ]
     },
     {

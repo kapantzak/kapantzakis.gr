@@ -136,8 +136,8 @@ export const profile: Profile = {
   role: "Senior frontend engineer",
   headline: "I build things for the web.",
   intro: [
-    "I'm a frontend engineer based in Thessaloniki, Greece, with 15+ years of experience. Currently, I mostly work with React and AI agents.",
-    "I co-organise SKG JS, Thessaloniki’s JavaScript community, bringing developers together to learn, share, and connect. I’ve also written about frontend engineering on dev.to and Scalable Path.",
+    "I'm a frontend engineer based in Thessaloniki, Greece, with 12+ years of experience. Currently, I mostly work with React and AI agents.",
+    "I co-organise SKG JS, Thessaloniki’s JavaScript community, bringing developers together to learn, share, and connect. I’ve also written about software engineering on dev.to, Scalable Path, and the Skroutz Engineering blog.",
   ],
   email: "kapantzak@gmail.com",
   experience: [
