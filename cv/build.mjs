@@ -32,12 +32,15 @@ try {
   await page.goto(pathToFileURL(htmlPath).href, { waitUntil: "load" });
   // Fonts must be fully loaded before printing or Chrome falls back to system fonts.
   await page.evaluate(() => document.fonts.ready);
-  // A wrong path would print in Arial without complaint, so fail instead.
-  const missing = await page.evaluate(() =>
-    ["Inter", "Momo Trust Display"].filter(
-      (family) => !document.fonts.check(`12px "${family}"`),
-    ),
-  );
+  // A wrong path would print in a fallback face without complaint, so fail instead. Every face declared in
+  // print.css is loaded and checked, since a missing weight falls back as silently as a missing family.
+  const missing = await page.evaluate(async () => {
+    const faces = [...document.fonts];
+    await Promise.allSettled(faces.map((face) => face.load()));
+    return faces
+      .filter((face) => face.status !== "loaded")
+      .map((face) => `${face.family} ${face.weight}`);
+  });
   if (missing.length)
     throw new Error(`CV fonts did not load: ${missing.join(", ")}`);
   await page.emulateMedia({ media: "print" });
