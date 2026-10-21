@@ -110,3 +110,30 @@ test("leaves the home page's styles alone after visiting the CV", async ({
   await expect(page).toHaveURL(/\/experience$/);
   expect(await typeOf(heading)).toEqual(fresh);
 });
+
+test("the nav's CV link reaches the CV page from the home page and marks it current (decision 234)", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page
+    .getByRole("navigation", { name: "Main" })
+    .getByRole("link", { name: "CV" })
+    .click();
+  await expect(page).toHaveURL(/\/cv$/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(name);
+  await expect(
+    page.getByRole("navigation", { name: "Main" }).getByRole("link", {
+      name: "CV",
+    }),
+  ).toHaveAttribute("aria-current", "page");
+});
+
+test("the footer's CV link reaches the CV page, even clicked as the scroll reveals it (decision 229)", async ({
+  page,
+}) => {
+  await page.goto("/");
+  // Playwright scrolls the link into view and clicks at once: the case that cancelled a client navigation.
+  await page.getByRole("contentinfo").getByRole("link", { name: "CV" }).click();
+  await expect(page).toHaveURL(/\/cv$/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(name);
+});

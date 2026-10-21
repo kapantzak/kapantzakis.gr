@@ -70,11 +70,13 @@
 }
 
 .link:hover,
-.link[aria-current="true"] {
+.link[aria-current="true"],
+.link[aria-current="page"] {
   background-size: 100% 2px;
 }
 
-.link[aria-current="true"] {
+.link[aria-current="true"],
+.link[aria-current="page"] {
   color: var(--accent);
 }
 
