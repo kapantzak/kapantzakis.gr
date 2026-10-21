@@ -70,4 +70,26 @@ describe("consent", () => {
     expect(readConsent()).toBe("denied");
     expect(reload).toHaveBeenCalledOnce();
   });
+
+  it("turns the loaded tag off before the reload, so no last hit restores the cookies (decision 225)", () => {
+    const gtag = vi.fn();
+    window.gtag = gtag;
+    try {
+      writeConsent("granted");
+      withdrawConsent("G-3L6VP0EV5V", vi.fn());
+      expect(gtag).toHaveBeenCalledWith("consent", "update", {
+        analytics_storage: "denied",
+      });
+      expect(
+        (window as unknown as Record<string, unknown>)[
+          "ga-disable-G-3L6VP0EV5V"
+        ],
+      ).toBe(true);
+    } finally {
+      delete window.gtag;
+      delete (window as unknown as Record<string, unknown>)[
+        "ga-disable-G-3L6VP0EV5V"
+      ];
+    }
+  });
 });

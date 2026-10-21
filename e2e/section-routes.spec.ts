@@ -1,6 +1,11 @@
 import type { Page } from "@playwright/test";
 import { expect, test } from "./fixtures";
-import { HOME_TITLE, REGION_PAGES, pageviews } from "./helpers";
+import {
+  HOME_TITLE,
+  REGION_PAGES,
+  analyticsEnabled,
+  pageviews,
+} from "./helpers";
 
 const scrollY = (page: Page) => page.evaluate(() => Math.round(window.scrollY));
 
@@ -64,6 +69,7 @@ test.describe("with consent", () => {
     page,
   }) => {
     await page.goto("/writing");
+    test.skip(!(await analyticsEnabled(page)), "no GA ID on this deployment");
     await expect(page.locator("#writing")).toBeInViewport();
     await expect.poll(() => pageviews(page)).toEqual(["/writing"]);
   });
@@ -129,6 +135,7 @@ test.describe("with consent", () => {
     page,
   }) => {
     await page.goto("/writing");
+    test.skip(!(await analyticsEnabled(page)), "no GA ID on this deployment");
     await settled(page);
     await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
     await expect(page).toHaveURL(/\/$/);

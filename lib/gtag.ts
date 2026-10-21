@@ -43,6 +43,15 @@ export function sendPageView(path: string): void {
   });
 }
 
+/**
+ * Stops a loaded tag before withdrawal's reload: an unload hit would otherwise set the GA cookies again (decision 225).
+ * `ga-disable-<ID>` is Google's documented opt-out flag.
+ */
+export function disableGtag(id: string): void {
+  window.gtag?.("consent", "update", { analytics_storage: "denied" });
+  (window as unknown as Record<string, unknown>)[`ga-disable-${id}`] = true;
+}
+
 /** The hostname and each parent with at least two labels, where gtag's automatic cookie domain may have written. */
 export function cookieDomains(hostname: string): string[] {
   const labels = hostname.split(".");

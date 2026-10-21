@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from "react";
-import { clearGaCookies } from "./gtag";
+import { clearGaCookies, disableGtag } from "./gtag";
 
 export type Consent = "granted" | "denied";
 
@@ -66,6 +66,7 @@ export function withdrawConsent(
   reload: () => void = () => window.location.reload(),
 ): void {
   writeConsent("denied");
+  disableGtag(id);
   clearGaCookies(id);
   reload();
 }

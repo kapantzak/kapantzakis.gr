@@ -4,6 +4,7 @@ import {
   HOME_TITLE,
   PAPER_BG,
   SHEET_PAGES,
+  analyticsEnabled,
   expectNoHorizontalOverflow,
   pageviewTitles,
   pageviews,
@@ -254,6 +255,7 @@ test.describe("analytics", () => {
   }) => {
     const adzuna = "/experience/adzuna";
     await page.goto("/");
+    test.skip(!(await analyticsEnabled(page)), "no GA ID on this deployment");
     await page.getByRole("button", { name: /Netdata/ }).click();
     const sheet = page.getByRole("dialog", { name: "Netdata" });
     await expect(sheet).toBeVisible();
@@ -279,6 +281,7 @@ test.describe("analytics", () => {
   }) => {
     const msc = "/education/msc-applied-informatics";
     await page.goto(msc);
+    test.skip(!(await analyticsEnabled(page)), "no GA ID on this deployment");
     const sheet = page.getByRole("dialog", {
       name: "MSc in Applied Informatics",
     });
