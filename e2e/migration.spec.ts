@@ -20,13 +20,14 @@ test("the service-worker kill switch is served", async ({ request }) => {
   expect(await response.text()).toContain("registration.unregister()");
 });
 
-test("sitemap lists the home page, the privacy page and every sheet path (decisions 168, 221)", async ({
+test("sitemap lists the home page, the privacy page, the CV page and every sheet path (decisions 168, 221, 233)", async ({
   request,
 }) => {
   const body = await (await request.get("/sitemap.xml")).text();
-  expect(body.match(/<loc>/g)).toHaveLength(2 + SHEET_PAGES.length);
+  expect(body.match(/<loc>/g)).toHaveLength(3 + SHEET_PAGES.length);
   expect(body).toContain("<loc>https://kapantzakis.gr</loc>");
   expect(body).toContain("<loc>https://kapantzakis.gr/privacy</loc>");
+  expect(body).toContain("<loc>https://kapantzakis.gr/cv</loc>");
   for (const { path } of SHEET_PAGES) {
     expect(body).toContain(`<loc>https://kapantzakis.gr${path}</loc>`);
   }

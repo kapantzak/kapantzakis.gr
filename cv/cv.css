@@ -241,7 +241,18 @@
   font-weight: 600;
 }
 
-/* Phones only; the PDF prints with print media, so these never reach it. */
+/* Screens only; the PDF prints with print media, so these never reach it. */
+
+/* The contact items have no break opportunities between them, and the site's Inter runs a little wider than the
+   PDF's static faces, so on screen they wrap as whole items instead of overflowing the sheet. */
+@media screen {
+  .cv .contact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+  }
+}
+
 @media screen and (max-width: 40rem) {
   .cv .row,
   .cv .skill {
@@ -250,10 +261,6 @@
   }
   .cv .skill .group {
     flex-basis: auto;
-  }
-  .cv .contact a,
-  .cv .contact .loc {
-    white-space: normal;
   }
   .cv a {
     overflow-wrap: anywhere;
