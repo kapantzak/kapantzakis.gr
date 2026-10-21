@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { profile } from "@/content/profile";
 import { gaId } from "@/lib/gtag";
 import { BackToTop } from "./BackToTop";
@@ -19,7 +18,9 @@ export function Footer() {
       </ul>
       <div className={styles.end}>
         <BackToTop />
-        <Link href="/privacy">Privacy</Link>
+        {/* A full page load, not a client navigation: a path write from the home page's scroll tracker during one
+            would cancel it (decision 229). */}
+        <a href="/privacy">Privacy</a>
         {/* Only where analytics can run (decision 222). */}
         {gaId() && <CookieSettings />}
         <p className={styles.copy}>

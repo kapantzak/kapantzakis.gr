@@ -254,6 +254,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 226 | GA collection             | Page views and outbound clicks only: GA Admin keeps enhanced measurement's outbound clicks and turns off its scrolls, site search, form, video and file-download events, history-based page views, automatic collection of user-provided data and Google signals |
 | 227 | GA data retention         | 14 months, set in GA Admin and stated on the privacy page |
 | 228 | Banner over a sheet       | While a detail sheet is open the banner stays above it and usable: the sheet's modality leaves the banner out of what it makes inert, and the sheet's content keeps clear of the bar while it shows |
+| 229 | Footer Privacy link       | The footer's Privacy link is a plain link (a full page load), not a client navigation: a path write from the scroll tracker (decision 174) during a client navigation off the home page cancels it |
 
 ## 3. Scope
 
@@ -666,7 +667,7 @@ The user asked for content on the SKG JS sheet: the Meetup group, the Discord se
 
 ## 32. Google Analytics (2026-10-20)
 
-Issue #23 asks for Google Analytics, a cookie banner and legal pages. The user gave the GA4 measurement ID `G-3L6VP0EV5V`, said older GA accounts for the domain do not matter, chose to replace Vercel Web Analytics rather than run both, and approved decisions 216–228 on 2026-10-20.
+Issue #23 asks for Google Analytics, a cookie banner and legal pages. The user gave the GA4 measurement ID `G-3L6VP0EV5V`, said older GA accounts for the domain do not matter, chose to replace Vercel Web Analytics rather than run both, and approved decisions 216–228 on 2026-10-20, then the privacy page and banner copy and decision 229 on 2026-10-21.
 
 - **Why it is more than a tag:**
   - The site rewrites its path with `history.replaceState` while the visitor scrolls (`components/NavLinks.tsx`, decision 174), and pushes or replaces history for sheets and section links (`SheetHost.tsx`, `SectionLink.tsx`, `lib/scroll-top.ts`). GA4's history-based page views listen for `pushState`, `popstate` and `replaceState` (Google Analytics Help, "Enhanced measurement events", read 2026-10-20), so with GA's defaults every section scrolled past would be a page view.
@@ -695,3 +696,4 @@ Issue #23 asks for Google Analytics, a cookie banner and legal pages. The user g
   - GA counts only visitors who accept; with Vercel Web Analytics gone, there is no count of everyone.
   - The banner appears after hydration, so it slides in a moment after the page.
   - The `dataLayer` entries the tests read are gtag's public API, but GA's own handling of them (and the history-events switch) is tested only by the checks after deploy.
+  - Found while building it: if the scroll tracker writes a section path (decision 174) while a client navigation off the home page is still in flight, Next.js treats the write as a restore and cancels the navigation, leaving the home page on `/contact`. Traced with stack traces and reproduced by a click in the same frame as the scroll that reveals the footer. The footer's Privacy link avoids it by loading the page (decision 229); any future client link from the home page to another page would meet the same race.
