@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { act, cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { NavLinks } from "./NavLinks";
 
@@ -59,12 +59,28 @@ afterEach(() => {
 });
 
 describe("NavLinks", () => {
-  it("links to every section's path (decision 175)", () => {
+  it("links to every section's path, then to the CV (decisions 175, 234)", () => {
     loadAt("/");
     render(<NavLinks />);
     expect(
       screen.getAllByRole("link").map((a) => a.getAttribute("href")),
-    ).toEqual(["/experience", "/writing", "/contact"]);
+    ).toEqual(["/experience", "/writing", "/contact", "/cv"]);
+  });
+
+  it("marks CV as the current page only on /cv (decision 234)", () => {
+    loadAt("/cv");
+    render(<NavLinks />);
+    expect(screen.getByRole("link", { name: "CV" })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
+    expect(current()).toEqual([]);
+    cleanup();
+    loadAt("/");
+    render(<NavLinks />);
+    expect(screen.getByRole("link", { name: "CV" })).not.toHaveAttribute(
+      "aria-current",
+    );
   });
 
   it("marks only the section in view as current", () => {

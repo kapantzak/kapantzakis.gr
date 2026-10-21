@@ -80,7 +80,8 @@ function openSheet() {
 
 async function expectClosed(row: HTMLElement) {
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
-  expect(row).toHaveFocus();
+  // Focus returns in an effect after the sheet unmounts, so it can lag the dialog's removal by a tick.
+  await waitFor(() => expect(row).toHaveFocus());
   expect(row.closest("[inert]")).toBeNull();
   expect(document.documentElement).not.toHaveAttribute("data-sheet-open");
   expect(window.location.pathname).toBe("/");

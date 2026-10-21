@@ -44,7 +44,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 16 | Light pages             | *Superseded by 38.* `/posts` and `/posts/[slug]` use the light theme; all other routes stay dark |
 | 17 | Post-page test coverage | *Superseded by 35.* Optional `draft: true` post flag; a permanent draft fixture is built only when `INCLUDE_DRAFTS=1` (e2e) |
 | 18 | Cache Components        | Off; routes use classic static generation                                                                 |
-| 19 | Owner's name in code    | Allowed in `content/profile.ts` only; everything else reads `profile.name`                               |
+| 19 | Owner's name in code    | Allowed in `content/profile.ts` only; everything else reads `profile.name`. *Amended by 231:* also in `cv/content.json`, read as `cv.name` |
 | 20 | Sticky nav              | Top bar sticks to the top on screens wider than 640px (40rem); on phones it scrolls away normally         |
 | 21 | Sticky bar look         | Solid page background (follows the light/dark theme) with a thin bottom rule; no blur or translucency     |
 | 22 | Hero backdrop scope     | *Superseded by 39.* Ambient animation behind the Home headline area only; every other page stays still |
@@ -256,6 +256,12 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 228 | Banner over a sheet       | While a detail sheet is open the banner stays above it and usable: the sheet's modality leaves the banner out of what it makes inert, and the sheet's content keeps clear of the bar while it shows |
 | 229 | Footer Privacy link       | The footer's Privacy link is a plain link (a full page load), not a client navigation: a path write from the scroll tracker (decision 174) during a client navigation off the home page cancels it |
 | 230 | Banner colour             | The bar is solid magenta (`--color-accent-magenta`, `#ff5cd6`) with dark text (`--color-on-accent`, 7.2:1), so it stands out from the page; its link and both buttons are dark on it, and Accept and Reject keep one style, so the colour never favours Accept (decision 219) |
+| 231 | CV content                | The CV builder moves into this repo; `cv/content.json` stays the CV's own data, worded for a CV, and is not derived from `content/profile.ts`; it is the one public CV, with no per-application variants, and this repo becomes the CV's single source of truth |
+| 232 | CV PDF build              | `npm run cv` prints the PDF locally with the installed Google Chrome and writes it to `public/`, where it is committed; the Vercel build does not generate it |
+| 233 | CV page                   | `/cv` renders the CV from the same template and stylesheet as the PDF, scoped under a `.cv` wrapper and shown on a paper sheet, with a button that downloads the PDF |
+| 234 | CV links                  | A "CV" link in the main nav after the section links, and one in the footer beside Privacy; both are plain links (full page loads, decision 229) |
+| 235 | Stale PDF guard           | `npm run cv` records a hash of the CV's sources next to them, and a unit test fails when the sources change without the PDF being rebuilt |
+| 236 | CV downloads              | Not tracked: no download event; the `/cv` page view counts as any other page's (decision 226) |
 
 ## 3. Scope
 
@@ -372,7 +378,7 @@ e2e/                    # Playwright smoke tests
 - **Local post:** `content/posts/<slug>.mdx`. The slug is the file name. Each file exports `metadata = { title, date, summary, draft? }`, with `date` as an ISO `YYYY-MM-DD` string. Drafts (`draft: true`) are left out of builds unless `INCLUDE_DRAFTS=1` (decision 17).
 - **External post:** an entry in `content/external-posts.ts` with `{ title, date, summary, url, source }`, for example `source: "DEV"`.
 - **`lib/posts.ts`:** returns one merged list, sorted by date with newest first, using a discriminated union (`kind: "local" | "external"`). It fails the build on missing or invalid fields or duplicate slugs. That way bad content cannot reach production silently.
-- **Profile data:** `content/profile.ts` holds experience, education, community, social links and the email address as typed data. The pages render from it, so updating the CV means editing one file.
+- **Profile data:** `content/profile.ts` holds experience, education, community, social links and the email address as typed data. The pages render from it, so updating the CV means editing one file. *Amended by 231:* the CV page and its PDF render from `cv/content.json`, kept in step with this file by hand.
 
 ### 6.4 Initial content
 
@@ -698,3 +704,32 @@ Issue #23 asks for Google Analytics, a cookie banner and legal pages. The user g
   - The banner appears after hydration, so it slides in a moment after the page.
   - The `dataLayer` entries the tests read are gtag's public API, but GA's own handling of them (and the history-events switch) is tested only by the checks after deploy.
   - Found while building it: if the scroll tracker writes a section path (decision 174) while a client navigation off the home page is still in flight, Next.js treats the write as a restore and cancels the navigation, leaving the home page on `/contact`. Traced with stack traces and reproduced by a click in the same frame as the scroll that reveals the footer. The footer's Privacy link avoids it by loading the page (decision 229); any future client link from the home page to another page would meet the same race.
+
+## 33. CV page (2026-10-21)
+
+The user had a standalone CV builder outside this repo (Node, `cv/content.json` rendered by `cv/template.mjs` and printed to a 2-page A4 PDF with Playwright and the installed Google Chrome; its own design is `docs/superpowers/specs/2026-10-20-cv-design.md`). They asked to generate the CV on demand with a script, show it on the site at its own route, and let visitors download it as a PDF. The user approved decisions 231–236 on 2026-10-21, and chose one public CV with no per-application variants (decision 231): the standalone folder is frozen, and edits to the CV happen here.
+
+- **Why the PDF is committed (decision 232):** printing needs Chrome, which the Vercel build does not have; a serverless Chromium would mean a new dependency, a rewritten launch and a new way for deploys to fail. A CV changes rarely, and the user checks each PDF before committing it.
+- **Files:**
+  - `cv/content.json`: moved unchanged. `outputBasename` names the PDF.
+  - `cv/template.mjs`: dependency-free as before. It now exports the CV's markup as a fragment wrapped in `<div class="cv">` for the page, and a full document for the PDF, built from that fragment. The escaping (`esc`) is unchanged.
+  - `cv/cv.css`: the rules the page and the PDF share, every selector scoped under `.cv`, so they cannot reach the rest of the site, even after a client navigation away from `/cv` leaves the stylesheet loaded. The colour custom properties move from `:root` to `.cv`. Font families read the site's stacks with the CV's fonts as fallback (`var(--font-body-stack, "Inter", Arial, Helvetica, sans-serif)`, and likewise for the display face), so the page uses the site's `next/font` faces and the PDF, which has no site tokens, uses the static ones. Narrow-screen rules sit in `@media screen` blocks, which the PDF (printed with print media) never applies. Builder's call: `.cv`-scoped resets undo the site's global heading rules (`styles/globals.css` gives `h1`–`h3` the display font, a tight line height and `overflow-wrap: anywhere`), so the CV's `h3` stays Inter on the page as in the PDF; the CV's colour properties are renamed with a `--cv-` prefix so they do not override the site's `--accent` for elements inside the sheet.
+  - `cv/print.css`: PDF only: the `@font-face` rules, `@page`, and the `html`/`body` reset and white background.
+  - `cv/fonts/`: moved unchanged, plus the SIL Open Font License for Momo Trust Display, which the source folder lacked; the repo is public, and the OFL requires the license to travel with the font.
+  - `cv/build.mjs`: the PDF build (decision 232).
+  - `cv/sources.mjs` and `cv/sources.sha256`: the stale-PDF guard (decision 235).
+  - `docs/superpowers/specs/2026-10-20-cv-design.md`: the CV's own design (A4, 2 pages, section order, content constraints), moved from the standalone folder with its layout notes updated to these paths; builder's call, so the CV's decisions are recorded where the CV now lives.
+- **PDF build (`npm run cv`):** renders the full document to `.tmp/cv/<outputBasename>.html` with a `<base>` pointing at `cv/`, so the fonts' relative URLs resolve; opens it in Chrome through `@playwright/test`'s `chromium` with `channel: "chrome"` (the site's existing dependency; no new one), waits for fonts and fails, naming the face, if any face declared in `print.css` did not load (a missing file would otherwise print in a fallback face without complaint), prints with print media and the same `page.pdf` options as before to `public/<outputBasename>.pdf`, then writes `cv/sources.sha256`. The HTML stays in `.tmp/` for inspection; it is not served.
+- **Stale-PDF guard (decision 235):** `cv/sources.mjs` hashes (SHA-256) `content.json`, `template.mjs`, `cv.css`, `print.css` and `build.mjs`, in that order. `cv/sources.test.ts` recomputes it, compares it with `cv/sources.sha256`, fails with "CV sources changed; run npm run cv", and checks that `public/<outputBasename>.pdf` exists. The guard runs only where `npm test` runs (the repo has no CI; README's pre-merge checks include it). It catches a forgotten rebuild, not a rebuild left uncommitted.
+- **Page (decision 233):** `app/cv/page.tsx`, outside the `(home)` group, with `PageMain` like `/privacy`. It is a server component that imports `cv/content.json`, `cv/cv.css` and the template's fragment, and renders the fragment with `dangerouslySetInnerHTML`; the data is the repo's own and escaped by the template. Above the sheet, a "Download PDF" link (`href="/<outputBasename>.pdf"`, `download`) styled as a button. The sheet: paper background (`--color-paper`), centred, about A4's width at most, with padding that shrinks on phones. The CV's name is the page's `h1`. Metadata: title "CV" through the title template, a description, and canonical `/cv`; the sitemap lists `/cv`.
+- **Links (decision 234):** `NavLinks` renders a CV `<li>` after the section items as a plain `<a href="/cv">`, with `aria-current="page"` on `/cv`; `Nav.module.css` styles that state like a current section. `NAV_ITEMS` stays the in-page sections, since its types and the scroll tracker assume regions. The footer gets `<a href="/cv">CV</a>` before Privacy.
+- **Tests:**
+  - Unit: the stale-PDF guard; `NavLinks` links to every section's path and then to `/cv`, and marks CV current only on `/cv`.
+  - E2E (`e2e/cv.spec.ts`): `/cv` returns 200, with the CV's name as `h1`, the title `CV — <name>`, and canonical `https://kapantzakis.gr/cv`; the Download PDF link fetches with status 200 and `application/pdf`; no horizontal overflow (desktop and Pixel 7); the nav's and the footer's CV links reach `/cv` from the home page. The sitemap spec counts `3 + SHEET_PAGES.length` and checks the `/cv` entry.
+- **Checks on the moved build:** the new PDF is still A4, 2 pages, with no role split across a page, 4 embedded fonts, clickable links and the same title as the last PDF from the standalone folder; the user compares the two by eye before committing.
+- **Formatting:** the moved files are run through Prettier, since `format:check` covers them; the changes are whitespace only.
+- **Not changed:** the standalone CV folder outside the repo, which is left as it is and no longer edited; GA and the privacy page (decision 236); `content/profile.ts`.
+- **Known limits:**
+  - `npm run cv` needs Google Chrome installed locally.
+  - The page and the PDF use different files of the same font families (the site's `next/font` faces and the CV's static ones).
+  - `content.json` and `content/profile.ts` overlap and are kept in step by hand (decision 231).

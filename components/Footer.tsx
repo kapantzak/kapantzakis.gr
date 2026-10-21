@@ -18,8 +18,9 @@ export function Footer() {
       </ul>
       <div className={styles.end}>
         <BackToTop />
-        {/* A full page load, not a client navigation: a path write from the home page's scroll tracker during one
+        {/* Full page loads, not client navigations: a path write from the home page's scroll tracker during one
             would cancel it (decision 229). */}
+        <a href="/cv">CV</a>
         <a href="/privacy">Privacy</a>
         {/* Only where analytics can run (decision 222). */}
         {gaId() && <CookieSettings />}

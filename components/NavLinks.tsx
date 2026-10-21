@@ -100,6 +100,17 @@ export function NavLinks() {
           </SectionLink>
         </li>
       ))}
+      <li>
+        {/* A page of its own, so neither a SectionLink nor in NAV_ITEMS, whose types assume regions; and a full
+            page load, since a path write from the scroll tracker would cancel a client navigation (decision 229). */}
+        <a
+          href="/cv"
+          className={styles.link}
+          aria-current={pathname === "/cv" ? "page" : undefined}
+        >
+          CV
+        </a>
+      </li>
     </ul>
   );
 }
