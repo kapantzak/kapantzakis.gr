@@ -20,6 +20,10 @@ npm run dev          # http://localhost:3000
 | `npm run build`        | Production build                             |
 
 Run `format:check`, `lint`, `typecheck`, `test`, `e2e` and `build` before merging.
+
+Google Analytics and its consent banner run only when `NEXT_PUBLIC_GA_ID` is set at build time; on Vercel it is set
+for Production only, so local runs and previews send nothing. `npm run e2e` builds with a placeholder ID and blocks
+every request to Google.
 To smoke-test a deployed site: `BASE_URL=https://kapantzakis.gr npm run e2e`.
 
 ## Content
