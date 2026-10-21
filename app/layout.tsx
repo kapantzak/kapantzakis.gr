@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { ConsentBanner } from "@/components/ConsentBanner";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
 import { PageAnalytics } from "@/components/PageAnalytics";
@@ -38,7 +39,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Nav />
         {children}
         <Footer />
-        {id && <PageAnalytics gaId={id} sheetPaths={sheetPaths(profile)} />}
+        {id && (
+          <>
+            <PageAnalytics gaId={id} sheetPaths={sheetPaths(profile)} />
+            <ConsentBanner gaId={id} />
+          </>
+        )}
       </body>
     </html>
   );
