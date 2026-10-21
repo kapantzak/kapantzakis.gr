@@ -262,6 +262,10 @@
   .cv .skill .group {
     flex-basis: auto;
   }
+  /* The name's longest word at 28pt is wider than a 320px screen's sheet; the PDF keeps 28pt. */
+  .cv h1 {
+    font-size: clamp(20pt, 9vw, 28pt);
+  }
   .cv a {
     overflow-wrap: anywhere;
   }

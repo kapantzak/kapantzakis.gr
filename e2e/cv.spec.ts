@@ -52,13 +52,30 @@ test("the Download PDF link serves the PDF (decision 233)", async ({
 });
 
 /** Elements whose right edge runs past the sheet's; the page itself may still fit. */
+/** Elements whose right edge runs into the sheet's padding or past it; the page itself may still fit. */
 function pastTheSheet(page: Page) {
   return page.locator(".cv").evaluate((cv) => {
-    const edge = cv.parentElement!.getBoundingClientRect().right;
+    const sheet = cv.parentElement!;
+    const edge =
+      sheet.getBoundingClientRect().right -
+      parseFloat(getComputedStyle(sheet).paddingRight);
     return [...cv.querySelectorAll("*")]
       .filter((el) => el.getBoundingClientRect().right > edge + 0.5)
       .map((el) => el.textContent);
   });
+}
+
+/** Elements in main that run past the viewport; main clips them, so the page's own scroll width cannot tell. */
+function pastTheScreen(page: Page) {
+  return page
+    .locator("main")
+    .evaluate((main) =>
+      [...main.querySelectorAll("*")]
+        .filter(
+          (el) => el.getBoundingClientRect().right > window.innerWidth + 0.5,
+        )
+        .map((el) => el.className || el.tagName),
+    );
 }
 
 test("nothing runs past the sheet's edge", async ({ page }) => {
@@ -71,6 +88,7 @@ test("the CV fits a 320px-wide screen", async ({ page }) => {
   await page.goto("/cv");
   await expect(page.locator(".cv")).toBeVisible();
   await expectNoHorizontalOverflow(page);
+  expect(await pastTheScreen(page)).toEqual([]);
   expect(await pastTheSheet(page)).toEqual([]);
 });
 

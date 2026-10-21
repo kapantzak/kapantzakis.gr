@@ -1,5 +1,7 @@
 .page {
   display: grid;
+  /* minmax(0, …): the CV's longest word must not widen the column past a narrow screen. */
+  grid-template-columns: minmax(0, 1fr);
   gap: 1.5rem;
   justify-items: center;
 }
