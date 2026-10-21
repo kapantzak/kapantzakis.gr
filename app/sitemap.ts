@@ -3,10 +3,11 @@ import { profile } from "@/content/profile";
 import { sheetsOf } from "@/lib/sheets";
 import { SITE_URL } from "@/lib/site";
 
-// The home page and each sheet's own path (decision 168).
+// The home page, the privacy page and each sheet's own path (decisions 168, 221).
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: SITE_URL },
+    { url: `${SITE_URL}/privacy` },
     ...sheetsOf(profile).map(({ path }) => ({ url: `${SITE_URL}${path}` })),
   ];
 }

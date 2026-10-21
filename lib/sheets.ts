@@ -76,11 +76,9 @@ export function sheetsOf(source: Profile): SheetMeta[] {
   ];
 }
 
-/** Each sheet path's route, as analytics reports it (decision 171). */
-export function sheetRoutes(source: Profile): Record<string, string> {
-  return Object.fromEntries(
-    sheetsOf(source).map((sheet) => [sheet.path, `/${sheet.group}/[slug]`]),
-  );
+/** Every sheet path, which analytics counts by decision 172. */
+export function sheetPaths(source: Profile): string[] {
+  return sheetsOf(source).map((sheet) => sheet.path);
 }
 
 /** Static params for a group's `[slug]` route. */

@@ -46,4 +46,17 @@ describe("DetailSheet", () => {
     unmount();
     expect(outside.closest("[inert]")).toBeNull();
   });
+
+  it("leaves the consent banner usable when the banner opened first (decision 228)", () => {
+    const banner = document.createElement("section");
+    banner.setAttribute("data-consent-banner", "");
+    document.body.append(banner);
+    try {
+      renderSheet(null);
+      expect(screen.getByTestId("outside").closest("[inert]")).not.toBeNull();
+      expect(banner).not.toHaveAttribute("inert");
+    } finally {
+      banner.remove();
+    }
+  });
 });

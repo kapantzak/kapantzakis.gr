@@ -75,7 +75,11 @@ export function DetailSheet({
     const sheet = sheetRef.current!;
     const root = document.documentElement;
     // Not only <body>'s children: the sheet need not sit directly in <body> (tests, decision 163).
-    const others = outsideOf(sheet).filter((el) => !el.hasAttribute("inert"));
+    // The consent banner stays usable over the sheet, since a sheet link can be a visit's only page (decision 228).
+    const others = outsideOf(sheet).filter(
+      (el) =>
+        !el.hasAttribute("inert") && !el.hasAttribute("data-consent-banner"),
+    );
     for (const el of others) el.setAttribute("inert", "");
     // Measured before the lock hides the scrollbar. A reserved gutter would paint over the sheet's own scrollbar.
     const gap = window.innerWidth - root.clientWidth;

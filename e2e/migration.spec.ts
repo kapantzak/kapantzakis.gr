@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 import { SHEET_PAGES } from "./helpers";
 
 // The site is one page, with a path per sheet and per section (decisions 30–31, 35, 161, 173).
@@ -20,12 +20,13 @@ test("the service-worker kill switch is served", async ({ request }) => {
   expect(await response.text()).toContain("registration.unregister()");
 });
 
-test("sitemap lists the home page and every sheet path (decision 168)", async ({
+test("sitemap lists the home page, the privacy page and every sheet path (decisions 168, 221)", async ({
   request,
 }) => {
   const body = await (await request.get("/sitemap.xml")).text();
-  expect(body.match(/<loc>/g)).toHaveLength(1 + SHEET_PAGES.length);
+  expect(body.match(/<loc>/g)).toHaveLength(2 + SHEET_PAGES.length);
   expect(body).toContain("<loc>https://kapantzakis.gr</loc>");
+  expect(body).toContain("<loc>https://kapantzakis.gr/privacy</loc>");
   for (const { path } of SHEET_PAGES) {
     expect(body).toContain(`<loc>https://kapantzakis.gr${path}</loc>`);
   }

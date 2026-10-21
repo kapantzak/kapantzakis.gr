@@ -7,7 +7,7 @@ import {
   sheetMetadata,
   sheetParams,
   sheetPath,
-  sheetRoutes,
+  sheetPaths,
   sheetsOf,
 } from "./sheets";
 
@@ -89,14 +89,10 @@ describe("sheet routes", () => {
   });
 });
 
-describe("sheetRoutes", () => {
-  it("maps every sheet path to its group's dynamic route (decision 171)", () => {
-    const routes = sheetRoutes(profile);
-    expect(Object.keys(routes)).toEqual(
+describe("sheetPaths", () => {
+  it("lists every sheet path, for analytics (decision 217)", () => {
+    expect(sheetPaths(profile)).toEqual(
       sheetsOf(profile).map((sheet) => sheet.path),
     );
-    expect(routes["/experience/netdata"]).toBe("/experience/[slug]");
-    expect(routes["/education/bsc-economic-science"]).toBe("/education/[slug]");
-    expect(routes["/community/skgjs"]).toBe("/community/[slug]");
   });
 });

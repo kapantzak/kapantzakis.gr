@@ -1,0 +1,47 @@
+/* The 404 page's header (app/not-found.module.css), so the two plain pages match. */
+.header {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.eyebrow {
+  font-family: var(--font-display-stack);
+  font-size: 0.875rem;
+  letter-spacing: 0.12em;
+  color: var(--color-muted);
+}
+
+.title {
+  font-size: var(--text-display);
+  color: var(--accent);
+}
+
+.lead {
+  max-width: var(--measure);
+  font-size: var(--text-lead);
+  line-height: 1.5;
+  color: var(--color-fg-strong);
+}
+
+.body {
+  display: grid;
+  gap: 2.5rem;
+  max-width: var(--measure);
+  line-height: 1.6;
+}
+
+.body h2 {
+  margin-bottom: 0.75rem;
+  font-size: var(--text-h3);
+  color: var(--color-fg-strong);
+}
+
+.body p,
+.body ul {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+.updated {
+  color: var(--color-muted);
+}

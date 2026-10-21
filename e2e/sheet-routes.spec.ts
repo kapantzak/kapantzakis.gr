@@ -1,9 +1,12 @@
-import { expect, type Locator, test } from "@playwright/test";
+import type { Locator } from "@playwright/test";
+import { expect, test } from "./fixtures";
 import {
   HOME_TITLE,
   PAPER_BG,
   SHEET_PAGES,
+  analyticsEnabled,
   expectNoHorizontalOverflow,
+  pageviewTitles,
   pageviews,
 } from "./helpers";
 
@@ -244,17 +247,15 @@ test("reduced motion opens a sheet by URL with the short fade", async ({
 });
 
 test.describe("analytics", () => {
-  const home = { route: "/", path: "/" };
-  const netdata = {
-    route: "/experience/[slug]",
-    path: "/experience/netdata",
-  };
+  test.use({ consent: "granted" });
+  const netdata = "/experience/netdata";
 
-  test("a sheet opened in the page is reported under its route, and closing it is no home view (decisions 171–172)", async ({
+  test("a sheet opened in the page is reported under its path and title, and closing it is no home view (decisions 172, 217)", async ({
     page,
   }) => {
-    const adzuna = { route: "/experience/[slug]", path: "/experience/adzuna" };
+    const adzuna = "/experience/adzuna";
     await page.goto("/");
+    test.skip(!(await analyticsEnabled(page)), "no GA ID on this deployment");
     await page.getByRole("button", { name: /Netdata/ }).click();
     const sheet = page.getByRole("dialog", { name: "Netdata" });
     await expect(sheet).toBeVisible();
@@ -268,17 +269,19 @@ test.describe("analytics", () => {
     await expect(page.getByRole("dialog", { name: "Adzuna" })).toBeVisible();
     await expect
       .poll(() => pageviews(page))
-      .toEqual([home, netdata, adzuna, adzuna]);
+      .toEqual(["/", netdata, adzuna, adzuna]);
+    // The sheet's own tab title (decision 169), not the home title it replaced.
+    const title = await page.title();
+    expect(title).toMatch(/^Adzuna — /);
+    expect((await pageviewTitles(page)).at(-1)).toBe(title);
   });
 
-  test("a sheet loaded by URL is reported under its route, and closing it counts / once (decision 172)", async ({
+  test("a sheet loaded by URL is reported under its path, and closing it counts / once (decision 172)", async ({
     page,
   }) => {
-    const msc = {
-      route: "/education/[slug]",
-      path: "/education/msc-applied-informatics",
-    };
-    await page.goto(msc.path);
+    const msc = "/education/msc-applied-informatics";
+    await page.goto(msc);
+    test.skip(!(await analyticsEnabled(page)), "no GA ID on this deployment");
     const sheet = page.getByRole("dialog", {
       name: "MSc in Applied Informatics",
     });
@@ -289,6 +292,6 @@ test.describe("analytics", () => {
     await expect(page.getByRole("dialog", { name: "Netdata" })).toBeVisible();
     await page.keyboard.press("Escape");
     await expect(page.getByRole("dialog")).toHaveCount(0);
-    await expect.poll(() => pageviews(page)).toEqual([msc, home, netdata]);
+    await expect.poll(() => pageviews(page)).toEqual([msc, "/", netdata]);
   });
 });
