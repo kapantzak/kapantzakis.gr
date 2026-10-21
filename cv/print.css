@@ -1,0 +1,48 @@
+/* PDF only (decision 232): fonts, page box and the white sheet. The shared rules are in cv.css. */
+
+/* Static instances rather than the variable font: Chrome embeds variable fonts
+   as Type3 glyphs, which some CV parsers handle poorly. Paths resolve against
+   the document's <base>, which points at cv/. */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  src: url("fonts/Inter-Regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  src: url("fonts/Inter-Medium.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  src: url("fonts/Inter-SemiBold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Momo Trust Display";
+  font-style: normal;
+  font-weight: 400;
+  src: url("fonts/MomoTrustDisplay-latin.woff2") format("woff2");
+}
+
+@page {
+  size: A4;
+  margin: 15mm 17mm 16mm 17mm;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #fff;
+}

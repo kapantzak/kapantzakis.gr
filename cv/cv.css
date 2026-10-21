@@ -1,0 +1,261 @@
+/* The CV's styles, shared by the /cv page and the PDF (decision 233). Single column, one accent colour.
+   Every rule is scoped under .cv so none reaches the rest of the site, even after a client navigation
+   leaves this stylesheet loaded. Colours derive from the site's paper tokens, adapted for white paper. */
+
+.cv {
+  --cv-fg: #0b0d12;
+  --cv-fg-soft: #2a2e37;
+  --cv-muted: #5a6070;
+  --cv-rule: #d9d6cc;
+  --cv-accent: #15533d;
+
+  /* The site's stacks on the page; the PDF has no site tokens, so it falls back to print.css's static faces. */
+  font-family: var(--font-body-stack, "Inter", Arial, Helvetica, sans-serif);
+  font-size: 10.8pt;
+  line-height: 1.45;
+  color: var(--cv-fg);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  text-rendering: optimizeLegibility;
+}
+
+.cv a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* The site's own hover and focus colour is lime, which fails on paper. */
+.cv a:hover {
+  color: var(--cv-accent);
+}
+.cv :focus-visible {
+  outline-color: var(--cv-accent);
+}
+
+/* Undo the site's global heading rule (styles/globals.css), so the page matches the PDF. */
+.cv h1,
+.cv h2,
+.cv h3 {
+  overflow-wrap: normal;
+}
+.cv h2,
+.cv h3 {
+  line-height: inherit;
+}
+
+/* Header: name and contact details stay in the body so parsers read them. */
+.cv header {
+  margin-bottom: 6pt;
+}
+
+.cv h1 {
+  font-family: var(
+    --font-display-stack,
+    "Momo Trust Display",
+    "Inter",
+    sans-serif
+  );
+  font-weight: 400;
+  font-size: 28pt;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  margin: 0 0 4pt;
+  color: var(--cv-fg);
+}
+
+.cv .title {
+  font-size: 11.5pt;
+  font-weight: 600;
+  color: var(--cv-accent);
+  margin: 0 0 4pt;
+}
+
+.cv .contact {
+  margin: 0;
+  color: var(--cv-fg-soft);
+  font-size: 9.4pt;
+}
+.cv .contact a,
+.cv .contact .loc {
+  white-space: nowrap;
+}
+
+.cv .sep {
+  color: var(--cv-muted);
+  margin: 0 5pt;
+}
+
+.cv .summary p {
+  margin: 0 0 2pt;
+  color: var(--cv-fg-soft);
+  max-width: 100%;
+}
+
+/* Sections */
+.cv section {
+  margin-top: 14pt;
+}
+
+.cv h2 {
+  font-family: var(
+    --font-display-stack,
+    "Momo Trust Display",
+    "Inter",
+    sans-serif
+  );
+  font-weight: 400;
+  font-size: 13pt;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cv-accent);
+  margin: 0 0 5pt;
+  padding-bottom: 2.5pt;
+  border-bottom: 1px solid var(--cv-rule);
+  break-after: avoid;
+}
+
+.cv h3 {
+  font-family: inherit;
+  font-size: 10.4pt;
+  font-weight: 600;
+  margin: 0;
+  color: var(--cv-fg);
+}
+
+.cv h3 .at {
+  font-weight: 400;
+  color: var(--cv-muted);
+}
+.cv h3 .sub {
+  font-weight: 400;
+  color: var(--cv-fg-soft);
+}
+
+.cv .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10pt;
+  break-after: avoid;
+}
+
+.cv .meta {
+  flex: none;
+  color: var(--cv-muted);
+  font-size: 9.2pt;
+  font-variant-numeric: tabular-nums;
+}
+
+.cv .context {
+  margin: 1pt 0 2pt;
+  color: var(--cv-muted);
+  font-size: 9.3pt;
+}
+
+.cv .role {
+  margin-bottom: 9pt;
+  break-inside: avoid;
+}
+.cv .role:last-child {
+  margin-bottom: 0;
+}
+
+.cv ul {
+  margin: 0;
+  padding-left: 11pt;
+}
+
+.cv li {
+  margin: 0 0 2pt;
+  padding-left: 1pt;
+}
+
+.cv li::marker {
+  color: var(--cv-accent);
+}
+
+.cv .entry {
+  margin-bottom: 7pt;
+  break-inside: avoid;
+}
+.cv .entry:last-child {
+  margin-bottom: 0;
+}
+
+.cv .links {
+  margin: 0;
+  font-size: 9.2pt;
+  color: var(--cv-fg-soft);
+}
+
+.cv .links a {
+  text-decoration: underline;
+  text-decoration-color: var(--cv-rule);
+  text-underline-offset: 2pt;
+}
+.cv .contact a {
+  text-decoration: underline;
+  text-decoration-color: var(--cv-rule);
+  text-underline-offset: 2pt;
+}
+
+.cv ul.plain {
+  list-style: none;
+  padding: 0;
+}
+.cv ul.plain li {
+  margin-bottom: 2.5pt;
+  padding-left: 0;
+}
+.cv ul.plain a {
+  font-weight: 500;
+}
+
+.cv .venue {
+  color: var(--cv-muted);
+  font-size: 9.2pt;
+}
+.cv .venue::before {
+  content: " — ";
+}
+
+.cv .skill {
+  margin: 0 0 2.5pt;
+  display: flex;
+  gap: 8pt;
+}
+.cv .skill .group {
+  flex: 0 0 108pt;
+  font-weight: 600;
+  color: var(--cv-fg-soft);
+}
+
+.cv .edu {
+  margin-bottom: 2.5pt;
+}
+.cv .edu p {
+  margin: 0;
+}
+.cv .edu strong {
+  font-weight: 600;
+}
+
+/* Phones only; the PDF prints with print media, so these never reach it. */
+@media screen and (max-width: 40rem) {
+  .cv .row,
+  .cv .skill {
+    flex-direction: column;
+    gap: 0;
+  }
+  .cv .skill .group {
+    flex-basis: auto;
+  }
+  .cv .contact a,
+  .cv .contact .loc {
+    white-space: normal;
+  }
+  .cv a {
+    overflow-wrap: anywhere;
+  }
+}

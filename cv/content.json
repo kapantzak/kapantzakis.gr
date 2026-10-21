@@ -1,0 +1,220 @@
+{
+  "name": "John Kapantzakis",
+  "title": "Senior Frontend Engineer",
+  "outputBasename": "John_Kapantzakis_CV",
+  "location": "Thessaloniki, Greece (UTC+2)",
+  "contacts": [
+    {
+      "label": "kapantzak@gmail.com",
+      "href": "mailto:kapantzak@gmail.com"
+    },
+    {
+      "label": "kapantzakis.gr",
+      "href": "https://kapantzakis.gr"
+    },
+    {
+      "label": "linkedin.com/in/johnkapantzakis",
+      "href": "https://www.linkedin.com/in/johnkapantzakis"
+    },
+    {
+      "label": "github.com/kapantzak",
+      "href": "https://github.com/kapantzak"
+    }
+  ],
+  "summary": "Senior frontend engineer with 12 years of experience building web products, currently on the React frontend of Netdata Cloud: AI-assisted observability, Model Context Protocol (MCP) integration and performance work on data-intensive UIs. Contributor to Hotwire Turbo, co-organiser of SKG JS, the Thessaloniki JavaScript community.",
+  "experience": [
+    {
+      "company": "Netdata",
+      "url": "https://www.netdata.cloud/",
+      "role": "Senior Software Engineer",
+      "period": "Feb 2023 – Present",
+      "location": "Thessaloniki, Greece",
+      "context": "Open-source, real-time observability platform. Frontend of Netdata Cloud, a large, data-intensive React application.",
+      "bullets": [
+        "Evolved Netdata's AI assistant from a conversational interface with streaming responses into persistent conversations, AI-assisted alert configuration and investigation workflows; implemented frontend support for the Model Context Protocol (MCP), connecting AI features to external tools and services.",
+        "Eliminated a documented 12–15 second main-thread freeze in large environments by replacing two quadratic-time hot paths in node processing and grouping with linear-time implementations.",
+        "Cut reported frontend CI runtime by about 60% through Jest test sharding, test-reliability fixes and additional lint rules; contribute to the ongoing release process.",
+        "Built the foundational Dynamic Configurations UI and grew it into a system for complex, dynamically generated forms with reusable widgets, autocomplete, nested interfaces and password masking.",
+        "Delivered end-to-end AI Insights investigation reports (generation, rendering, scheduling, email delivery, log integration) and enterprise identity features: SCIM, SSO, role and room mappings, and label-driven room membership."
+      ]
+    },
+    {
+      "company": "Adzuna",
+      "url": "https://www.adzuna.co.uk/",
+      "role": "Senior Frontend Developer",
+      "period": "Feb 2022 – Jan 2023",
+      "location": "Thessaloniki, Greece",
+      "context": "Job search engine used by 15M+ jobseekers a month across 20 countries.",
+      "bullets": [
+        "Built Labour Market Intelligence, a new data product, from zero to launch in under a year on Next.js, in a team of three (one product manager, two developers).",
+        "Built the product's interactive charts and maps with Apache ECharts, visualising hiring demand, salaries and trends across regions.",
+        "Shipped search, grouping and filtering by location, sector, salary and other dimensions, so users could explore labour-market data for multiple countries."
+      ]
+    },
+    {
+      "company": "Skroutz",
+      "url": "https://www.skroutz.gr/",
+      "role": "Software Engineer",
+      "period": "Jun 2020 – Jan 2022",
+      "location": "Thessaloniki, Greece",
+      "context": "One of Greece's leading e-commerce marketplaces. Partners department: tooling for merchants.",
+      "bullets": [
+        "Developed and maintained the merchant platform (orders, payments, daily operations) with Ruby on Rails and Hotwire Turbo server rendering, using React for selected views.",
+        "Contributed two features to Hotwire Turbo that shipped in Turbo 7 and were credited in the release announcement: the turbo:frame-render event and target elements on fetch events.",
+        "Published two articles on the Skroutz engineering blog, on progressive data loading in React and lazy loading with Hotwire."
+      ]
+    },
+    {
+      "company": "EpsilonNet",
+      "url": "https://www.epsilonnet.gr/",
+      "role": "Full Stack Developer",
+      "period": "Sep 2014 – May 2020",
+      "location": "Thessaloniki, Greece",
+      "context": "Greek business-software company. Epsilon ESS, an employee self-service web platform on ASP.NET and C#.",
+      "bullets": [
+        "Progressed from junior web designer to full-stack developer responsible for the product's frontend, implementing features end to end from C# backend to TypeScript frontend.",
+        "Introduced TypeScript, webpack and Redux-managed asynchronous views into a legacy ASP.NET Web Forms frontend, and added unit tests on both sides (Mocha and Chai, xUnit).",
+        "Built a Node.js and Handlebars CLI that generates the boilerplate for a new form: the ASP.NET user control and async handler, the TypeScript page script and Redux state, and the C# data models."
+      ]
+    }
+  ],
+  "community": [
+    {
+      "title": "Hotwire Turbo",
+      "subtitle": "Open-source contributor",
+      "period": "2021",
+      "text": "Two pull requests shipped in Turbo 7, credited by name in the release announcement.",
+      "links": [
+        {
+          "label": "PR #327",
+          "href": "https://github.com/hotwired/turbo/pull/327"
+        },
+        {
+          "label": "PR #367",
+          "href": "https://github.com/hotwired/turbo/pull/367"
+        },
+        {
+          "label": "Turbo 7 announcement",
+          "href": "https://world.hey.com/hotwired/turbo-7-0dd7a27f"
+        }
+      ]
+    },
+    {
+      "title": "SKG JS, Thessaloniki JavaScript Meetup",
+      "subtitle": "Co-organiser",
+      "period": "Apr 2025 – Present",
+      "text": "Organising meetups and talks for the JavaScript community in Thessaloniki. Speaker: \"What's new in React 19\", SKG JS Meetup #3, Apr 2025.",
+      "links": [
+        {
+          "label": "skgjs.gr",
+          "href": "https://skgjs.gr/"
+        },
+        {
+          "label": "Talk",
+          "href": "https://www.meetup.com/skg-js/events/307229886/"
+        }
+      ]
+    },
+    {
+      "title": "Stack Overflow",
+      "subtitle": "11,600+ reputation",
+      "period": "",
+      "text": "",
+      "links": [
+        {
+          "label": "stackoverflow.com/users/1221792/kapantzak",
+          "href": "https://stackoverflow.com/users/1221792/kapantzak"
+        }
+      ]
+    }
+  ],
+  "writing": [
+    {
+      "title": "Refactoring a React app to progressively load its data",
+      "venue": "Skroutz Engineering",
+      "year": "2021",
+      "href": "https://engineering.skroutz.gr/blog/refactor-react-app-to-progressively-load-its-data/"
+    },
+    {
+      "title": "Hotwire @ Skroutz: Lazy load data with minimum effort",
+      "venue": "Skroutz Engineering",
+      "year": "2021",
+      "href": "https://engineering.skroutz.gr/blog/using_hotwire_to_lazy_load_data/"
+    },
+    {
+      "title": "When to Use NoSQL vs SQL: The Ultimate Guide for Choosing a Database",
+      "venue": "Scalable Path",
+      "year": "2021",
+      "href": "https://www.scalablepath.com/back-end/sql-vs-nosql"
+    },
+    {
+      "title": "TypeScript or Flow: Which Is Better?",
+      "venue": "Scalable Path",
+      "year": "2020",
+      "href": "https://www.scalablepath.com/blog/typescript-or-flow-which-is-better/"
+    },
+    {
+      "title": "Automating boilerplate code generation with Node.js and Handlebars",
+      "venue": "DEV Community",
+      "year": "2020",
+      "href": "https://dev.to/kapantzak/automating-boilerplate-code-generation-with-node-js-and-handlebars-2c09"
+    },
+    {
+      "title": "JS illustrated: The event loop",
+      "venue": "DEV Community",
+      "year": "2019",
+      "href": "https://dev.to/kapantzak/js-illustrated-the-event-loop-4mco"
+    },
+    {
+      "title": "JS illustrated: Promises",
+      "venue": "DEV Community",
+      "year": "2019",
+      "href": "https://dev.to/kapantzak/js-illustrated-promises-3ign"
+    },
+    {
+      "title": "Using Redux in a legacy ASP.NET Web Forms project",
+      "venue": "DEV Community",
+      "year": "2019",
+      "href": "https://dev.to/kapantzak/using-redux-in-a-legacy-asp-net-web-forms-project-1805"
+    }
+  ],
+  "skills": [
+    {
+      "group": "Languages",
+      "items": "JavaScript, TypeScript, C#, Ruby, HTML, CSS"
+    },
+    {
+      "group": "Frontend",
+      "items": "React, Next.js, Redux, Hotwire Turbo, webpack"
+    },
+    {
+      "group": "Backend",
+      "items": "Node.js, ASP.NET / ASP.NET Core, Ruby on Rails, SQL Server"
+    },
+    {
+      "group": "Testing & delivery",
+      "items": "Jest, Testing Library, RSpec, Mocha, xUnit, CI pipelines, Git"
+    },
+    {
+      "group": "AI",
+      "items": "AI coding agents, Model Context Protocol (MCP), LLM-powered product features"
+    }
+  ],
+  "education": [
+    {
+      "degree": "MSc in Applied Informatics",
+      "school": "University of Macedonia",
+      "period": "2015 – 2018"
+    },
+    {
+      "degree": "MSc in Informatics and Management",
+      "school": "Aristotle University of Thessaloniki",
+      "period": "2008 – 2010"
+    },
+    {
+      "degree": "BSc in Economic Science",
+      "school": "Aristotle University of Thessaloniki",
+      "period": "2001 – 2006"
+    }
+  ]
+}
