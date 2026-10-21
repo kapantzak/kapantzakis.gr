@@ -47,6 +47,32 @@ test("a first visit asks, and Reject loads nothing from Google", async ({
   expect(google).toEqual([]);
 });
 
+test("the bar is magenta with dark text, and Accept and Reject look the same (decisions 219, 230)", async ({
+  page,
+}) => {
+  await open(page, "/");
+  await expect(banner(page)).toHaveCSS("background-color", "rgb(255, 92, 214)");
+  await expect(banner(page)).toHaveCSS("color", "rgb(11, 13, 18)");
+  const look = (name: string) =>
+    banner(page)
+      .getByRole("button", { name })
+      .evaluate((el) => {
+        const s = getComputedStyle(el);
+        return [
+          s.color,
+          s.backgroundColor,
+          s.borderColor,
+          s.borderWidth,
+          s.fontSize,
+          s.fontWeight,
+          s.padding,
+        ];
+      });
+  const accept = await look("Accept");
+  expect(accept[0]).toBe("rgb(11, 13, 18)");
+  expect(await look("Reject")).toEqual(accept);
+});
+
 test("Accept requests the tag and counts the page in view (decision 224)", async ({
   page,
 }) => {

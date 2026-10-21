@@ -255,6 +255,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 227 | GA data retention         | 14 months, set in GA Admin and stated on the privacy page |
 | 228 | Banner over a sheet       | While a detail sheet is open the banner stays above it and usable: the sheet's modality leaves the banner out of what it makes inert, and the sheet's content keeps clear of the bar while it shows |
 | 229 | Footer Privacy link       | The footer's Privacy link is a plain link (a full page load), not a client navigation: a path write from the scroll tracker (decision 174) during a client navigation off the home page cancels it |
+| 230 | Banner colour             | The bar is solid magenta (`--color-accent-magenta`, `#ff5cd6`) with dark text (`--color-on-accent`, 7.2:1), so it stands out from the page; its link and both buttons are dark on it, and Accept and Reject keep one style, so the colour never favours Accept (decision 219) |
 
 ## 3. Scope
 
@@ -667,7 +668,7 @@ The user asked for content on the SKG JS sheet: the Meetup group, the Discord se
 
 ## 32. Google Analytics (2026-10-20)
 
-Issue #23 asks for Google Analytics, a cookie banner and legal pages. The user gave the GA4 measurement ID `G-3L6VP0EV5V`, said older GA accounts for the domain do not matter, chose to replace Vercel Web Analytics rather than run both, and approved decisions 216–228 on 2026-10-20, then the privacy page and banner copy and decision 229 on 2026-10-21.
+Issue #23 asks for Google Analytics, a cookie banner and legal pages. The user gave the GA4 measurement ID `G-3L6VP0EV5V`, said older GA accounts for the domain do not matter, chose to replace Vercel Web Analytics rather than run both, and approved decisions 216–228 on 2026-10-20, then the privacy page and banner copy and decision 229 on 2026-10-21, and decision 230 on 2026-10-21.
 
 - **Why it is more than a tag:**
   - The site rewrites its path with `history.replaceState` while the visitor scrolls (`components/NavLinks.tsx`, decision 174), and pushes or replaces history for sheets and section links (`SheetHost.tsx`, `SectionLink.tsx`, `lib/scroll-top.ts`). GA4's history-based page views listen for `pushState`, `popstate` and `replaceState` (Google Analytics Help, "Enhanced measurement events", read 2026-10-20), so with GA's defaults every section scrolled past would be a page view.
