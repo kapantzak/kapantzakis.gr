@@ -262,6 +262,10 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 234 | CV links                  | A "CV" link in the main nav after the section links, and one in the footer beside Privacy; both are plain links (full page loads, decision 229) |
 | 235 | Stale PDF guard           | `npm run cv` records a hash of the CV's sources next to them, and a unit test fails when the sources change without the PDF being rebuilt |
 | 236 | CV downloads              | Not tracked: no download event; the `/cv` page view counts as any other page's (decision 226) |
+| 237 | JS illustrated on Medium  | "JS illustrated: The event loop" (16 Aug 2019) and "JS illustrated: Promises" (8 Oct 2019) link to their Medium copies in the Frontend Weekly publication, on the site and the CV, with the source and venue "Medium" |
+| 238 | Writing venues            | The intro names the venues in this order: Scalable Path, Medium, dev.to and the Skroutz Engineering blog |
+| 239 | CV Selected Writing       | The CV lists the Scalable Path articles, then the Medium ones, then "Hotwire @ Skroutz: Lazy load data with minimum effort", then the DEV ones; "Refactoring a React app to progressively load its data" leaves the CV but stays on the site |
+| 240 | CV Skroutz bullet         | Still names both Skroutz Engineering articles: Selected Writing is a selection, not a full list |
 
 ## 3. Scope
 

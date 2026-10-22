@@ -130,18 +130,6 @@
   ],
   "writing": [
     {
-      "title": "Refactoring a React app to progressively load its data",
-      "venue": "Skroutz Engineering",
-      "year": "2021",
-      "href": "https://engineering.skroutz.gr/blog/refactor-react-app-to-progressively-load-its-data/"
-    },
-    {
-      "title": "Hotwire @ Skroutz: Lazy load data with minimum effort",
-      "venue": "Skroutz Engineering",
-      "year": "2021",
-      "href": "https://engineering.skroutz.gr/blog/using_hotwire_to_lazy_load_data/"
-    },
-    {
       "title": "When to Use NoSQL vs SQL: The Ultimate Guide for Choosing a Database",
       "venue": "Scalable Path",
       "year": "2021",
@@ -154,22 +142,28 @@
       "href": "https://www.scalablepath.com/blog/typescript-or-flow-which-is-better/"
     },
     {
+      "title": "JS illustrated: The event loop",
+      "venue": "Medium",
+      "year": "2019",
+      "href": "https://medium.com/front-end-weekly/js-illustrated-the-event-loop-68a7f0e855d9"
+    },
+    {
+      "title": "JS illustrated: Promises",
+      "venue": "Medium",
+      "year": "2019",
+      "href": "https://medium.com/front-end-weekly/js-illustrated-promises-c87efb8d27a9"
+    },
+    {
+      "title": "Hotwire @ Skroutz: Lazy load data with minimum effort",
+      "venue": "Skroutz Engineering",
+      "year": "2021",
+      "href": "https://engineering.skroutz.gr/blog/using_hotwire_to_lazy_load_data/"
+    },
+    {
       "title": "Automating boilerplate code generation with Node.js and Handlebars",
       "venue": "DEV Community",
       "year": "2020",
       "href": "https://dev.to/kapantzak/automating-boilerplate-code-generation-with-node-js-and-handlebars-2c09"
-    },
-    {
-      "title": "JS illustrated: The event loop",
-      "venue": "DEV Community",
-      "year": "2019",
-      "href": "https://dev.to/kapantzak/js-illustrated-the-event-loop-4mco"
-    },
-    {
-      "title": "JS illustrated: Promises",
-      "venue": "DEV Community",
-      "year": "2019",
-      "href": "https://dev.to/kapantzak/js-illustrated-promises-3ign"
     },
     {
       "title": "Using Redux in a legacy ASP.NET Web Forms project",
