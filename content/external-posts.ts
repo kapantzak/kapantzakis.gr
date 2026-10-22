@@ -62,8 +62,8 @@ export const externalPosts: Post[] = [
     title: "JS illustrated: Promises",
     date: "2019-10-08",
     summary: "An illustrated walkthrough of how JavaScript promises work.",
-    url: "https://dev.to/kapantzak/js-illustrated-promises-3ign",
-    source: "DEV.TO",
+    url: "https://medium.com/front-end-weekly/js-illustrated-promises-c87efb8d27a9",
+    source: "Medium",
   },
   {
     title: "The RGB split effect with css and a bit of javascript",
@@ -98,11 +98,11 @@ export const externalPosts: Post[] = [
   },
   {
     title: "JS illustrated: The event loop 🔁",
-    date: "2019-08-15",
+    date: "2019-08-16",
     summary:
       "An illustrated explanation of how the event loop lets single-threaded JavaScript run asynchronous code.",
-    url: "https://dev.to/kapantzak/js-illustrated-the-event-loop-4mco",
-    source: "DEV.TO",
+    url: "https://medium.com/front-end-weekly/js-illustrated-the-event-loop-68a7f0e855d9",
+    source: "Medium",
   },
   {
     title: "Some of my favorite Javascript resources",

@@ -670,7 +670,7 @@ test("every post is a tile, newest first, opening off-site in a new tab", async 
     page.getByRole("link", { name: /JS illustrated: The event loop/ }),
   ).toHaveAttribute(
     "href",
-    "https://dev.to/kapantzak/js-illustrated-the-event-loop-4mco",
+    "https://medium.com/front-end-weekly/js-illustrated-the-event-loop-68a7f0e855d9",
   );
 });
 
