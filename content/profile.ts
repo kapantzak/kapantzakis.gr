@@ -136,8 +136,8 @@ export const profile: Profile = {
   role: "Senior frontend engineer",
   headline: "I build things for the web.",
   intro: [
-    "I'm a frontend engineer based in Thessaloniki, Greece, with 12+ years of experience. Currently, I mostly work with React and AI agents.",
-    "I co-organise SKG JS, Thessaloniki’s JavaScript community, bringing developers together to learn, share, and connect. I’ve also written about software engineering on dev.to, Scalable Path, and the Skroutz Engineering blog.",
+    "I'm a frontend engineer from Greece, with 12+ years of experience. Currently, I work with React and AI agents.",
+    "I co-organise SKG JS, Thessaloniki’s JavaScript community meetups, bringing developers together to learn, share, and connect. I’ve also written about software engineering on dev.to, Scalable Path, and the Skroutz Engineering blog.",
   ],
   email: "kapantzak@gmail.com",
   experience: [
@@ -166,37 +166,37 @@ export const profile: Profile = {
           },
           {
             label: "My role",
-            text: "At Netdata, I work on the frontend of Netdata Cloud, building product experiences and evolving the architecture of a large React application. My work spans frontend architecture, AI-powered features, infrastructure configuration, performance optimization, and developer tooling.",
+            text: "At Netdata, I work on the frontend of Netdata Cloud, building product experiences and evolving the architecture of a large React application. My work spans frontend architecture, AI-powered features, infrastructure configuration and performance optimization.",
           },
         ],
         contributions: [
           {
             title: "AI-powered observability",
-            body: "Contributed to the evolution of Netdata's AI assistant, from conversational interfaces and streaming responses to persistent conversations, AI-assisted alert configuration, and investigation workflows. I also implemented frontend support for Model Context Protocol (MCP), connecting AI experiences with external tools and services.",
+            body: "Built frontend capabilities for Netdata's AI assistant, evolving it from a basic chat interface to persistent LLM conversations powered by Netdata-specific tools and investigation workflows. I also implemented frontend support for Model Context Protocol (MCP), allowing users to connect external tooling.",
             image: aiChat,
             tint: "#dff3e4",
           },
           {
             title: "AI Insights and investigation reports",
-            body: "Helped build an end-to-end reporting experience for infrastructure investigations, including report generation, rendering, scheduling, email delivery, and the integration of operational log data. This work brings investigation and reporting capabilities together in a cohesive product experience.",
+            body: "Helped build an end-to-end reporting experience for infrastructure investigations, including report generation, rendering and scheduling. This work brings investigation and reporting capabilities together in a cohesive product experience.",
             image: aiInsights,
             tint: "#d7eeee",
           },
           {
             title: "Dynamic configuration system",
-            body: "Built the foundational Dynamic Configurations UI and continued evolving it to support complex, dynamically generated configuration forms. This included reusable widgets, autocomplete, nested interfaces, password masking, and improvements to configuration editing and reliability.",
+            body: "Built the foundational Dynamic Configurations UI and continued evolving it to support complex, dynamically generated configuration forms, using the react-jsonschema-form library.",
             image: dyncfg,
             tint: "#e9f3d6",
           },
           {
             title: "Frontend performance engineering",
-            body: "Improved performance in data-intensive parts of Netdata Cloud, including node processing and grouping logic. Two hot-path optimizations replaced quadratic-time operations with linear-time alternatives, addressing a documented 12–15-second main-thread freeze in large environments.",
+            body: "Optimized data processing algorithms and React rendering to improve performance and eliminate unnecessary component remounts.",
             image: performance,
             tint: "#d6eaf2",
           },
           {
             title: "Alerting and scheduling",
-            body: "Contributed to alert configuration, silencing, recurring schedules, and historical alert evaluation. This work included advanced recurrence rules, timezone and daylight-saving considerations, and interfaces for exploring alert behavior over time.",
+            body: "Contributed to alert configuration, silencing, recurring schedules, and historical alert evaluation.",
             image: silencingRules,
             tint: "#e2f1dd",
           },
@@ -208,7 +208,7 @@ export const profile: Profile = {
           },
           {
             title: "Integrations and onboarding",
-            body: "Built the integrations onboarding experience and contributed to its continued evolution. I also implemented onboarding flows that guide new users through connecting their infrastructure and getting started with monitoring.",
+            body: "Built the integrations onboarding experience and contributed to its continued evolution.",
             image: integrations,
             tint: "#eef0d8",
           },
@@ -220,7 +220,7 @@ export const profile: Profile = {
           },
           {
             title: "Developer productivity and release engineering",
-            body: "Improved the frontend testing and CI workflow through test reliability fixes, additional linting rules, and Jest test sharding. The reported CI runtime dropped by about 60%. I also contribute to the ongoing release process and use AI coding agents to accelerate implementation and refactoring while maintaining engineering oversight.",
+            body: "Improved the frontend testing and CI workflow through test reliability fixes and Jest test sharding. The reported CI runtime dropped by about 60%.",
             image: githubCi,
             tint: "#e0f2ea",
           },
@@ -345,7 +345,7 @@ export const profile: Profile = {
           },
           {
             title: "Recognised in the Turbo 7 release",
-            body: "Both pull requests shipped in Turbo 7. The release announcement thanked me, together with Sean Doyle, for the new frame events.",
+            body: "Both pull requests shipped in Turbo 7. The release announcement thanked me, together with another contributor, for the new frame events.",
             image: turbo7Announcement,
             tint: "#f5ead6",
             links: [

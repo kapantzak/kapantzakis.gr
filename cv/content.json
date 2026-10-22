@@ -31,11 +31,11 @@
       "location": "Thessaloniki, Greece",
       "context": "Open-source, real-time observability platform. Frontend of Netdata Cloud, a large, data-intensive React application.",
       "bullets": [
-        "Contributed to the evolution of Netdata's AI assistant, from a conversational interface with streaming responses to persistent conversations, AI-assisted alert configuration and investigation workflows; implemented frontend support for the Model Context Protocol (MCP), connecting AI features to external tools and services.",
-        "Addressed a documented 12–15 second main-thread freeze in large environments by replacing two quadratic-time hot paths in node processing and grouping with linear-time implementations.",
-        "Improved frontend CI through Jest test sharding, test-reliability fixes and additional lint rules, with reported runtime down by about 60%; contribute to the ongoing release process.",
-        "Built the foundational Dynamic Configurations UI and grew it into a system for complex, dynamically generated forms with reusable widgets, autocomplete, nested interfaces and password masking.",
-        "Helped build end-to-end AI Insights investigation reports (generation, rendering, scheduling, email delivery, log integration) and contributed to enterprise identity features: SCIM, SSO, role and room mappings, and label-driven room membership."
+        "Built frontend capabilities for Netdata's AI assistant, evolving it from a basic chat interface to persistent LLM conversations powered by Netdata-specific tools and investigation workflows. Also implemented frontend support for Model Context Protocol (MCP), allowing users to connect external tooling.",
+        "Optimized data processing and React rendering to improve performance and eliminate unnecessary remounts.",
+        "Cut reported frontend CI runtime by about 60% through Jest test sharding and test-reliability fixes.",
+        "Built the foundational Dynamic Configurations UI and continued evolving it to support complex, dynamically generated configuration forms, using the react-jsonschema-form library.",
+        "Helped build end-to-end AI Insights investigation reports (generation, rendering, scheduling) and contributed to enterprise identity features: SCIM, SSO, role and room mappings, and label-driven room membership."
       ]
     },
     {
