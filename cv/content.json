@@ -191,7 +191,7 @@
     },
     {
       "group": "AI",
-      "items": "AI coding agents, Model Context Protocol (MCP), LLM-powered product features"
+      "items": "Claude Code and other AI coding agents, custom skills, CLAUDE.md / AGENTS.md project instructions"
     }
   ],
   "education": [
