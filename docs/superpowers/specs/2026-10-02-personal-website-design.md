@@ -266,6 +266,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 238 | Writing venues            | The intro names the venues in this order: Scalable Path, Medium, dev.to and the Skroutz Engineering blog |
 | 239 | CV Selected Writing       | The CV lists the Scalable Path articles, then the Medium ones, then "Hotwire @ Skroutz: Lazy load data with minimum effort", then the DEV ones; "Refactoring a React app to progressively load its data" leaves the CV but stays on the site |
 | 240 | CV Skroutz bullet         | Still names both Skroutz Engineering articles: Selected Writing is a selection, not a full list |
+| 241 | CV AI skills              | The CV's AI skills row reads "Claude Code and other AI coding agents, custom skills, CLAUDE.md / AGENTS.md project instructions"; MCP and LLM work stays in the summary and the Netdata bullet, as work history rather than skills |
 
 ## 3. Scope
 
