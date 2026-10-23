@@ -42,6 +42,24 @@ function experience(cv) {
   return `<section><h2>Experience</h2>${roles}</section>`;
 }
 
+// A project takes a role's layout, named by its live site (CV design decision 14).
+function projects(cv) {
+  const entries = cv.projects
+    .map(
+      (p) => `
+<article class="role">
+  <div class="row">
+    <h3>${link(p.url, p.name)}<span class="at">, </span><span class="sub">${esc(p.descriptor)}</span></h3>
+    <span class="meta">${esc(p.period)}</span>
+  </div>
+  <p class="context">${esc(p.context)}</p>
+  ${list(p.bullets)}
+</article>`,
+    )
+    .join("");
+  return `<section><h2>Projects</h2>${entries}</section>`;
+}
+
 function community(cv) {
   const entries = cv.community
     .map((c) => {
@@ -102,6 +120,7 @@ export function renderCv(cv) {
 ${header(cv)}
 <section class="summary"><p>${esc(cv.summary)}</p></section>
 ${experience(cv)}
+${projects(cv)}
 ${community(cv)}
 ${writing(cv)}
 ${skills(cv)}

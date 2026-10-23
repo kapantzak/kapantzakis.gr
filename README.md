@@ -36,5 +36,5 @@ To smoke-test a deployed site: `BASE_URL=https://kapantzakis.gr npm run e2e`.
 
 The site is a single page (`app/page.tsx`): hero, experience, writing and contact.
 
-- **Profile** (intro, experience, education, community, links, email): `content/profile.ts`.
+- **Profile** (intro, experience, projects, education, community, links, email): `content/profile.ts`.
 - **Writing**: every post is published elsewhere. Add an entry to `content/external-posts.ts`; invalid entries fail the build with the entry index in the error.

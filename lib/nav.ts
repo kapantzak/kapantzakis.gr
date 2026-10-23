@@ -10,13 +10,14 @@ export type SectionId = (typeof NAV_ITEMS)[number]["id"];
 // Each place with a path of its own (decision 173) and the nav item it marks as current (decision 181).
 const REGION_SECTIONS = {
   experience: "experience",
+  projects: "experience",
   education: "experience",
   community: "experience",
   writing: "writing",
   contact: "contact",
 } as const satisfies Record<string, SectionId>;
 
-/** A region's element id; Education and Community are groups inside Experience. */
+/** A region's element id; Projects, Education and Community are groups inside Experience. */
 export type RegionId = keyof typeof REGION_SECTIONS;
 
 /** In reading order, so a group comes after the section it sits in (decision 174). */

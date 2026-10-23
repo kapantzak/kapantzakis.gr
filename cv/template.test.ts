@@ -3,12 +3,13 @@ import cv from "./content.json";
 import { renderCv, renderDocument } from "./template.mjs";
 
 describe("renderCv", () => {
-  it("wraps the CV in .cv, sections in the CV's order (CV design decision 9)", () => {
+  it("wraps the CV in .cv, sections in the CV's order (CV design decision 14)", () => {
     const html = renderCv(cv);
     expect(html.startsWith('<div class="cv">')).toBe(true);
     const h2 = [...html.matchAll(/<h2>(.*?)<\/h2>/g)].map((m) => m[1]);
     expect(h2).toEqual([
       "Experience",
+      "Projects",
       "Open Source &amp; Community",
       "Selected Writing",
       "Skills",

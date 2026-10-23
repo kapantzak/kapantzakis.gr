@@ -3,6 +3,7 @@ import { profile } from "@/content/profile";
 import {
   communitySheet,
   degreeSheet,
+  projectSheet,
   roleSheet,
   sheetMetadata,
   sheetParams,
@@ -32,6 +33,19 @@ describe("sheet metadata", () => {
     });
   });
 
+  it("describes a project by its name, descriptor and period (decision 251)", () => {
+    expect(projectSheet(profile.projects[0]!)).toEqual({
+      group: "projects",
+      slug: "hoohooli",
+      path: "/projects/hoohooli",
+      title: "hoohooli.gr",
+      subtitle: "Headless e-commerce storefront",
+      period: "Dec 2025 – Present",
+      description:
+        "hoohooli.gr: Headless e-commerce storefront, Dec 2025 – Present.",
+    });
+  });
+
   it("describes a degree by its name, institution and period", () => {
     expect(degreeSheet(profile.education[0]!)).toMatchObject({
       path: "/education/msc-applied-informatics",
@@ -57,6 +71,7 @@ describe("sheet metadata", () => {
       "/experience/adzuna",
       "/experience/skroutz",
       "/experience/epsilonnet",
+      "/projects/hoohooli",
       "/education/msc-applied-informatics",
       "/education/msc-informatics-and-management",
       "/education/bsc-economic-science",

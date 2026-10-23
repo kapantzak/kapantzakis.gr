@@ -4,13 +4,14 @@ import {
   type CommunityRole,
   type Degree,
   type Profile,
+  type Project,
   type Role,
   profile,
 } from "@/content/profile";
 import { formatPeriod } from "./period";
 
 /** The first path segment of each group's sheets (decision 161). */
-export type SheetGroup = "experience" | "education" | "community";
+export type SheetGroup = "experience" | "projects" | "education" | "community";
 
 /** What a sheet's row, route metadata and sitemap entry share. */
 export type SheetMeta = {
@@ -38,6 +39,19 @@ export function roleSheet(role: Role): SheetMeta {
     subtitle: role.title,
     period,
     description: `${role.title} at ${role.org}, ${period}.`,
+  };
+}
+
+export function projectSheet(project: Project): SheetMeta {
+  const period = formatPeriod(project.period);
+  return {
+    group: "projects",
+    slug: project.slug,
+    path: sheetPath("projects", project.slug),
+    title: project.name,
+    subtitle: project.descriptor,
+    period,
+    description: `${project.name}: ${project.descriptor}, ${period}.`,
   };
 }
 
@@ -71,6 +85,7 @@ export function communitySheet(entry: CommunityRole): SheetMeta {
 export function sheetsOf(source: Profile): SheetMeta[] {
   return [
     ...source.experience.map(roleSheet),
+    ...source.projects.map(projectSheet),
     ...source.education.map(degreeSheet),
     ...source.community.map(communitySheet),
   ];

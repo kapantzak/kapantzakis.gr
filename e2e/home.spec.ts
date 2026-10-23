@@ -18,7 +18,7 @@ test("home renders the headline and every section without horizontal scroll", as
   for (const name of ["Experience", "Writing", "Say hello"]) {
     await expect(page.getByRole("heading", { level: 2, name })).toBeAttached();
   }
-  for (const name of ["Work", "Education", "Community"]) {
+  for (const name of ["Work", "Projects", "Education", "Community"]) {
     await expect(page.getByRole("heading", { level: 3, name })).toBeAttached();
   }
   await expectBodyBackground(page, DARK_BG);
@@ -625,6 +625,55 @@ test("the Thessaloniki JavaScript Meetup sheet tells its story, with the talk an
     await expect(link).toHaveAttribute("href", href);
     await expect(link).toHaveAttribute("target", "_blank");
   }
+});
+
+// A project takes a brand and a story like a work role (decisions 242, 250–252).
+test("the hoohooli.gr sheet opens on its rose band with its logo, site link and story", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const row = page.getByRole("button", { name: /hoohooli\.gr/ });
+  await expect
+    .poll(() =>
+      row.evaluate((el) =>
+        getComputedStyle(el.closest("li")!).getPropertyValue("--accent"),
+      ),
+    )
+    .toBe("#f43f5e");
+  await row.click();
+  await expect(page).toHaveURL(/\/projects\/hoohooli$/);
+  const sheet = page.getByRole("dialog", { name: "hoohooli.gr" });
+  const band = sheet.locator("[data-brand]");
+  await expect(band).toHaveCSS("background-color", "rgb(255, 241, 242)");
+  await expect(band).toHaveAttribute("data-tone", "light");
+  // The logo is the title, so its alt text names the dialog (decision 50).
+  const logo = band.getByRole("heading", { level: 2 }).locator("img");
+  await expect(logo).toHaveAttribute("alt", "hoohooli.gr");
+  await expect
+    .poll(() => logo.evaluate((img: HTMLImageElement) => img.naturalWidth))
+    .toBeGreaterThan(0);
+  // The live site, never the private repository (decision 244).
+  const site = band.getByRole("link", { name: /hoohooli\.gr/ });
+  await expect(site).toHaveAttribute("href", "https://hoohooli.gr/");
+  await expect(site).toHaveCSS("background-color", "rgb(244, 63, 94)");
+  for (const label of ["hoohooli", "My role"]) {
+    await expect(
+      sheet.getByRole("heading", { level: 3, name: label, exact: true }),
+    ).toBeVisible();
+  }
+  await expect(sheet.locator("[data-placeholder]")).toHaveCount(0);
+  await expect(
+    sheet
+      .getByRole("region", { name: "What I built" })
+      .getByRole("heading", { level: 4 }),
+  ).toHaveText([
+    "Splitting the monolith",
+    "One shop, two apps",
+    "A fast, findable catalogue",
+  ]);
+  expect(
+    await sheet.evaluate((el) => el.scrollWidth - el.clientWidth),
+  ).toBeLessThanOrEqual(0);
 });
 
 test("education and community sheets reveal their links", async ({ page }) => {

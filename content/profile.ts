@@ -5,6 +5,8 @@ import authOntology from "@/assets/brand/auth-ontology.webp";
 import adzunaLogo from "@/assets/brand/adzuna-logo.svg";
 import epsilonnetHome from "@/assets/brand/epsilonnet-home.webp";
 import epsilonnetLogo from "@/assets/brand/epsilonnet-logo.svg";
+import hoohooliHome from "@/assets/brand/hoohooli-home.webp";
+import hoohooliLogo from "@/assets/brand/hoohooli-logo.svg";
 import netdataDashboard from "@/assets/brand/netdata-dashboard.png";
 import netdataLogo from "@/assets/brand/netdata-logo.svg";
 import skgjsHome from "@/assets/brand/skgjs-home.webp";
@@ -37,6 +39,9 @@ import essDevCli from "@/assets/stories/epsilonnet/cli.webp";
 import attendanceMobile from "@/assets/stories/msc/mobile-app.webp";
 import attendanceWeb from "@/assets/stories/msc/web-app.webp";
 import attendanceApi from "@/assets/stories/msc/web-api.webp";
+import hoohooliCatalogue from "@/assets/stories/hoohooli/catalogue.webp";
+import hoohooliAccount from "@/assets/stories/hoohooli/wordpress-account.webp";
+import hoohooliProduct from "@/assets/stories/hoohooli/product.webp";
 import type { Period } from "@/lib/period";
 
 /** An organisation's own look for the top of its detail sheet (decisions 48–53, 87). */
@@ -95,6 +100,20 @@ export type Role = {
   brand?: Brand;
   story?: Story;
 };
+/** A project of the user's own, outside employment (decision 242). */
+export type Project = {
+  /** Its sheet's path segment, unique within its group (decision 162). */
+  slug: string;
+  name: string;
+  /** The live site; never a private repository (decision 244). */
+  url: string;
+  /** What the project is, shown as the sheet's subtitle (decision 251). */
+  descriptor: string;
+  period: Period;
+  stack: string[];
+  brand?: Brand;
+  story?: Story;
+};
 export type Degree = {
   /** Its sheet's path segment, unique within its group (decision 162). */
   slug: string;
@@ -126,6 +145,7 @@ export type Profile = {
   intro: string[];
   email: string;
   experience: Role[];
+  projects: Project[];
   education: Degree[];
   community: CommunityRole[];
   social: SocialLink[];
@@ -465,6 +485,59 @@ export const profile: Profile = {
             },
           ],
         },
+      },
+    },
+  ],
+  projects: [
+    {
+      slug: "hoohooli",
+      name: "hoohooli.gr",
+      url: "https://hoohooli.gr/",
+      descriptor: "Headless e-commerce storefront",
+      period: { start: "Dec 2025" },
+      stack: ["Next.js", "React", "TypeScript", "WooCommerce"],
+      // From hoohooli.gr: the official logo, rose-50 band, the button rose and the home screen (decision 250).
+      brand: {
+        logo: hoohooliLogo,
+        background: "#fff1f2",
+        accent: "#f43f5e",
+        link: "#f43f5e",
+        tone: "light",
+        visual: hoohooliHome,
+      },
+      // Screenshots of the live shop, approved by the user (decisions 247, 252).
+      story: {
+        intro: [
+          {
+            label: "hoohooli",
+            text: "hoohooli is my family's business: a Greek online shop selling handmade clothes and accessories for babies and toddlers. It started as a WordPress and WooCommerce monolith that handled everything, from the catalogue to checkout.",
+          },
+          {
+            label: "My role",
+            text: "I designed and built the new storefront: a Next.js app for the catalogue, with WordPress kept as a headless backend on its own subdomain for checkout, payments and customer accounts.",
+          },
+        ],
+        contributionsHeading: "What I built",
+        contributions: [
+          {
+            title: "Splitting the monolith",
+            body: "Moved the product catalogue to a Next.js App Router storefront on Vercel that reads products and categories from the WooCommerce REST API on the server. WordPress moved to an API subdomain, where it still runs checkout, payments and customer accounts.",
+            image: hoohooliCatalogue,
+            tint: "#ffe4e6",
+          },
+          {
+            title: "One shop, two apps",
+            body: "Carried the cart from the storefront to WooCommerce checkout. A server-side proxy to the CoCart API keeps the store's keys off the browser and hands the cart over by its key. I restyled the remaining WordPress pages to match the new UI, so customers never feel they have left the shop.",
+            image: hoohooliAccount,
+            tint: "#fef3c7",
+          },
+          {
+            title: "A fast, findable catalogue",
+            body: "Cut product API responses from about 2.4 MB to about 400 KB, bringing them under Next.js's 2 MB data-cache limit so catalogue data is cached and revalidated every minute. Added indexable category pages, a sitemap built from live data, and Product and breadcrumb structured data.",
+            image: hoohooliProduct,
+            tint: "#f5f0eb",
+          },
+        ],
       },
     },
   ],

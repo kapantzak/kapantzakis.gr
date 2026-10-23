@@ -56,7 +56,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 28 | Site icon               | The same logo replaces the generated monogram: `favicon.ico`, a 512px icon and a 192px Apple touch icon    |
 | 29 | Logo link               | Logo sits inside the existing name link before the name; the image is decorative (`alt=""`)              |
 | 30 | One-page site           | `/` holds everything, read by scrolling: hero, experience, writing, contact                               |
-| 31 | Old routes              | *Sitemap superseded by 168; `/contact` by 173.* `/about`, `/posts`, `/contact` removed (404); the `/projects` redirect removed; the sitemap lists `/` only |
+| 31 | Old routes              | *Sitemap superseded by 168; `/contact` by 173; `/projects` by 242.* `/about`, `/posts`, `/contact` removed (404); the `/projects` redirect removed; the sitemap lists `/` only |
 | 32 | Education and community | Expandable rows inside the Experience section, under their own subheadings                               |
 | 33 | Experience details      | *Superseded by 41.* Big rows that expand with an animation; the panel shows existing facts plus a placeholder for rich content to be designed later |
 | 34 | Posts                   | Every post as a tile with a hover animation; every tile opens the article in a new tab                    |
@@ -267,6 +267,18 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 239 | CV Selected Writing       | The CV lists the Scalable Path articles, then the Medium ones, then "Hotwire @ Skroutz: Lazy load data with minimum effort", then the DEV ones; "Refactoring a React app to progressively load its data" leaves the CV but stays on the site |
 | 240 | CV Skroutz bullet         | Still names both Skroutz Engineering articles: Selected Writing is a selection, not a full list |
 | 241 | CV AI skills              | The CV's AI skills row reads "Claude Code and other AI coding agents, custom skills, CLAUDE.md / AGENTS.md project instructions"; MCP and LLM work stays in the summary and the Netdata bullet, as work history rather than skills |
+| 242 | Projects group            | A "Projects" group inside Experience, after Work and before Education, with its own path `/projects` (marking Experience in the nav, like Education and Community) and one sheet per project at `/projects/<slug>`, using the same row, sheet, brand and story as the other groups; `/projects` leaves the retired routes of decision 31 |
+| 243 | hoohooli.gr project       | The first project: hoohooli.gr, the user's family business, a live Greek e-shop selling handmade clothes and accessories for babies and toddlers, whose WordPress/WooCommerce monolith the user split into a Next.js storefront and a headless WooCommerce backend; on the site and the CV |
+| 244 | Project links             | A project links to its live site, never to its repository: the hoohooli-frontend repository is private |
+| 245 | Project period            | hoohooli.gr runs "Dec 2025 – Present", from the repository's first commit; it is live and still changing |
+| 246 | Project figures           | Only well-evidenced figures: the product payload cut from about 2.4 MB to about 400 KB, which brought it under Next.js's 2 MB data-cache limit; the local Lighthouse LCP and accessibility scores are left out |
+| 247 | Project visuals           | Screenshots of the live hoohooli.gr, taken by the builder at 1714×964 with the cookie banner dismissed and approved by the user before commit |
+| 248 | AI-assisted development   | Not mentioned on the project: the CV's AI skills row already covers it, and the project's copy stays on the engineering |
+| 249 | Unclaimed project work    | Never claimed for hoohooli.gr: automated tests, on-demand revalidation or webhooks, and redirects from the old WooCommerce URLs; none of them exist |
+| 250 | hoohooli.gr brand         | Pale rose band `#fff1f2` (the shop's `rose-50`, echoing its hero gradient), `tone: "light"`, with the official hoohooli.gr logo copied unchanged, the shop's button rose `#f43f5e` as both accent and link colour (`--color-on-accent` on it is 5.29:1) and the hoohooli.gr home screen as the visual |
+| 251 | hoohooli.gr row           | Title "hoohooli.gr", subtitle "Headless e-commerce storefront", stack pills Next.js, React, TypeScript and WooCommerce, and a link to hoohooli.gr; "family business" goes in the intro, not the subtitle |
+| 252 | hoohooli.gr story         | A "hoohooli" / "My role" intro, then three panels under the heading "What I built": "Splitting the monolith" (the category page), "One shop, two apps" (the restyled WordPress account page) and "A fast, findable catalogue" (a product page), in the user-approved wording; tints `#ffe4e6`, `#fef3c7` and `#f5f0eb`, on which the paper text tokens keep 4.5:1 (decision 104) |
+| 253 | CV hoohooli.gr entry      | "hoohooli.gr", "Headless e-commerce storefront", "Dec 2025 – Present", a family-business context line and three bullets (the split, the cart handoff, caching and SEO), in the user-approved wording; the Backend skills row adds "WordPress / WooCommerce (headless)" (CV design decisions 14, 15) |
 
 ## 3. Scope
 
@@ -738,3 +750,13 @@ The user had a standalone CV builder outside this repo (Node, `cv/content.json` 
   - `npm run cv` needs Google Chrome installed locally.
   - The page and the PDF use different files of the same font families (the site's `next/font` faces and the CV's static ones).
   - `content.json` and `content/profile.ts` overlap and are kept in step by hand (decision 231).
+
+## 34. hoohooli.gr project (2026-10-23)
+
+The user asked to feature hoohooli.gr, their family's e-shop, on the site and the CV: they split its WordPress/WooCommerce monolith into a Next.js storefront for the catalogue, kept WordPress on an API subdomain for checkout, payments and accounts, and restyled those WordPress pages to match. The user approved decisions 242–249 and 250–253 on 2026-10-23. Every claim was checked against the private `kapantzak/hoohooli-frontend` repository and the live site.
+
+- **Content (decisions 242, 251, 252):** a `Project` type and `profile.projects` in `content/profile.ts`, shaped like a work role (slug, name, url, a descriptor as subtitle, period, stack, brand, story).
+- **Routes (decision 242):** `lib/sheets.ts` adds the `projects` group and its sheet metadata; `lib/nav.ts` adds the `projects` region after `experience`, marking Experience; `app/(home)/projects/page.tsx` and `app/(home)/projects/[slug]/page.tsx` follow the Community routes. The sitemap and analytics pick up the sheet through `sheetsOf`. `/projects` leaves the retired-routes check in `e2e/migration.spec.ts`.
+- **Images (decisions 247, 250, 252):** captured from hoohooli.gr with Playwright at 1714×964 after rejecting the cookie banner, then converted with `sharp` to quality-90 WebP: the home screen as the brand visual under `assets/brand/`, and the category, account and product pages under `assets/stories/hoohooli/`. The logo is `public/images/hoohooli-logo.svg` from the hoohooli-frontend repository, copied unchanged to `assets/brand/`.
+- **CV (decision 253):** `cv/content.json` gains a `projects` list; `cv/template.mjs` renders it as a "Projects" section after Experience with a role's markup; the PDF is rebuilt.
+- **Not changed:** the hero intro and the CV summary (CV design decision 5).

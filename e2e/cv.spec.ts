@@ -20,6 +20,7 @@ test("the CV page renders the CV with its title, canonical URL and paper sheet (
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(name);
   expect(await page.locator("main h2").allTextContents()).toEqual([
     "Experience",
+    "Projects",
     "Open Source & Community",
     "Selected Writing",
     "Skills",

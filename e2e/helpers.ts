@@ -27,6 +27,7 @@ export const SHEET_PAGES = [
   { path: "/experience/adzuna", name: "Adzuna" },
   { path: "/experience/skroutz", name: "Skroutz" },
   { path: "/experience/epsilonnet", name: "EpsilonNet" },
+  { path: "/projects/hoohooli", name: "hoohooli.gr" },
   {
     path: "/education/msc-applied-informatics",
     name: "MSc in Applied Informatics",
@@ -42,6 +43,7 @@ export const SHEET_PAGES = [
 /** Every section path and the element it lands on (decision 173). */
 export const REGION_PAGES = [
   { path: "/experience", id: "experience" },
+  { path: "/projects", id: "projects" },
   { path: "/education", id: "education" },
   { path: "/community", id: "community" },
   { path: "/writing", id: "writing" },
