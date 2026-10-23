@@ -78,6 +78,20 @@
       ]
     }
   ],
+  "projects": [
+    {
+      "name": "hoohooli.gr",
+      "url": "https://hoohooli.gr/",
+      "descriptor": "Headless e-commerce storefront",
+      "period": "Dec 2025 – Present",
+      "context": "Family business: a live Greek e-shop for handmade baby and toddler clothes. A WordPress/WooCommerce monolith split into a Next.js storefront and a headless WooCommerce backend.",
+      "bullets": [
+        "Moved the product catalogue to a Next.js 16 App Router storefront on Vercel. Kept checkout, payments and accounts on WordPress behind an API subdomain, restyled to match the new UI.",
+        "Carried the cart across both apps through a server-side proxy to the CoCart API, with a cart-key handoff to WooCommerce checkout.",
+        "Cut product API payloads from ~2.4 MB to ~400 KB so they fit the Next.js data cache. Added indexable category routes, a live sitemap and Product/Breadcrumb structured data."
+      ]
+    }
+  ],
   "community": [
     {
       "title": "Hotwire Turbo",
@@ -183,7 +197,7 @@
     },
     {
       "group": "Backend",
-      "items": "Node.js, ASP.NET / ASP.NET Core, Ruby on Rails, SQL Server"
+      "items": "Node.js, ASP.NET / ASP.NET Core, Ruby on Rails, SQL Server, WordPress / WooCommerce (headless)"
     },
     {
       "group": "Testing & delivery",

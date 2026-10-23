@@ -1,14 +1,10 @@
 import { expect, test } from "./fixtures";
 import { SHEET_PAGES } from "./helpers";
 
-// The site is one page, with a path per sheet and per section (decisions 30–31, 35, 161, 173).
+// The site is one page, with a path per sheet and per section (decisions 30–31, 35, 161, 173); `/projects` is a
+// section again (decision 242).
 test("retired routes return 404", async ({ request }) => {
-  for (const path of [
-    "/about",
-    "/posts",
-    "/projects",
-    "/posts/draft-fixture",
-  ]) {
+  for (const path of ["/about", "/posts", "/posts/draft-fixture"]) {
     const response = await request.get(path, { maxRedirects: 0 });
     expect(response.status(), path).toBe(404);
   }

@@ -22,6 +22,7 @@ describe("REGIONS", () => {
   it("lists every place with a path of its own, in reading order (decision 173)", () => {
     expect(REGIONS).toEqual([
       "experience",
+      "projects",
       "education",
       "community",
       "writing",
@@ -29,6 +30,7 @@ describe("REGIONS", () => {
     ]);
     expect(REGIONS.map(regionPath)).toEqual([
       "/experience",
+      "/projects",
       "/education",
       "/community",
       "/writing",
@@ -38,6 +40,7 @@ describe("REGIONS", () => {
 
   it("marks Experience for the groups inside it (decision 181)", () => {
     expect(REGIONS.map(sectionOf)).toEqual([
+      "experience",
       "experience",
       "experience",
       "experience",

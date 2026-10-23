@@ -4,6 +4,7 @@ import type { RegionId } from "@/lib/nav";
 import {
   communitySheet,
   degreeSheet,
+  projectSheet,
   roleSheet,
   type SheetMeta,
 } from "@/lib/sheets";
@@ -57,6 +58,27 @@ function groupsOf(profile: Profile): GroupData[] {
                 {hostOf(role.orgUrl)}
               </ExternalLink>
             ) : null}
+          </>
+        ),
+      })),
+    },
+    {
+      title: "Projects",
+      id: "projects",
+      entries: profile.projects.map((project) => ({
+        sheet: projectSheet(project),
+        brand: project.brand,
+        story: project.story,
+        details: (
+          <>
+            <ul className={styles.tags} aria-label="Stack">
+              {project.stack.map((tech) => (
+                <li key={tech}>{tech}</li>
+              ))}
+            </ul>
+            <ExternalLink href={project.url}>
+              {hostOf(project.url)}
+            </ExternalLink>
           </>
         ),
       })),

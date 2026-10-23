@@ -8,7 +8,7 @@ import styles from "./page.module.css";
 export const metadata: Metadata = {
   title: "CV",
   description:
-    "Experience, open source, writing, skills and education, with a PDF to download.",
+    "Experience, projects, open source, writing, skills and education, with a PDF to download.",
   alternates: { canonical: "/cv" },
 };
 
