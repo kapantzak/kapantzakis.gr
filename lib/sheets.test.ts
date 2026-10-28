@@ -27,9 +27,9 @@ describe("sheet metadata", () => {
       slug: "netdata",
       path: "/experience/netdata",
       title: "Netdata",
-      subtitle: "Senior software engineer",
+      subtitle: "Senior frontend engineer",
       period: "Feb 2023 – Present",
-      description: "Senior software engineer at Netdata, Feb 2023 – Present.",
+      description: "Senior frontend engineer at Netdata, Feb 2023 – Present.",
     });
   });
 

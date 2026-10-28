@@ -3,7 +3,7 @@ import { HOME_TITLE, TITLE_TEMPLATE, pageTitle } from "./titles";
 
 describe("titles", () => {
   it("names the home page after the owner and role", () => {
-    expect(HOME_TITLE).toBe("John Kapantzakis — Senior frontend engineer");
+    expect(HOME_TITLE).toBe("John Kapantzakis — Senior software engineer");
   });
 
   it("titles other pages through the site template", () => {

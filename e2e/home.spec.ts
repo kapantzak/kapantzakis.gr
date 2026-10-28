@@ -320,7 +320,7 @@ test("the Netdata sheet opens on a brand band with its logo", async ({
 for (const [org, role, background, link] of [
   [
     "Adzuna",
-    "Senior frontend developer",
+    "Senior frontend engineer",
     "rgb(255, 255, 255)",
     "rgb(39, 155, 55)",
   ],

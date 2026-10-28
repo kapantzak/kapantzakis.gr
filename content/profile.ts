@@ -153,10 +153,10 @@ export type Profile = {
 
 export const profile: Profile = {
   name: "John Kapantzakis",
-  role: "Senior frontend engineer",
+  role: "Senior software engineer",
   headline: "I build things for the web.",
   intro: [
-    "I'm a frontend engineer from Greece, with 12+ years of experience. Currently, I work with React and AI agents.",
+    "I'm a software engineer from Greece, with 12+ years of experience. Currently, I work with React and AI agents.",
     "I co-organise SKG JS, Thessaloniki’s JavaScript community meetups, bringing developers together to learn, share, and connect. I’ve also written about software engineering on Scalable Path, Medium, dev.to, and the Skroutz Engineering blog.",
   ],
   email: "kapantzak@gmail.com",
@@ -165,7 +165,7 @@ export const profile: Profile = {
       slug: "netdata",
       org: "Netdata",
       orgUrl: "https://www.netdata.cloud/",
-      title: "Senior software engineer",
+      title: "Senior frontend engineer",
       period: { start: "Feb 2023" },
       stack: ["JavaScript", "React", "AI coding agents"],
       // From netdata.cloud: page background, logo green and the hero's dashboard.
@@ -251,7 +251,7 @@ export const profile: Profile = {
       slug: "adzuna",
       org: "Adzuna",
       orgUrl: "https://www.adzuna.co.uk/",
-      title: "Senior frontend developer",
+      title: "Senior frontend engineer",
       period: { start: "Feb 2022", end: "Jan 2023" },
       stack: ["JavaScript", "React", "Next.js"],
       // From adzuna.co.uk: header logo, brand green and the first screen.
