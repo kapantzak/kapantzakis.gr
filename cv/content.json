@@ -1,6 +1,6 @@
 {
   "name": "John Kapantzakis",
-  "title": "Senior Frontend Engineer",
+  "title": "Senior Software Engineer",
   "outputBasename": "John_Kapantzakis_CV",
   "location": "Thessaloniki, Greece (UTC+2)",
   "contacts": [
@@ -21,34 +21,32 @@
       "href": "https://github.com/kapantzak"
     }
   ],
-  "summary": "Senior frontend engineer with 12+ years of experience building web products, currently on the React frontend of Netdata Cloud: AI-assisted observability, Model Context Protocol (MCP) integration and performance work on data-intensive UIs. Contributor to Hotwire Turbo, co-organiser of SKG JS, the Thessaloniki JavaScript community.",
+  "summary": "Senior Software Engineer with 12+ years building data-intensive web products across React, Next.js, Node.js, and Ruby on Rails. Currently developing AI-assisted observability features and frontend performance improvements at Netdata Cloud, with prior work shipping merchant, search, and e-commerce products.",
   "experience": [
     {
       "company": "Netdata",
       "url": "https://www.netdata.cloud/",
-      "role": "Senior Software Engineer",
+      "role": "Senior Frontend Engineer",
       "period": "Feb 2023 – Present",
       "location": "Thessaloniki, Greece",
       "context": "Open-source, real-time observability platform. Frontend of Netdata Cloud, a large, data-intensive React application.",
       "bullets": [
-        "Built frontend capabilities for Netdata's AI assistant, evolving it from a basic chat interface to persistent LLM conversations powered by Netdata-specific tools and investigation workflows. Also implemented frontend support for Model Context Protocol (MCP), allowing users to connect external tooling.",
-        "Optimized data processing and React rendering to improve performance and eliminate unnecessary remounts.",
-        "Cut reported frontend CI runtime by about 60% through Jest test sharding and test-reliability fixes.",
-        "Built the foundational Dynamic Configurations UI and continued evolving it to support complex, dynamically generated configuration forms, using the react-jsonschema-form library.",
-        "Helped build end-to-end AI Insights investigation reports (generation, rendering, scheduling) and contributed to enterprise identity features: SCIM, SSO, role and room mappings, and label-driven room membership."
+        "Developed AI assistant frontend capabilities for Netdata Cloud, including persistent LLM conversations, Netdata-specific tools, and investigation workflows, plus Model Context Protocol (MCP) frontend support.",
+        "Improved React performance by reducing unnecessary remounts and data-processing overhead.",
+        "Reduced frontend CI runtime by about 60% through Jest test sharding and test-reliability fixes.",
+        "Built and evolved the Dynamic Configurations UI for dynamically generated forms, and contributed to AI Insights reports plus enterprise identity features including SCIM, SSO, role and room mappings, and label-driven room membership."
       ]
     },
     {
       "company": "Adzuna",
       "url": "https://www.adzuna.co.uk/",
-      "role": "Senior Frontend Developer",
+      "role": "Senior Frontend Engineer",
       "period": "Feb 2022 – Jan 2023",
       "location": "Thessaloniki, Greece",
       "context": "Job search engine used by 15M+ jobseekers a month across 20 countries.",
       "bullets": [
-        "Built Labour Market Intelligence, a new data product, from zero to launch in under a year on Next.js, in a team of three (one product manager, two developers).",
-        "Built the product's interactive charts and maps with Apache ECharts, visualising hiring demand, salaries and trends across regions.",
-        "Shipped search, grouping and filtering by location, sector, salary and other dimensions, so users could explore labour-market data for multiple countries."
+        "Built Labour Market Intelligence, a new data product, from zero to launch in under a year on Next.js, working in a team of three.",
+        "Implemented interactive charts and maps with Apache ECharts, search, grouping, and filtering so users could explore hiring demand, salaries, and trends across multiple countries."
       ]
     },
     {
@@ -59,9 +57,8 @@
       "location": "Thessaloniki, Greece",
       "context": "One of Greece's leading e-commerce marketplaces. Partners department: tooling for merchants.",
       "bullets": [
-        "Developed and maintained the merchant platform (orders, payments, daily operations) with Ruby on Rails and Hotwire Turbo server rendering, using React for selected views.",
-        "Contributed two features to Hotwire Turbo that shipped in Turbo 7 and were credited in the release announcement: the turbo:frame-render event and target elements on fetch events.",
-        "Published two articles on the Skroutz engineering blog, on progressive data loading in React and lazy loading with Hotwire."
+        "Developed and maintained the merchant platform for orders, payments, and daily operations using Ruby on Rails, Hotwire Turbo, and React.",
+        "Contributed two features to Hotwire Turbo that shipped in Turbo 7 and were credited in the release announcement, and published two engineering articles on progressive data loading in React and lazy loading with Hotwire."
       ]
     },
     {
@@ -72,9 +69,8 @@
       "location": "Thessaloniki, Greece",
       "context": "Greek business-software company. Epsilon ESS, an employee self-service web platform on ASP.NET and C#.",
       "bullets": [
-        "Progressed from junior web designer to full-stack developer responsible for the product's frontend, implementing features end to end from C# backend to TypeScript frontend.",
-        "Introduced TypeScript, webpack and Redux-managed asynchronous views into a legacy ASP.NET Web Forms frontend, and added unit tests on both sides (Mocha and Chai, xUnit).",
-        "Built a Node.js and Handlebars CLI that generates the boilerplate for a new form: the ASP.NET user control and async handler, the TypeScript page script and Redux state, and the C# data models."
+        "Progressed from junior web designer to full-stack developer responsible for the product frontend, implementing features end to end across C# backend and TypeScript frontend.",
+        "Introduced TypeScript, webpack, Redux-managed asynchronous views, and unit tests with Mocha, Chai, and xUnit, then built a Node.js and Handlebars CLI to generate form boilerplate across UI, state, and data models."
       ]
     }
   ],

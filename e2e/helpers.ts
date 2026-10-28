@@ -19,7 +19,7 @@ export async function expectBodyBackground(
   await expect(page.locator("body")).toHaveCSS("background-color", colour);
 }
 
-export const HOME_TITLE = "John Kapantzakis — Senior frontend engineer";
+export const HOME_TITLE = "John Kapantzakis — Senior software engineer";
 
 /** Every sheet path and its dialog's accessible name (decision 162). */
 export const SHEET_PAGES = [
