@@ -28,7 +28,25 @@ body {
   position: relative;
   width: 1200px;
   height: 630px;
-  background: #0b0d12;
+  /* A still frame of the homepage hero's aurora (components/HeroAurora.module.css), same three glows, same
+     positions, blended into --color-bg instead of animated so text keeps the same contrast margin (decision 82). */
+  background:
+    radial-gradient(
+      ellipse 56% 44% at 30% 28%,
+      color-mix(in srgb, #15533d 60%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 52% 40% at 74% 18%,
+      color-mix(in srgb, #124854 55%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 62% 48% at 55% 88%,
+      color-mix(in srgb, #3e2d6d 60%, transparent),
+      transparent 70%
+    ),
+    #0b0d12;
   font-family: "Inter", system-ui, sans-serif;
   display: flex;
   flex-direction: column;
