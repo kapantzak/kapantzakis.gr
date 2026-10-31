@@ -21,6 +21,21 @@ export const metadata: Metadata = {
     template: TITLE_TEMPLATE,
   },
   description: profile.headline,
+  // One thumbnail for the whole site (decision 254): every route inherits this unless it sets its own.
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: profile.name,
+    title: HOME_TITLE,
+    description: profile.headline,
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: HOME_TITLE,
+    description: profile.headline,
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

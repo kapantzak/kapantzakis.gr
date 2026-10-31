@@ -9,16 +9,17 @@ npm install
 npm run dev          # http://localhost:3000
 ```
 
-| Script                 | What it does                                                      |
-| ---------------------- | ----------------------------------------------------------------- |
-| `npm run lint`         | ESLint                                                            |
-| `npm run typecheck`    | Generates Next.js types, then `tsc --noEmit`                      |
-| `npm run test`         | Vitest unit tests                                                 |
-| `npm run e2e`          | Builds, then runs Playwright smoke tests                          |
-| `npm run format`       | Prettier                                                          |
-| `npm run format:check` | Prettier check (no writes)                                        |
-| `npm run build`        | Production build                                                  |
-| `npm run cv`           | Rebuilds the CV PDF in `public/` from `cv/` (needs Google Chrome) |
+| Script                 | What it does                                                           |
+| ---------------------- | ---------------------------------------------------------------------- |
+| `npm run lint`         | ESLint                                                                 |
+| `npm run typecheck`    | Generates Next.js types, then `tsc --noEmit`                           |
+| `npm run test`         | Vitest unit tests                                                      |
+| `npm run e2e`          | Builds, then runs Playwright smoke tests                               |
+| `npm run format`       | Prettier                                                               |
+| `npm run format:check` | Prettier check (no writes)                                             |
+| `npm run build`        | Production build                                                       |
+| `npm run cv`           | Rebuilds the CV PDF in `public/` from `cv/` (needs Google Chrome)      |
+| `npm run og-image`     | Rebuilds the social-share thumbnail in `public/` (needs Google Chrome) |
 
 Run `format:check`, `lint`, `typecheck`, `test`, `e2e` and `build` before merging.
 
@@ -26,6 +27,9 @@ After editing the CV's content, template or styles in `cv/`, run `npm run cv` an
 `cv/sources.sha256`; `npm test` fails until you do. Before committing, open the PDF, select all and paste into a
 plain-text editor to check the reading order, then confirm it has 2 pages, no role split across pages, and clickable
 links.
+
+After editing `profile.name`, `profile.role` or `profile.headline`, update `scripts/og-image/content.json` to match
+and run `npm run og-image`, then commit `public/og-image.png`.
 
 Google Analytics and its consent banner run only when `NEXT_PUBLIC_GA_ID` is set at build time; on Vercel it is set
 for Production only, so local runs and previews send nothing. `npm run e2e` builds with a placeholder ID and blocks
