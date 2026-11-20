@@ -42,7 +42,7 @@ function experience(cv) {
   return `<section><h2>Experience</h2>${roles}</section>`;
 }
 
-// A project takes a role's layout, named by its live site (CV design decision 14).
+// A project takes a role's layout, named by its live site or public repository (CV design decisions 14, 16).
 function projects(cv) {
   const entries = cv.projects
     .map(

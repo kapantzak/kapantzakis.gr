@@ -34,7 +34,7 @@ describe("sheet metadata", () => {
   });
 
   it("describes a project by its name, descriptor and period (decision 251)", () => {
-    expect(projectSheet(profile.projects[0]!)).toEqual({
+    expect(projectSheet(profile.projects[1]!)).toEqual({
       group: "projects",
       slug: "hoohooli",
       path: "/projects/hoohooli",
@@ -43,6 +43,19 @@ describe("sheet metadata", () => {
       period: "Dec 2025 – Present",
       description:
         "hoohooli.gr: Headless e-commerce storefront, Dec 2025 – Present.",
+    });
+  });
+
+  it("lists the newest project first (decisions 258, 263)", () => {
+    expect(projectSheet(profile.projects[0]!)).toEqual({
+      group: "projects",
+      slug: "job-applications-tracker",
+      path: "/projects/job-applications-tracker",
+      title: "Job Applications Tracker",
+      subtitle: "Local job tracker driven by AI agents",
+      period: "Nov 2026 – Present",
+      description:
+        "Job Applications Tracker: Local job tracker driven by AI agents, Nov 2026 – Present.",
     });
   });
 
@@ -71,6 +84,7 @@ describe("sheet metadata", () => {
       "/experience/adzuna",
       "/experience/skroutz",
       "/experience/epsilonnet",
+      "/projects/job-applications-tracker",
       "/projects/hoohooli",
       "/education/msc-applied-informatics",
       "/education/msc-informatics-and-management",

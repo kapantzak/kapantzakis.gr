@@ -19,7 +19,10 @@ test("home renders the headline and every section without horizontal scroll", as
     await expect(page.getByRole("heading", { level: 2, name })).toBeAttached();
   }
   for (const name of ["Work", "Projects", "Education", "Community"]) {
-    await expect(page.getByRole("heading", { level: 3, name })).toBeAttached();
+    // Exact, since post titles are level-3 headings too ("…that works with AI agents").
+    await expect(
+      page.getByRole("heading", { level: 3, name, exact: true }),
+    ).toBeAttached();
   }
   await expectBodyBackground(page, DARK_BG);
   await expectNoHorizontalOverflow(page);
@@ -671,6 +674,76 @@ test("the hoohooli.gr sheet opens on its rose band with its logo, site link and 
     "One shop, two apps",
     "A fast, findable catalogue",
   ]);
+  expect(
+    await sheet.evaluate((el) => el.scrollWidth - el.clientWidth),
+  ).toBeLessThanOrEqual(0);
+});
+
+// The newest project comes first, on a dark band with the app's tile logo beside its name (decisions 258–264).
+test("the Job Applications Tracker sheet opens on its dark band with its lockup, repository link and story", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const rows = page
+    .locator("#projects")
+    .getByRole("button", { name: /Job Applications Tracker|hoohooli\.gr/ });
+  await expect(rows.first()).toContainText("Job Applications Tracker");
+  const row = rows.first();
+  await expect
+    .poll(() =>
+      row.evaluate((el) =>
+        getComputedStyle(el.closest("li")!).getPropertyValue("--accent"),
+      ),
+    )
+    .toBe("#5598e7");
+  await row.click();
+  await expect(page).toHaveURL(/\/projects\/job-applications-tracker$/);
+  const sheet = page.getByRole("dialog", { name: "Job Applications Tracker" });
+  const band = sheet.locator("[data-brand]");
+  await expect(band).toHaveCSS("background-color", "rgb(24, 24, 27)");
+  await expect(band).toHaveAttribute("data-tone", "dark");
+  // The lockup names the heading; the logo beside it is decorative (decision 92).
+  const title = band.getByRole("heading", {
+    level: 2,
+    name: "Job Applications Tracker",
+  });
+  const logo = title.locator("img");
+  await expect(logo).toHaveAttribute("alt", "");
+  await expect
+    .poll(() => logo.evaluate((img: HTMLImageElement) => img.naturalWidth))
+    .toBeGreaterThan(0);
+  await expect(title.getByText("Tracker", { exact: true })).toHaveCSS(
+    "color",
+    "rgb(85, 152, 231)",
+  );
+  // No live site, so the public repository (decision 259).
+  const repo = band.getByRole("link", { name: /github\.com/ });
+  await expect(repo).toHaveAttribute(
+    "href",
+    "https://github.com/kapantzak/job-applications-tracker",
+  );
+  await expect(repo).toHaveCSS("background-color", "rgb(85, 152, 231)");
+  for (const label of ["Job Applications Tracker", "My role"]) {
+    await expect(
+      sheet.getByRole("heading", { level: 3, name: label, exact: true }),
+    ).toBeVisible();
+  }
+  await expect(sheet.locator("[data-placeholder]")).toHaveCount(0);
+  const built = sheet.getByRole("region", { name: "What I built" });
+  await expect(built.getByRole("heading", { level: 4 })).toHaveText([
+    "Your agent does the searching",
+    "Gmail sync you approve",
+    "Local and in plain sight",
+  ]);
+  // The write-up on DEV is linked from the first panel (decision 260).
+  await expect(
+    built.getByRole("link", {
+      name: /I built a job application tracker that works with AI agents/,
+    }),
+  ).toHaveAttribute(
+    "href",
+    "https://dev.to/kapantzak/i-built-a-job-application-tracker-that-works-with-ai-agents-25i4",
+  );
   expect(
     await sheet.evaluate((el) => el.scrollWidth - el.clientWidth),
   ).toBeLessThanOrEqual(0);

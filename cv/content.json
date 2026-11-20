@@ -76,6 +76,18 @@
   ],
   "projects": [
     {
+      "name": "Job Applications Tracker",
+      "url": "https://github.com/kapantzak/job-applications-tracker",
+      "descriptor": "Local job tracker driven by AI agents",
+      "period": "Nov 2026 – Present",
+      "context": "Open-source, local-first app (MIT, on npm) that hands job discovery and Gmail status tracking to the user's own AI agent CLI.",
+      "bullets": [
+        "Built a local Node.js (Hono), React and SQLite app that runs Claude Code, Codex or a custom agent CLI as a subprocess, with per-run tool allowlists, spend caps and zod-validated structured output.",
+        "Checks every discovered job's link (verified, redirected or dead), removes duplicates by canonical URL, and offers a max-effort search that runs five source-specific searches in parallel.",
+        "Built Gmail sync that turns confirmations, interviews and rejections into evidence-backed proposals the user accepts or rejects; nothing changes without approval."
+      ]
+    },
+    {
       "name": "hoohooli.gr",
       "url": "https://hoohooli.gr/",
       "descriptor": "Headless e-commerce storefront",
