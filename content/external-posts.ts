@@ -2,6 +2,14 @@ import type { Post } from "@/lib/posts";
 
 export const externalPosts: Post[] = [
   {
+    title: "I built a job application tracker that works with AI agents",
+    date: "2026-11-20",
+    summary:
+      "Why I built a local job application tracker that lets AI agents search for openings and read Gmail, while I approve every change.",
+    url: "https://dev.to/kapantzak/i-built-a-job-application-tracker-that-works-with-ai-agents-25i4",
+    source: "DEV.TO",
+  },
+  {
     title: "Hotwire @ Skroutz: Lazy load data with minimum effort",
     date: "2021-07-11",
     summary:

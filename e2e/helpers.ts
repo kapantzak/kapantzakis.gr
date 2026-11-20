@@ -27,6 +27,10 @@ export const SHEET_PAGES = [
   { path: "/experience/adzuna", name: "Adzuna" },
   { path: "/experience/skroutz", name: "Skroutz" },
   { path: "/experience/epsilonnet", name: "EpsilonNet" },
+  {
+    path: "/projects/job-applications-tracker",
+    name: "Job Applications Tracker",
+  },
   { path: "/projects/hoohooli", name: "hoohooli.gr" },
   {
     path: "/education/msc-applied-informatics",

@@ -46,6 +46,7 @@ const brands = [
   ...[...profile.experience, ...profile.community].map(
     (entry) => [entry.org, entry.brand] as const,
   ),
+  ...profile.projects.map((project) => [project.name, project.brand] as const),
   ...profile.education.map((degree) => [degree.degree, degree.brand] as const),
 ].flatMap(([name, brand]) => (brand ? [[name, brand] as const] : []));
 
@@ -154,6 +155,7 @@ describe.each(brands.filter(([, brand]) => brand.lockup))(
 // Contribution panels keep the sheet's paper text tokens on their own tints (decision 104).
 const stories = [
   ...profile.experience.map((role) => [role.org, role.story] as const),
+  ...profile.projects.map((project) => [project.name, project.story] as const),
   ...profile.education.map((degree) => [degree.degree, degree.story] as const),
   ...profile.community.map((entry) => [entry.org, entry.story] as const),
 ].flatMap(([name, story]) => (story ? [[name, story] as const] : []));

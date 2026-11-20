@@ -7,6 +7,8 @@ import epsilonnetHome from "@/assets/brand/epsilonnet-home.webp";
 import epsilonnetLogo from "@/assets/brand/epsilonnet-logo.svg";
 import hoohooliHome from "@/assets/brand/hoohooli-home.webp";
 import hoohooliLogo from "@/assets/brand/hoohooli-logo.svg";
+import jatDashboard from "@/assets/brand/job-applications-tracker-dashboard.webp";
+import jatLogo from "@/assets/brand/job-applications-tracker-logo.svg";
 import netdataDashboard from "@/assets/brand/netdata-dashboard.png";
 import netdataLogo from "@/assets/brand/netdata-logo.svg";
 import skgjsHome from "@/assets/brand/skgjs-home.webp";
@@ -42,6 +44,9 @@ import attendanceApi from "@/assets/stories/msc/web-api.webp";
 import hoohooliCatalogue from "@/assets/stories/hoohooli/catalogue.webp";
 import hoohooliAccount from "@/assets/stories/hoohooli/wordpress-account.webp";
 import hoohooliProduct from "@/assets/stories/hoohooli/product.webp";
+import jatJobs from "@/assets/stories/job-applications-tracker/jobs.webp";
+import jatReview from "@/assets/stories/job-applications-tracker/review.webp";
+import jatRun from "@/assets/stories/job-applications-tracker/run.webp";
 import type { Period } from "@/lib/period";
 
 /** An organisation's own look for the top of its detail sheet (decisions 48–53, 87). */
@@ -105,7 +110,7 @@ export type Project = {
   /** Its sheet's path segment, unique within its group (decision 162). */
   slug: string;
   name: string;
-  /** The live site; never a private repository (decision 244). */
+  /** The live site, or the public repository when there is none; never a private repository (decisions 244, 259). */
   url: string;
   /** What the project is, shown as the sheet's subtitle (decision 251). */
   descriptor: string;
@@ -488,7 +493,67 @@ export const profile: Profile = {
       },
     },
   ],
+  // Newest first, like the work roles (decision 258).
   projects: [
+    {
+      slug: "job-applications-tracker",
+      name: "Job Applications Tracker",
+      url: "https://github.com/kapantzak/job-applications-tracker",
+      descriptor: "Local job tracker driven by AI agents",
+      period: { start: "Nov 2026" },
+      stack: ["TypeScript", "React", "Node.js", "SQLite"],
+      // The app's own tile logo, unchanged, on the tile's zinc; its "Applied" blue as accent (decision 262).
+      brand: {
+        logo: jatLogo,
+        background: "#18181b",
+        accent: "#5598e7",
+        link: "#5598e7",
+        tone: "dark",
+        visual: jatDashboard,
+        lockup: ["Job Applications", "Tracker"],
+      },
+      // Screenshots of the app's own invented sandbox data, approved by the user (decisions 261, 264).
+      story: {
+        intro: [
+          {
+            label: "Job Applications Tracker",
+            text: "An open-source app that runs on your own machine and keeps a job search in one place: the openings worth applying to, every application and where it stands. It is published on npm and starts with one command.",
+          },
+          {
+            label: "My role",
+            text: "I designed and built it end to end. Rather than adding a chatbot, it hands the legwork to the agent CLI you already use (Claude Code, Codex or your own command), and nothing in your data changes until you approve it.",
+          },
+        ],
+        contributionsHeading: "What I built",
+        contributions: [
+          {
+            title: "Your agent does the searching",
+            body: "Job searches run your own agent with a limited tool list and a spend cap, and its structured answer is validated before anything is saved. The app then checks every link itself, marking each job Verified, Redirected or Dead, skips duplicates by their canonical link, and shows whether each opening fits your locations, remote preference and seniority. A max-effort search splits the work into five searches by source and merges what they find.",
+            image: jatJobs,
+            tint: "#e8f1fc",
+            links: [
+              {
+                label:
+                  "I built a job application tracker that works with AI agents",
+                url: "https://dev.to/kapantzak/i-built-a-job-application-tracker-that-works-with-ai-agents-25i4",
+              },
+            ],
+          },
+          {
+            title: "Gmail sync you approve",
+            body: "A sync run lets the agent read your mailbox through its own Gmail connector, limited to search and read tools. It turns confirmations, interview invitations and rejections into proposals, each backed by the sender, date, subject and a snippet of the email, and finds applications you never added. Nothing changes until you accept.",
+            image: jatReview,
+            tint: "#f4f4f5",
+          },
+          {
+            title: "Local and in plain sight",
+            body: "Everything lives in a SQLite file on your machine. The server listens only on your own computer and checks each request’s Host and Origin, so other websites cannot use its API. Every run gets its own page, with a plain-language log, the tokens and estimated cost the agent reported, and a Cancel button that stops the agent’s whole process tree.",
+            image: jatRun,
+            tint: "#eef0fb",
+          },
+        ],
+      },
+    },
     {
       slug: "hoohooli",
       name: "hoohooli.gr",
