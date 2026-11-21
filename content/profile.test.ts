@@ -5,6 +5,7 @@ function allUrls(): string[] {
   return [
     ...profile.experience.flatMap((r) => (r.orgUrl ? [r.orgUrl] : [])),
     ...profile.projects.map((p) => p.url),
+    ...profile.projects.flatMap((p) => (p.repo ? [p.repo] : [])),
     ...profile.education.flatMap((d) => (d.program ? [d.program.url] : [])),
     ...profile.education.flatMap((d) => (d.thesis ? [d.thesis.url] : [])),
     ...profile.community.map((c) => c.orgUrl),
