@@ -79,6 +79,11 @@ function groupsOf(profile: Profile): GroupData[] {
             <ExternalLink href={project.url}>
               {hostOf(project.url)}
             </ExternalLink>
+            {project.repo ? (
+              <ExternalLink href={project.repo}>
+                {hostOf(project.repo)}
+              </ExternalLink>
+            ) : null}
           </>
         ),
       })),

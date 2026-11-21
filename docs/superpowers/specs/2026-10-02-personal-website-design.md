@@ -290,6 +290,7 @@ The user approved all decisions on 2026-10-02: 1–14 in the first round, 15–1
 | 265 | CV tracker entry          | "Job Applications Tracker", "Local job tracker driven by AI agents", "Nov 2026 – Present", an open-source context line and three bullets (the agent runner, link checks and max-effort search, Gmail sync proposals), in the user-approved wording; no skills-row change (CV design decision 16) |
 | 266 | Tracker article           | "I built a job application tracker that works with AI agents" (DEV, 2026-11-20) joins the site's Writing list; it is not added to the CV's Selected Writing, which the tracker's project entry already covers |
 | 267 | Project contrast tests    | `styles/tokens.test.ts` checks project brands, lockups and story tints like the other groups' (decisions 93, 104) |
+| 268 | Project links (revised)   | *Revises 259.* A project links to its live site; a public repository may be shown as well, after the site; with no live site, the public repository alone; never a private repository. Job Applications Tracker links to its official site `jobtrack.kapantzakis.gr` and to `github.com/kapantzak/job-applications-tracker`, as two matching filled links in the sheet header, site first; the CV links the site only (CV design decision 17) |
 
 ## 3. Scope
 
@@ -792,3 +793,12 @@ The user asked to add their Job Applications Tracker (`github.com/kapantzak/job-
 - **CV (decision 265):** `cv/content.json` gains the entry first under Projects; the PDF is rebuilt and stays at two pages, with hoohooli.gr moving whole to page 2.
 - **Tests (decision 267):** `styles/tokens.test.ts` adds `profile.projects` to its brand and story lists; hoohooli.gr passes too.
 - **Not changed:** the hero intro, the CV summary and skills, and the OG image.
+
+## 37. Job Applications Tracker official site (2026-11-21)
+
+The user asked to link the tracker's official site, `https://jobtrack.kapantzakis.gr/`, on the site and the CV, keeping the GitHub link on the site. The user approved decision 268 on 2026-11-21.
+
+- **Content (decision 268):** `Project` gains an optional `repo`, the public repository shown after `url`; the tracker's `url` becomes its official site and its `repo` the GitHub repository. hoohooli.gr has no `repo`, as its repository is private.
+- **Sheet (decision 268):** the header shows `jobtrack.kapantzakis.gr ↗` then `github.com ↗`, both filled in the brand link colour by the existing `.facts` rule, so no CSS or contrast change.
+- **CV (CV design decision 17):** the project name links to the official site; no repository link; the PDF is rebuilt.
+- **Tests:** the tracker sheet's e2e test checks both links in order.

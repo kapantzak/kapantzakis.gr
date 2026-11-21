@@ -77,7 +77,7 @@
   "projects": [
     {
       "name": "Job Applications Tracker",
-      "url": "https://github.com/kapantzak/job-applications-tracker",
+      "url": "https://jobtrack.kapantzakis.gr/",
       "descriptor": "Local job tracker driven by AI agents",
       "period": "Nov 2026 – Present",
       "context": "Open-source, local-first app (MIT, on npm) that hands job discovery and Gmail status tracking to the user's own AI agent CLI.",

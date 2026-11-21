@@ -680,7 +680,7 @@ test("the hoohooli.gr sheet opens on its rose band with its logo, site link and 
 });
 
 // The newest project comes first, on a dark band with the app's tile logo beside its name (decisions 258–264).
-test("the Job Applications Tracker sheet opens on its dark band with its lockup, repository link and story", async ({
+test("the Job Applications Tracker sheet opens on its dark band with its lockup, site and repository links and story", async ({
   page,
 }) => {
   await page.goto("/");
@@ -716,13 +716,20 @@ test("the Job Applications Tracker sheet opens on its dark band with its lockup,
     "color",
     "rgb(85, 152, 231)",
   );
-  // No live site, so the public repository (decision 259).
-  const repo = band.getByRole("link", { name: /github\.com/ });
-  await expect(repo).toHaveAttribute(
+  // The official site first, then the public repository, both filled (decision 268).
+  const links = band.getByRole("link");
+  await expect(links).toHaveText([/jobtrack\.kapantzakis\.gr/, /github\.com/]);
+  await expect(links.nth(0)).toHaveAttribute(
+    "href",
+    "https://jobtrack.kapantzakis.gr/",
+  );
+  await expect(links.nth(1)).toHaveAttribute(
     "href",
     "https://github.com/kapantzak/job-applications-tracker",
   );
-  await expect(repo).toHaveCSS("background-color", "rgb(85, 152, 231)");
+  for (const link of [links.nth(0), links.nth(1)]) {
+    await expect(link).toHaveCSS("background-color", "rgb(85, 152, 231)");
+  }
   for (const label of ["Job Applications Tracker", "My role"]) {
     await expect(
       sheet.getByRole("heading", { level: 3, name: label, exact: true }),

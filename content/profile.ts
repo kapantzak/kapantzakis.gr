@@ -110,8 +110,10 @@ export type Project = {
   /** Its sheet's path segment, unique within its group (decision 162). */
   slug: string;
   name: string;
-  /** The live site, or the public repository when there is none; never a private repository (decisions 244, 259). */
+  /** The live site, or the public repository when there is none; never a private repository (decisions 244, 268). */
   url: string;
+  /** A public repository shown after the live site; never a private repository (decision 268). */
+  repo?: string;
   /** What the project is, shown as the sheet's subtitle (decision 251). */
   descriptor: string;
   period: Period;
@@ -498,7 +500,8 @@ export const profile: Profile = {
     {
       slug: "job-applications-tracker",
       name: "Job Applications Tracker",
-      url: "https://github.com/kapantzak/job-applications-tracker",
+      url: "https://jobtrack.kapantzakis.gr/",
+      repo: "https://github.com/kapantzak/job-applications-tracker",
       descriptor: "Local job tracker driven by AI agents",
       period: { start: "Nov 2026" },
       stack: ["TypeScript", "React", "Node.js", "SQLite"],
